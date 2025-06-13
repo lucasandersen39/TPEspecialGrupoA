@@ -2,11 +2,13 @@ package com.integrador.grupoA.services;
 
 import com.integrador.grupoA.entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.integrador.grupoA.repositories.UsuarioRepository;
 import com.integrador.grupoA.services.dto.usuario.usuarioRequestDTO.UsuarioRequestDTO;
 import com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO.UsuarioResponseDTO;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,7 +40,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Optional<UsuarioResponseDTO> o = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario());
         Optional<UsuarioResponseDTO> p = usuarioRepository.findByEmail(usuario.getEmail());
 
-        if (!o.isPresent() && !p.isPresent()) {
+        if (o.isEmpty() && p.isEmpty()) {
             Usuario nuevoUsuario = new Usuario();
             nuevoUsuario.setNombre(usuario.getNombre());
             nuevoUsuario.setApellido(usuario.getApellido());
@@ -87,15 +89,21 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public void eliminarUsuario(Long id) {
-        Optional<Usuario> o = usuarioRepository.findById(id);
-        if (o.isPresent()) {
+        boolean existe = usuarioRepository.existsById(id);
+        if (existe) {
             usuarioRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Usuario con ID " + id + " no encontrado."
+            );
         }
     }
 
     @Override
     @Transactional
     public void cambiarEstadoUsuario(Long id) {
+        //controlar lo que muestra si no llega ningun usuario con ese id
         Optional<Usuario> o = usuarioRepository.findById(id);
         if (o.isPresent()) {
             Usuario usuario = o.get();
@@ -105,5 +113,12 @@ public class UsuarioServiceImpl implements UsuarioService {
         else {
             System.err.println("Error: No existe un usuario con ese ID");
         }
+    }
+
+    @Override
+    @Transactional
+    public List<UsuarioResponseDTO> obtenerUsuariosPorTipo(String tipo){
+        //controlar el hecho de poner un tipo de usuario que no exista
+        return usuarioRepository.obtenerUsuariosPorTipo(tipo);
     }
 }

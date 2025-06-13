@@ -2,6 +2,7 @@ package com.integrador.grupoA.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.integrador.grupoA.services.UsuarioService;
@@ -29,6 +30,11 @@ public class UsuarioController {
         return usuarioService.buscarPorId(id);
     }
 
+    @GetMapping("/tipoUsuario/{tipoUsuario}")
+    public List<UsuarioResponseDTO> obtenerUsuariosPorTipo(@PathVariable String tipoUsuario) {
+        return usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
+    }
+
     @PostMapping("")
     public ResponseEntity<Optional<UsuarioResponseDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario){
         final var result = this.usuarioService.crearUsuario(usuario);
@@ -41,9 +47,10 @@ public class UsuarioController {
         return ResponseEntity.accepted().body(result);
     }
 
-    @DeleteMapping ("/{id}")
-    public void eliminarUsuario(@PathVariable Long id){
-        this.usuarioService.eliminarUsuario(id);
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminarUsuario(@PathVariable Long id) {
+        usuarioService.eliminarUsuario(id);
     }
 
     @PutMapping("/estado/{id}")
