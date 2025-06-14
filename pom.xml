@@ -11,7 +11,8 @@
 	<groupId>com.integrador</groupId>
 	<artifactId>grupoA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>grupoA</name>
+    <packaging>pom</packaging>
+    <name>grupoA</name>
 	<description>Integrador Especial Grupo A</description>
 	<url/>
 	<licenses>
@@ -20,7 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
-	<scm>
+    <modules>
+        <module>msvc-paradas</module>
+    </modules>
+    <scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>

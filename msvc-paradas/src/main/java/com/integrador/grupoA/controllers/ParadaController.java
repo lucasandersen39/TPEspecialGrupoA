@@ -1,0 +1,44 @@
+package com.integrador.grupoA.controllers;
+
+import com.integrador.grupoA.services.ParadaService;
+import com.integrador.grupoA.services.dto.parada.paradaRequestDTO.ParadaRequestDTO;
+import com.integrador.grupoA.services.dto.parada.paradaResponseDTO.ParadaResponseDTO;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("api/parada")
+public class ParadaController {
+
+    @Autowired
+    private ParadaService paradaService;
+
+    @GetMapping("")
+    public List<ParadaResponseDTO> listar(){return paradaService.listar();}
+
+    @GetMapping("/{id}")
+    public Optional<ParadaResponseDTO> buscarPorId(@PathVariable Long id){return paradaService.buscarPorId(id);}
+
+    @PostMapping("")
+    public ResponseEntity<Optional<ParadaResponseDTO>> crearParada(@RequestBody @Valid ParadaRequestDTO parada){
+        final var result =paradaService.crearParada(parada);
+        return ResponseEntity.accepted().body(result);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<ParadaResponseDTO>> modificarParada(@RequestBody @Valid ParadaRequestDTO parada, @PathVariable Long id){
+        final var result = paradaService.modificarParada(parada, id);
+        return ResponseEntity.accepted().body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminarParada(@PathVariable Long id){paradaService.eliminarParada(id);}
+
+}
