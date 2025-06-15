@@ -5,9 +5,13 @@ import com.integrador.grupoA.exceptions.custom.BusinessValidationException;
 import com.integrador.grupoA.exceptions.custom.DuplicateEntityException;
 import com.integrador.grupoA.exceptions.custom.ResourceNotFoundException;
 import com.integrador.grupoA.repository.TarifaRepository;
+import com.integrador.grupoA.services.dto.tarifaRequest.TarifaRequestDTO;
+import com.integrador.grupoA.services.dto.tarifaResponse.TarifaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AdminService {
@@ -15,12 +19,41 @@ public class AdminService {
     @Autowired
     TarifaRepository tarifaRepository;
 
+    //Obtiene una lista de todas las tarifas
+    @Transactional (readOnly = true)
+    public List<TarifaResponseDTO> obtenerTarifas(){
+        List<TarifaResponseDTO> tarifas = tarifaRepository.findAllTarifas();
+        if (tarifas.isEmpty())
+            throw new ResourceNotFoundException("No existen tarifas");
+        return tarifas;
+    }
+
+    // Obtiene una TarifaResponseDTO por su id
+    @Transactional(readOnly = true)
+    public TarifaResponseDTO findTarifaPorId(Long id){
+        TarifaResponseDTO tarifa = tarifaRepository.findTarifaPorId(id);
+        if (tarifa == null)
+            throw new ResourceNotFoundException(String.format("No existen tarifas con el ID: %d", id));
+        return tarifa;
+    }
+
+    // Obtiene una TarifaResponseDTO por su tipo
+    @Transactional (readOnly = true)
+    public TarifaResponseDTO obtenerTarifaPorTipo(String tipoTarifa){
+        TarifaResponseDTO tarifa = tarifaRepository.findTarifaPorTipo(tipoTarifa);
+        if (tarifa == null)
+            throw new ResourceNotFoundException(String.format("No existen tarifas con el tipo: %s", tipoTarifa));
+        return tarifa;
+    }
+
     // Agrega una nueva tarifa
     @Transactional
-    public Tarifa agregarTarifa(Tarifa tarifa){
-        validarTipoTarifa(tarifa.getTipo_tarifa());
-        validarMonto(tarifa.getMonto());
-        return tarifaRepository.save(tarifa);
+    public TarifaResponseDTO agregarTarifa(TarifaRequestDTO tarifaRequestDTO){
+        validarTipoTarifa(tarifaRequestDTO.getTipo_tarifa());
+        validarMonto(tarifaRequestDTO.getMonto());
+        Tarifa tarifa = convertirATarifa(tarifaRequestDTO);
+        tarifaRepository.save(tarifa);
+        return convertirADTO(tarifa);
     }
 
     // Elimina una tarifa por su id
@@ -32,18 +65,18 @@ public class AdminService {
 
     // Modifica una tarifa por su id
     @Transactional
-    public Tarifa modificarTarifa(Long id, Tarifa tarifa){
+    public TarifaResponseDTO modificarTarifa(Long id, TarifaRequestDTO tarifaRequestDTO){
         Tarifa tarifaEncontrada = findById(id);
-        validarId(id, tarifa);
-        validarMonto(tarifa.getMonto());
+        validarId(id, tarifaRequestDTO);
+        validarMonto(tarifaRequestDTO.getMonto());
 
-        if (!tarifaEncontrada.getTipo_tarifa().equals( tarifa.getTipo_tarifa() ))
-            validarTipoTarifa(tarifa.getTipo_tarifa());
+        if (!tarifaEncontrada.getTipo_tarifa().equals(tarifaRequestDTO.getTipo_tarifa()))
+            validarTipoTarifa(tarifaRequestDTO.getTipo_tarifa());
 
-        tarifaEncontrada.setTipo_tarifa(tarifa.getTipo_tarifa());
-        tarifaEncontrada.setMonto(tarifa.getMonto());
-
-        return tarifaRepository.save(tarifaEncontrada);
+        tarifaEncontrada.setTipo_tarifa(tarifaRequestDTO.getTipo_tarifa());
+        tarifaEncontrada.setMonto(tarifaRequestDTO.getMonto());
+        tarifaRepository.save(tarifaEncontrada);
+        return convertirADTO(tarifaEncontrada);
     }
 
     // Obtiene una tarifa por su id
@@ -56,12 +89,12 @@ public class AdminService {
 
     // Ajusta los precios de las tarifas y los habilita a partir de cierta fecha.
     @Transactional
-    public Tarifa actualizarPrecios(Long id, double monto){
+    public TarifaResponseDTO actualizarPrecios(Long id, double monto){
         Tarifa tarifa = findById(id);
         validarMonto(monto);
         tarifa.setMonto(monto);
-
-        return tarifaRepository.save(tarifa);
+        tarifaRepository.save(tarifa);
+        return convertirADTO(tarifa);
     }
 
     /** ----- MÉTODOS AUXILIARES CON MANEJO DE EXCEPCIONES ---- */
@@ -82,9 +115,25 @@ public class AdminService {
     }
 
     // Verifica que no se intente cambiar el ID
-    private void validarId(Long id, Tarifa tarifa){
+    private void validarId(Long id, TarifaRequestDTO tarifa){
         if (!id.equals(tarifa.getId()))
             throw new BusinessValidationException("El ID de la tarifa no puede ser modificado");
     }
 
+    // Convierte una tarifa a TarifaResponseDTO.
+    private TarifaResponseDTO convertirADTO(Tarifa tarifa){
+        TarifaResponseDTO tarifaResponseDTO = new TarifaResponseDTO();
+        tarifaResponseDTO.setTipo_tarifa(tarifa.getTipo_tarifa());
+        tarifaResponseDTO.setMonto(tarifa.getMonto());
+        return tarifaResponseDTO;
+    }
+
+    // Convierte una TarifaResponseDTO a una tarifa.
+    private Tarifa convertirATarifa(TarifaRequestDTO tarifaRequestDTO){
+        Tarifa tarifa = new Tarifa();
+        tarifa.setId(tarifaRequestDTO.getId());
+        tarifa.setTipo_tarifa(tarifaRequestDTO.getTipo_tarifa());
+        tarifa.setMonto(tarifaRequestDTO.getMonto());
+        return tarifa;
+    }
 }

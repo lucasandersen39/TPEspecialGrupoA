@@ -3,6 +3,8 @@ package com.integrador.grupoA.controllers;
 import com.integrador.grupoA.entities.Tarifa;
 import com.integrador.grupoA.exceptions.custom.BusinessValidationException;
 import com.integrador.grupoA.services.AdminService;
+import com.integrador.grupoA.services.dto.tarifaRequest.TarifaRequestDTO;
+import com.integrador.grupoA.services.dto.tarifaResponse.TarifaResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+/**
+ * El manejador global de excepciones me permite capturar las excepciones que se producen en el controlador
+ * y las devuelve en un formato JSON.
+ * Por ese motivo ya no utilizo try -catch
+ */
 
 @RestController
 @RequestMapping("/api/admin/tarifas")
@@ -18,27 +26,28 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    /**
-     * El manejador global de excepciones me permite capturar las excepciones que se producen en el controlador
-     * y las devuelve en un formato JSON.
-     * Por ese motivo ya no utilizo try -catch
-     */
+    // Obtener todas las tarifas
+    @GetMapping("")
+    public ResponseEntity<List<TarifaResponseDTO>> obtenerTarifas(){
+        return ResponseEntity.ok(adminService.obtenerTarifas());
+    }
 
-    // Ajusta los precios de las tarifas y los habilita a partir de cierta fecha.
-    //Ver como trabajar lo de la fecha
-    @PutMapping("/actualizar-precios")
-    public ResponseEntity<Tarifa> actualizarPrecios(@Valid @RequestBody Tarifa request, @RequestParam LocalDate fecha) {
-        if (fecha.isBefore(LocalDate.now()))
-            throw new BusinessValidationException("La fecha de vigencia debe ser igual o posterior a hoy");
+    // Obtener una tarifa por su id
+    @GetMapping("/{id}")
+    public ResponseEntity<TarifaResponseDTO> obtenerTarifaPorId(@PathVariable Long id){
+        return ResponseEntity.ok(adminService.findTarifaPorId(id));
+    }
 
-        Tarifa tarifaActualizada = adminService.actualizarPrecios(request.getId(), request.getMonto());
-        return ResponseEntity.ok(tarifaActualizada);
+    // Obtener una tarifa por su tipo
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<TarifaResponseDTO> obtenerTarifaPorTipo(@PathVariable String tipo){
+        return ResponseEntity.ok(adminService.obtenerTarifaPorTipo(tipo));
     }
 
     // Da de alta una nueva tarifa
     @PostMapping("")
-    public ResponseEntity<Tarifa> agregarTarifa(@Valid @RequestBody Tarifa request) {
-        Tarifa tarifa = adminService.agregarTarifa(request);
+    public ResponseEntity<TarifaResponseDTO> agregarTarifa(@Valid @RequestBody TarifaRequestDTO request) {
+        TarifaResponseDTO tarifa = adminService.agregarTarifa(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(tarifa);
     }
 
@@ -51,7 +60,18 @@ public class AdminController {
 
     // Modifica una tarifa
     @PutMapping("/{id}")
-    public ResponseEntity<Tarifa> modificarTarifa(@PathVariable Long id, @Valid @RequestBody Tarifa request) {
+    public ResponseEntity<TarifaResponseDTO> modificarTarifa(@PathVariable Long id, @Valid @RequestBody TarifaRequestDTO request) {
         return ResponseEntity.ok(adminService.modificarTarifa(id, request));
+    }
+
+    // Ajusta los precios de las tarifas y los habilita a partir de cierta fecha.
+    //Ver como trabajar lo de la fecha
+    @PutMapping("/actualizar-precios")
+    public ResponseEntity<TarifaResponseDTO> actualizarPrecios(@Valid @RequestBody TarifaRequestDTO request, @RequestParam LocalDate fecha) {
+        if (fecha.isBefore(LocalDate.now()))
+            throw new BusinessValidationException("La fecha de vigencia debe ser igual o posterior a hoy");
+
+        TarifaResponseDTO tarifaActualizada = adminService.actualizarPrecios(request.getId(), request.getMonto());
+        return ResponseEntity.ok(tarifaActualizada);
     }
 }
