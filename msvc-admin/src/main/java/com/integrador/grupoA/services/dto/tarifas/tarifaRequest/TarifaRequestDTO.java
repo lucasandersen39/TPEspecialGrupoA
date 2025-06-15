@@ -1,4 +1,4 @@
-package com.integrador.grupoA.services.dto.tarifaRequest;
+package com.integrador.grupoA.services.dto.tarifas.tarifaRequest;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
@@ -11,8 +11,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
 public class TarifaRequestDTO {
-    @NotNull(message = "El campo id no puede estar vacío")
-    private Long id;
 
     @NotBlank(message = "El campo tipo_tarifa no puede estar vacío")
     private String tipo_tarifa;

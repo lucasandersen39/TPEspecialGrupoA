@@ -124,7 +124,6 @@ Modifica una tarifa existente
 
 ``` json
 {
-    "id": 1,
     "tipo_tarifa": "PREMIUM",
     "monto": 2000.00
 }
@@ -185,7 +184,6 @@ Actualiza el precio de la tarifa
 
 ``` json
 {
-    "id": 1,
     "monto": 2500.00,
 }
 ```

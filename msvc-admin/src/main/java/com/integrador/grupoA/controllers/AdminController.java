@@ -1,10 +1,9 @@
 package com.integrador.grupoA.controllers;
 
-import com.integrador.grupoA.entities.Tarifa;
 import com.integrador.grupoA.exceptions.custom.BusinessValidationException;
 import com.integrador.grupoA.services.AdminService;
-import com.integrador.grupoA.services.dto.tarifaRequest.TarifaRequestDTO;
-import com.integrador.grupoA.services.dto.tarifaResponse.TarifaResponseDTO;
+import com.integrador.grupoA.services.dto.tarifas.tarifaRequest.TarifaRequestDTO;
+import com.integrador.grupoA.services.dto.tarifas.tarifaResponse.TarifaResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -66,12 +65,12 @@ public class AdminController {
 
     // Ajusta los precios de las tarifas y los habilita a partir de cierta fecha.
     //Ver como trabajar lo de la fecha
-    @PutMapping("/actualizar-precios")
-    public ResponseEntity<TarifaResponseDTO> actualizarPrecios(@Valid @RequestBody TarifaRequestDTO request, @RequestParam LocalDate fecha) {
+    @PutMapping("/actualizar-precios/{id}")
+    public ResponseEntity<TarifaResponseDTO> actualizarPrecios(@PathVariable Long id, @Valid @RequestBody TarifaRequestDTO request, @RequestParam LocalDate fecha) {
         if (fecha.isBefore(LocalDate.now()))
             throw new BusinessValidationException("La fecha de vigencia debe ser igual o posterior a hoy");
 
-        TarifaResponseDTO tarifaActualizada = adminService.actualizarPrecios(request.getId(), request.getMonto());
+        TarifaResponseDTO tarifaActualizada = adminService.actualizarPrecios(id, request.getMonto());
         return ResponseEntity.ok(tarifaActualizada);
     }
 }

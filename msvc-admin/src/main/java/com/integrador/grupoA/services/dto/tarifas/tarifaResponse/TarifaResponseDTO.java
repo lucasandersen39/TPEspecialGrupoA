@@ -1,4 +1,4 @@
-package com.integrador.grupoA.services.dto.tarifaResponse;
+package com.integrador.grupoA.services.dto.tarifas.tarifaResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

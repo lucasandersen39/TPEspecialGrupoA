@@ -5,8 +5,8 @@ import com.integrador.grupoA.exceptions.custom.BusinessValidationException;
 import com.integrador.grupoA.exceptions.custom.DuplicateEntityException;
 import com.integrador.grupoA.exceptions.custom.ResourceNotFoundException;
 import com.integrador.grupoA.repository.TarifaRepository;
-import com.integrador.grupoA.services.dto.tarifaRequest.TarifaRequestDTO;
-import com.integrador.grupoA.services.dto.tarifaResponse.TarifaResponseDTO;
+import com.integrador.grupoA.services.dto.tarifas.tarifaRequest.TarifaRequestDTO;
+import com.integrador.grupoA.services.dto.tarifas.tarifaResponse.TarifaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +67,7 @@ public class AdminService {
     @Transactional
     public TarifaResponseDTO modificarTarifa(Long id, TarifaRequestDTO tarifaRequestDTO){
         Tarifa tarifaEncontrada = findById(id);
-        validarId(id, tarifaRequestDTO);
+        validarId(id, tarifaEncontrada);
         validarMonto(tarifaRequestDTO.getMonto());
 
         if (!tarifaEncontrada.getTipo_tarifa().equals(tarifaRequestDTO.getTipo_tarifa()))
@@ -115,7 +115,7 @@ public class AdminService {
     }
 
     // Verifica que no se intente cambiar el ID
-    private void validarId(Long id, TarifaRequestDTO tarifa){
+    private void validarId(Long id, Tarifa tarifa){
         if (!id.equals(tarifa.getId()))
             throw new BusinessValidationException("El ID de la tarifa no puede ser modificado");
     }
@@ -131,7 +131,6 @@ public class AdminService {
     // Convierte una TarifaResponseDTO a una tarifa.
     private Tarifa convertirATarifa(TarifaRequestDTO tarifaRequestDTO){
         Tarifa tarifa = new Tarifa();
-        tarifa.setId(tarifaRequestDTO.getId());
         tarifa.setTipo_tarifa(tarifaRequestDTO.getTipo_tarifa());
         tarifa.setMonto(tarifaRequestDTO.getMonto());
         return tarifa;
