@@ -1,4 +1,4 @@
-package com.integrador.grupoA.services.dto.parada.paradaRequestDTO;
+package com.integrador.grupoA.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotNull;

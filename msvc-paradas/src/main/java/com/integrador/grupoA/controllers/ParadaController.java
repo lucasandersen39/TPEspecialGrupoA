@@ -1,8 +1,9 @@
 package com.integrador.grupoA.controllers;
 
 import com.integrador.grupoA.services.ParadaService;
-import com.integrador.grupoA.services.dto.parada.paradaRequestDTO.ParadaRequestDTO;
-import com.integrador.grupoA.services.dto.parada.paradaResponseDTO.ParadaResponseDTO;
+import com.integrador.grupoA.dto.MonopatinResponseDTO;
+import com.integrador.grupoA.dto.ParadaRequestDTO;
+import com.integrador.grupoA.dto.ParadaResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,18 +31,21 @@ public class ParadaController {
 
     @PostMapping("")
     public ResponseEntity<Optional<ParadaResponseDTO>> crearParada(@RequestBody @Valid ParadaRequestDTO parada){
-        final var result =paradaService.crearParada(parada);
+        final Optional<ParadaResponseDTO> result =paradaService.crearParada(parada);
         return ResponseEntity.accepted().body(result);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Optional<ParadaResponseDTO>> modificarParada(@RequestBody @Valid ParadaRequestDTO parada, @PathVariable Long id){
-        final var result = paradaService.modificarParada(parada, id);
+        final Optional<ParadaResponseDTO> result = paradaService.modificarParada(parada, id);
         return ResponseEntity.accepted().body(result);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarParada(@PathVariable Long id){paradaService.eliminarParada(id);}
+
+    @GetMapping("/monopatinesCercanos")
+    public List<MonopatinResponseDTO> monopatinesCercanos(@RequestParam  Double x, @RequestParam  Double y){return paradaService.buscarMonopatinesCercanos(x, y);}
 
 }

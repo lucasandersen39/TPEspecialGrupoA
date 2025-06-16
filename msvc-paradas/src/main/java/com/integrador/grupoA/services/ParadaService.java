@@ -1,7 +1,8 @@
 package com.integrador.grupoA.services;
 
-import com.integrador.grupoA.services.dto.parada.paradaRequestDTO.ParadaRequestDTO;
-import com.integrador.grupoA.services.dto.parada.paradaResponseDTO.ParadaResponseDTO;
+import com.integrador.grupoA.dto.MonopatinResponseDTO;
+import com.integrador.grupoA.dto.ParadaRequestDTO;
+import com.integrador.grupoA.dto.ParadaResponseDTO;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface ParadaService {
     void eliminarParada(Long id);
 
     Optional<ParadaResponseDTO> buscarPorCoordenada(Double x, Double y);
+
+    List<MonopatinResponseDTO> buscarMonopatinesCercanos(Double x, Double y);
 }

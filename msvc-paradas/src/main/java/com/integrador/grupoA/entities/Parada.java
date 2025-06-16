@@ -7,18 +7,23 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"x", "y"})
+        }
+)
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Parada {
 
     @Id
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Setter
-    @Column()
+    @Column
     private String nombre;
 
     @Setter

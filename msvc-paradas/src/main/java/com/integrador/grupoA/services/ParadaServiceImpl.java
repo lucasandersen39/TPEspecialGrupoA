@@ -2,14 +2,17 @@ package com.integrador.grupoA.services;
 
 import com.integrador.grupoA.entities.Parada;
 import com.integrador.grupoA.repositories.ParadaRepository;
-import com.integrador.grupoA.services.dto.parada.paradaRequestDTO.ParadaRequestDTO;
-import com.integrador.grupoA.services.dto.parada.paradaResponseDTO.ParadaResponseDTO;
+import com.integrador.grupoA.dto.MonopatinResponseDTO;
+import com.integrador.grupoA.dto.ParadaRequestDTO;
+import com.integrador.grupoA.dto.ParadaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,30 +25,29 @@ public class ParadaServiceImpl implements ParadaService{
     @Override
     @Transactional(readOnly = true)
     public List<ParadaResponseDTO> listar() {
-        return paradaRepository.traerParadas();
+        return paradaRepository.findAll().stream().map(ParadaResponseDTO::toParadaResponseDTO).toList();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<ParadaResponseDTO> buscarPorId(Long id) {
-        return paradaRepository.buscarPorId(id);
+        return paradaRepository.findById(id).map(ParadaResponseDTO::toParadaResponseDTO);
     }
 
     @Override
     @Transactional
     public Optional<ParadaResponseDTO> crearParada(ParadaRequestDTO parada) {
-        Optional<ParadaResponseDTO> cord = paradaRepository.buscarPorCoordenadas(parada.getX(), parada.getY());
-
-        if (cord.isEmpty()){
+        try {
             Parada p = new Parada();
             p.setX(parada.getX());
             p.setY(parada.getY());
             p.setNombre(parada.getNombre());
-            paradaRepository.save(p);
-            return Optional.of(new ParadaResponseDTO(p.getNombre(),p.getX(),p.getY()));
 
-        }else{
-            System.err.println("Error: Ya existe una parada con esas coordenadas.");
+            Parada guardada = paradaRepository.save(p);
+            return Optional.of(new ParadaResponseDTO(guardada.getNombre(), guardada.getX(), guardada.getY()));
+
+        } catch (DataIntegrityViolationException e) {
+            System.err.println("Error: Ya existe una parada con esas coordenadas (x, y).");
             return Optional.empty();
         }
 
@@ -85,6 +87,21 @@ public class ParadaServiceImpl implements ParadaService{
     @Override
     @Transactional(readOnly = true)
     public Optional<ParadaResponseDTO> buscarPorCoordenada(Double x, Double y) {
-        return paradaRepository.buscarPorCoordenadas(x,y);
+        return paradaRepository.buscarPorCoordenadas(x,y).map(ParadaResponseDTO::toParadaResponseDTO);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<MonopatinResponseDTO> buscarMonopatinesCercanos(Double x, Double y) {
+        List<Parada>lp = paradaRepository.findAll();
+
+        lp.sort(Comparator.comparingDouble(p -> Math.abs(p.getX() - x) + Math.abs(p.getY() - y)));
+
+        for (Parada p : lp){
+            // Consulta a Monopatines con p.getId
+            // if(!List<Monopatines>.isEmpty())  return List<Monopatines>.map(MonopatinResponseDTO::toMonopatinResponseDTO);
+        }
+
+        return List.of();
     }
 }
