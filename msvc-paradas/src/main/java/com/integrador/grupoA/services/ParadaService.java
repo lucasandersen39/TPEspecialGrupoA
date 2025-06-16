@@ -18,4 +18,6 @@ public interface ParadaService {
     Optional<ParadaResponseDTO> modificarParada(@Valid ParadaRequestDTO parada, Long id);
 
     void eliminarParada(Long id);
+
+    Optional<ParadaResponseDTO> buscarPorCoordenada(Double x, Double y);
 }

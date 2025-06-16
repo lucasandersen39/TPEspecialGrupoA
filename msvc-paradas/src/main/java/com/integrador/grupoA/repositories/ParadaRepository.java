@@ -23,6 +23,6 @@ public interface ParadaRepository extends JpaRepository<Parada, Long> {
 
     @Query("SELECT new com.integrador.grupoA.services.dto.parada.paradaResponseDTO.ParadaResponseDTO(" +
             "p.nombre, p.x, p.y) " +
-            "FROM Parada p WHERE p.x = :x AND p.y = :y")
+            "FROM Parada p WHERE ABS(p.x - :x) < 0.0001 AND ABS(p.y - :y) < 0.0001")
     Optional<ParadaResponseDTO> buscarPorCoordenadas(@Param("x")Double x,@Param("y") Double y);
 }

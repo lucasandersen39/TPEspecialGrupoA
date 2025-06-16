@@ -25,6 +25,9 @@ public class ParadaController {
     @GetMapping("/{id}")
     public Optional<ParadaResponseDTO> buscarPorId(@PathVariable Long id){return paradaService.buscarPorId(id);}
 
+    @GetMapping("/coordenadas")
+    public Optional<ParadaResponseDTO> buscarPorCoordenada(@RequestParam  Double x, @RequestParam  Double y){return paradaService.buscarPorCoordenada(x, y);}
+
     @PostMapping("")
     public ResponseEntity<Optional<ParadaResponseDTO>> crearParada(@RequestBody @Valid ParadaRequestDTO parada){
         final var result =paradaService.crearParada(parada);

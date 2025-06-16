@@ -65,3 +65,15 @@ Modifica los datos de una parada existente.
 
 ### ❌ DELETE `/api/parada/{id}`
 Elimina una parada por su ID.
+
+### 📍 GET /api/parada/coordenadas?x={x}&y={y}
+Busca una parada por sus coordenadas x e y.
+
+**Respuesta (JSON):**
+```json
+{
+"nombre": "Parada Central",
+"x": -34.12345,
+"y": -58.6789
+}
+```

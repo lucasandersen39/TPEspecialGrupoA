@@ -69,6 +69,7 @@ public class ParadaServiceImpl implements ParadaService{
     }
 
     @Override
+    @Transactional
     public void eliminarParada(Long id) {
         boolean existe = paradaRepository.existsById(id);
         if(existe){
@@ -79,5 +80,11 @@ public class ParadaServiceImpl implements ParadaService{
                     "Parada con ID " + id + " no encontrada."
             );
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<ParadaResponseDTO> buscarPorCoordenada(Double x, Double y) {
+        return paradaRepository.buscarPorCoordenadas(x,y);
     }
 }
