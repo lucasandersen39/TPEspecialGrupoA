@@ -21,18 +21,21 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("")
-    public List<UsuarioResponseDTO> listar() {
-        return usuarioService.listar();
+    public ResponseEntity<List<UsuarioResponseDTO>> listar() {
+        final var result = usuarioService.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")
-    public Optional<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
-        return usuarioService.buscarPorId(id);
+    public ResponseEntity<Optional<UsuarioResponseDTO>> buscarPorId(@PathVariable Long id) {
+        final var result = usuarioService.buscarPorId(id);
+        return ResponseEntity.accepted().body(result);
     }
 
     @GetMapping("/tipoUsuario/{tipoUsuario}")
-    public List<UsuarioResponseDTO> obtenerUsuariosPorTipo(@PathVariable String tipoUsuario) {
-        return usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
+    public ResponseEntity<List<UsuarioResponseDTO>> obtenerUsuariosPorTipo(@PathVariable String tipoUsuario) {
+        final var result = usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("")
