@@ -57,7 +57,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/estado/{id}")
-    public void cambiarEstadoUsuario(@PathVariable Long id){
-        this.usuarioService.cambiarEstadoUsuario(id);
+    public void cambiarActivoUsuario(@PathVariable Long id){
+        this.usuarioService.cambiarActivoUsuario(id);
     }
 }

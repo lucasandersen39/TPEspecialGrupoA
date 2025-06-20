@@ -14,7 +14,7 @@ public interface UsuarioService {
     Optional<UsuarioResponseDTO> crearUsuario(UsuarioRequestDTO usuario);
     Optional<UsuarioResponseDTO> modificarUsuario(UsuarioRequestDTO usuario, Long idUsuario);
     void eliminarUsuario(Long id);
-    void cambiarEstadoUsuario(Long id);
+    void cambiarActivoUsuario(Long id);
 
     @Transactional
     List<UsuarioResponseDTO> obtenerUsuariosPorTipo(String tipo);

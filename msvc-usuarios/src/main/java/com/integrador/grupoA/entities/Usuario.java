@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class Usuario {
 
     @Id
-    @Column(name="id_usuario", unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="id_usuario")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -45,13 +45,7 @@ public class Usuario {
     @Column(name = "fecha_alta")
     private LocalDateTime fechaAlta;
 
-    @Column(nullable = true)
-    private Double x;
-
-    @Column(nullable = true)
-    private Double y;
-
     @Column(nullable = false)
-    private boolean estado;
+    private boolean activo;
 
 }

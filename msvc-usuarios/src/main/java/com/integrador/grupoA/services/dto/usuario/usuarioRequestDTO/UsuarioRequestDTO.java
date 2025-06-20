@@ -30,10 +30,4 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "El nombre de usuario es obligatorio")
     private String nombreUsuario;
 
-    @NotNull(message = "La coordenada X es obligatoria")
-    private Double x;
-
-    @NotNull(message = "La coordenada Y es obligatoria")
-    private Double y;
-
 }

@@ -16,9 +16,7 @@ public class UsuarioResponseDTO {
     private String telefono;
     private String tipoUsuario;
     private String nombreUsuario;
-    private Double x;
-    private Double y;
     private Double dinero;
     private LocalDateTime fechaAlta;
-    private boolean estado;
+    private boolean activo;
 }

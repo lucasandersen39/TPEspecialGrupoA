@@ -50,13 +50,11 @@ public class UsuarioServiceImpl implements UsuarioService {
             nuevoUsuario.setTipoUsuario("Basico"); //Posibilidad de armar 2 funciones para crear cada tipo de usuario dependiendo la funcionalidad
             nuevoUsuario.setDinero(0.0);
             nuevoUsuario.setFechaAlta(LocalDateTime.now());
-            nuevoUsuario.setX(usuario.getX());
-            nuevoUsuario.setY(usuario.getY());
-            nuevoUsuario.setEstado(true);
+            nuevoUsuario.setActivo(true);
             usuarioRepository.save(nuevoUsuario);
             return Optional.of(new UsuarioResponseDTO(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getEmail(), nuevoUsuario.getTelefono(),
-                    nuevoUsuario.getTipoUsuario(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getX(), nuevoUsuario.getY(), nuevoUsuario.getDinero(),
-                    nuevoUsuario.getFechaAlta(), nuevoUsuario.isEstado()));
+                    nuevoUsuario.getTipoUsuario(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getDinero(), nuevoUsuario.getFechaAlta(),
+                    nuevoUsuario.isActivo()));
         } else {
             System.err.println("Error: Ya existe un usuario con ese nombre o email.");
             return Optional.empty();
@@ -73,12 +71,10 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuarioExistente.setApellido(usuario.getApellido());
             usuarioExistente.setTelefono(usuario.getTelefono());
             usuarioExistente.setEmail(usuario.getEmail());
-            usuarioExistente.setX(usuario.getX());
-            usuarioExistente.setY(usuario.getY());
             usuarioRepository.save(usuarioExistente);
             return Optional.of(new UsuarioResponseDTO(usuarioExistente.getNombre(), usuarioExistente.getApellido(), usuarioExistente.getEmail(), usuarioExistente.getTelefono(),
-                    usuarioExistente.getTipoUsuario(), usuarioExistente.getNombreUsuario(), usuarioExistente.getX(), usuarioExistente.getY(), usuarioExistente.getDinero(),
-                    usuarioExistente.getFechaAlta(), usuarioExistente.isEstado()));
+                    usuarioExistente.getTipoUsuario(), usuarioExistente.getNombreUsuario(), usuarioExistente.getDinero(), usuarioExistente.getFechaAlta(),
+                    usuarioExistente.isActivo()));
         }
         else {
             System.err.println("Error: No existe un usuario con ese ID");
@@ -102,12 +98,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public void cambiarEstadoUsuario(Long id) {
+    //esta funcionalidad se usa para borrado logico y activacion de usuarios
+    public void cambiarActivoUsuario(Long id) {
         //controlar lo que muestra si no llega ningun usuario con ese id
         Optional<Usuario> o = usuarioRepository.findById(id);
         if (o.isPresent()) {
             Usuario usuario = o.get();
-            usuario.setEstado(!usuario.isEstado());
+            usuario.setActivo(!usuario.isActivo());
             usuarioRepository.save(usuario);
         }
         else {
