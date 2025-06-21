@@ -1,0 +1,582 @@
+{
+	"info": {
+		"_postman_id": "bc469d17-9182-4298-9f34-d12c45076d69",
+		"name": "msvc-admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43964255"
+	},
+	"item": [
+		{
+			"name": "Tipo de tarifa",
+			"item": [
+				{
+					"name": "Obtener todas los tipos de tarifas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener tipo de tarifa por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un tipo de tarifa por el tipo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo_tarifa\" : \"PARA BORRAR\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas/tipo/PREMIUM",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas",
+								"tipo",
+								"PREMIUM"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar un nuevo tipo de tarifa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo_tarifa\" : \"basica\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar un tipo de tarifa existente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tipo_tarifa\" : \"BASICO\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar un tipo de tarifa por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tipo_tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tipo_tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tarifas",
+			"item": [
+				{
+					"name": "Obtener todas las tarifas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una tarifa por id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 1500.50,\r\n  \"fechaVigencia\": \"2025-07-01\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtiene una lista de tarifas por tipo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 1500.50,\r\n  \"fechaVigencia\": \"2025-07-01\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas/tipo/premium",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas",
+								"tipo",
+								"premium"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar una nueva tarifa",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM 2\",\r\n  \"monto\": 1600.50,\r\n  \"fechaVigencia\": \"2025-07-26\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar una tarifa",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 1200.50,\r\n  \"fechaVigencia\": \"2025-07-04\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ajustar precio de tarifa",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"premium\",\r\n  \"monto\": 1900.50,\r\n  \"fechaVigencia\": \"2025-07-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar un tipo de tarifa por id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 1200.50,\r\n  \"fechaVigencia\": \"2025-07-04\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/tarifas/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"tarifas",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Obtener todas las cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una cuenta por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cuenta por entidad bancaria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/entidad_bancaria/mercado_pago",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"entidad_bancaria",
+								"mercado_pago"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener una cuenta por su número de cuenta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/numero_cuenta/2967",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"numero_cuenta",
+								"2967"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todas las cuentas por entidad bancaria con query params",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas?entidad_bancaria=mercado+pago",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas"
+							],
+							"query": [
+								{
+									"key": "entidad_bancaria",
+									"value": "mercado+pago"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar una nueva cuenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"entidad_bancaria\" : \"cuenta dni\",\r\n    \"numero_cuenta\" : 2966,\r\n    \"saldo\": 100.00,\r\n    \"id_titular\" : \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar una cuenta existente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"entidad_bancaria\" : \"mercado pago\",\r\n    \"numero_cuenta\" : 2960,\r\n    \"saldo\": 1500.00,\r\n    \"id_titular\" : \"8\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar una cuenta existente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"entidad_bancaria\" : \"mercado pago\",\r\n    \"numero_cuenta\" : 2960,\r\n    \"saldo\": 1500.00,\r\n    \"id_titular\" : \"8\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
