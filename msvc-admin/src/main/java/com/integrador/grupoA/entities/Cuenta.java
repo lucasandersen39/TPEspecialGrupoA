@@ -3,7 +3,7 @@ package com.integrador.grupoA.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +28,7 @@ public class Cuenta {
     private int numero_cuenta;
 
     @Column
-    @Positive(message = "El saldo debe ser positivo")
+    @PositiveOrZero(message = "El saldo debe ser cero o positivo")
     private double saldo;
 
     @Column(nullable = false, unique = true)

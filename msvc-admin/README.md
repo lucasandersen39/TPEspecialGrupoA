@@ -52,6 +52,40 @@ Ejemplo de endpoint:
 
 ---
 
+## Obtener tarifa vigente por tipo
+
+Retorna la tarifa vigente (con fecha más reciente anterior al día actual) para un tipo específico de tarifa.
+
+### **GET**: `/api/admin/tarifas/vigente/{tipo}`
+
+**Parámetros URL**: `tipo`: Tipo de la tarifa (String)
+
+Ejemplo de endpoint: 
+> `/api/admin/tarifas/vigente/PREMIUM`
+
+- **Response Success: `(200 OK)`**
+
+**Ejemplo de respuesta**:
+``` json 
+{ 
+    "tipo_tarifa": "PREMIUM", 
+    "monto": 2000.00, 
+    "fechaVigencia": "2025-05-03" 
+}
+``` 
+
+- **Response Error: `(404 Not Found)`**
+``` json 
+{ 
+    "timestamp": "2025-06-13T10:35:45.123Z", 
+    "status": 404, 
+    "error": "Not Found", 
+    "message": "No se encontró tarifa vigente para el tipo: PREMIUM", 
+    "path": "/api/admin/tarifas/vigente/PREMIUM" 
+}
+```
+---
+
 ## Obtener tarifa por tipo
 
 ### **GET**: `/api/admin/tarifas/tipo/{tipoTarifa}`
@@ -433,6 +467,66 @@ Ejemplo de endpoint:
 - **Response Error: `(404 Not Found)`**
 
 ---
+
+## Verificar y actualizar saldo
+
+Verifica si una cuenta tiene saldo suficiente, descuenta el monto especificado y actualiza el saldo.
+
+### **POST**: `/api/admin/cuentas/{id}/verificar-saldo`
+
+**Parámetros URL**: `id`: ID de la cuenta (Long)
+
+**Request body**:
+``` json 
+{ 
+    "saldo": 1000.50 
+}
+``` 
+
+- **Response Success: `(200 OK)`**
+``` json 
+{ 
+    "entidad_bancaria": "Banco Río", 
+    "numero_cuenta": 123456, 
+    "saldo": 49000.50, 
+    "id_titular": "DNI30123456" 
+}
+``` 
+
+- **Response Error: `(409 Conflict)`** - Cuando el saldo es insuficiente
+``` json 
+{ 
+    "timestamp": "2025-06-13T10:35:45.123Z", 
+    "status": 409, 
+    "error": "Conflict", 
+    "message": "Saldo insuficiente. Saldo actual: 500.00, Monto a descontar: 1000.50", 
+    "path": "/api/admin/cuentas/1/verificar-saldo" 
+}
+``` 
+
+- **Response Error: `(400 Bad Request)`** - Cuando el monto es inválido
+``` json 
+{ 
+    "timestamp": "2025-06-13T10:35:45.123Z", 
+    "status": 400, 
+    "error": "Bad Request", 
+    "message": "El monto a descontar debe ser un valor positivo", 
+    "path": "/api/admin/cuentas/1/verificar-saldo" 
+}
+``` 
+
+**Response Error: `(404 Not Found)`** - Cuando la cuenta no existe
+``` json 
+{ 
+    "timestamp": "2025-06-13T10:35:45.123Z", 
+    "status": 404, 
+    "error": "Not Found", 
+    "message": "Cuenta no encontrada con ID: 1", 
+    "path": "/api/admin/cuentas/1/verificar-saldo" 
+}
+```
+
+---
 ## Obtener cuentas por entidad bancaria
 
 ### **GET**: `/api/admin/cuentas/entidad_bancaria/{entidad_bancaria}`
@@ -657,7 +751,7 @@ Ejemplo de endpoint:
 ### Tarifas
 - Todas las fechas deben estar en formato ISO 8601 (YYYY-MM-DD)
 - Los montos deben ser positivos
-- Los tipos de tarifa deben existir en la bla tipo_tarifa
+- Los tipos de tarifa deben existir en la tabla tipo_tarifa
 - Las fechas de vigencia deben ser actuales o futuras
 - Se requiere autenticación para todos los endpoints
 ### TipoTarifa

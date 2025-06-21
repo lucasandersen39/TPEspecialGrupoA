@@ -39,6 +39,12 @@ public class TarifaController {
         return ResponseEntity.ok(tarifaService.findTarifaPorId(id));
     }
 
+    // Obtener la tarifa vigente por tipo de tarifa
+    @GetMapping("/vigente/{tipo}")
+    public ResponseEntity<TarifaResponseDTO> obtenerTarifaVigentePorTipo(@PathVariable String tipo){
+        return ResponseEntity.ok(tarifaService.obtenerTarifaVigentePorTipo(tipo));
+    }
+
     // Obtener una tarifa por su tipo
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<TarifaResponseDTO>> obtenerTarifasPorTipo(@PathVariable String tipo){

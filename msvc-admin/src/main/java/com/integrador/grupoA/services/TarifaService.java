@@ -32,6 +32,15 @@ public class TarifaService {
         return tarifas;
     }
 
+    // Obtener tarifa vigente por tipo
+    @Transactional (readOnly = true)
+    public TarifaResponseDTO obtenerTarifaVigentePorTipo(String tipoTarifa){
+        TarifaResponseDTO tarifa = tarifaRepository.findTarifaVigente(tipoTarifa);
+        if (tarifa == null)
+            throw new ResourceNotFoundException(String.format("No existe una tarifa vigente para el tipo: %s", tipoTarifa));
+        return tarifa;
+    }
+
     // Obtiene una TarifaResponseDTO por su id
     @Transactional(readOnly = true)
     public TarifaResponseDTO findTarifaPorId(Long id){
@@ -40,7 +49,6 @@ public class TarifaService {
             throw new ResourceNotFoundException(String.format("No existen tarifas con el ID: %d", id));
         return tarifa;
     }
-
 
     // Obtiene una lista de TarifaResponseDTO por su tipo
     @Transactional (readOnly = true)
@@ -121,6 +129,7 @@ public class TarifaService {
             throw new BusinessValidationException("El ID de la tarifa no puede ser modificado");
     }
 
+    // Valida la fecha de vigencia
     public void validarFecha(LocalDate fecha, String tipo_tarifa) {
         // 1. Valída que la fecha no sea anterior a hoy
         if (fecha.isBefore(LocalDate.now()))

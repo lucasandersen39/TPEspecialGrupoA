@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin/cuentas")
@@ -58,5 +59,11 @@ public class CuentaController {
     public ResponseEntity<CuentaResponseDTO> modificarCuenta(@PathVariable Long id, @RequestBody CuentaRequestDTO request){
         return ResponseEntity.ok(cuentaService.modificarCuenta(id, request));
     }
+
+    @PostMapping("/{id}/verificar-saldo")
+    public ResponseEntity<CuentaResponseDTO> verificarYActualizarSaldo(@PathVariable Long id, @RequestBody Map<String, Double> request) {
+        return ResponseEntity.ok(cuentaService.verificarYDescontarSaldo(id, request.get("saldo")));
+    }
+
 
 }

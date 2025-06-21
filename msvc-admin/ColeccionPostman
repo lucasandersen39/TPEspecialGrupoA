@@ -575,6 +575,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Verificar y descontar saldo de la cuenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"saldo\": 100.00\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8005/api/admin/cuentas/1/verificar-saldo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8005",
+							"path": [
+								"api",
+								"admin",
+								"cuentas",
+								"1",
+								"verificar-saldo"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

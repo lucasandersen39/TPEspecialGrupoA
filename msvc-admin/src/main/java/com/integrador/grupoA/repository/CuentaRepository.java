@@ -3,6 +3,7 @@ package com.integrador.grupoA.repository;
 import com.integrador.grupoA.entities.Cuenta;
 import com.integrador.grupoA.services.dto.cuentas.cuentaResponse.CuentaResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -40,5 +41,9 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
             "FROM Cuenta c " +
             "WHERE c.id_titular = :id_titular")
     CuentaResponseDTO findCuentaByTitular(@Param("id_titular")String id_titular);
+
+    @Modifying
+    @Query("UPDATE Cuenta c SET c.saldo = :nuevoSaldo WHERE c.id = :id")
+    void actualizarSaldo(@Param("id") Long id, @Param("nuevoSaldo") double nuevoSaldo);
 
 }
