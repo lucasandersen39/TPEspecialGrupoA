@@ -23,4 +23,6 @@ public interface ParadaService {
     Optional<ParadaResponseDTO> buscarPorCoordenada(Double x, Double y);
 
     List<MonopatinResponseDTO> buscarMonopatinesCercanos(Double x, Double y);
+
+    boolean validarParada(Long id);
 }

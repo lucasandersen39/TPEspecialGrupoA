@@ -104,4 +104,10 @@ public class ParadaServiceImpl implements ParadaService{
 
         return List.of();
     }
+
+    @Override
+    public boolean validarParada(Long id) {
+        Optional<Parada> p = paradaRepository.findById(id);
+        return p.isPresent();
+    }
 }

@@ -48,4 +48,10 @@ public class ParadaController {
     @GetMapping("/monopatinesCercanos")
     public List<MonopatinResponseDTO> monopatinesCercanos(@RequestParam  Double x, @RequestParam  Double y){return paradaService.buscarMonopatinesCercanos(x, y);}
 
+    @GetMapping("/id_valido/{id}")
+    public ResponseEntity<Void> validarParada(@PathVariable Long id) {
+        boolean existe = paradaService.validarParada(id);
+        return existe ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
 }
