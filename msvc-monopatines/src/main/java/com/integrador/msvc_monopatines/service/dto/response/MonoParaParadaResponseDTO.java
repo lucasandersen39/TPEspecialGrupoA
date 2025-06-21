@@ -6,16 +6,15 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class MonopatinResponseDTO {
+public class MonoParaParadaResponseDTO {
     private String idMonopatin;
     private int estado;
-    private double kmRecorridos;
-    private double tiempoUsado;
+    private Long idParada;
 
-    public MonopatinResponseDTO (Monopatin m) {
+    public MonoParaParadaResponseDTO (Monopatin m) {
         this.idMonopatin = m.getIdMonopatin();
         this.estado = m.getEstado();
-        this.kmRecorridos = m.getKmRecorridos();
-        this.tiempoUsado = m.getTiempoUsado();
+        this.idParada = m.getIdParada();
     }
+
 }

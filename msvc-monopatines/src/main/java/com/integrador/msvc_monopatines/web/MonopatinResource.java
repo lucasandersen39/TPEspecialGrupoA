@@ -2,7 +2,9 @@ package com.integrador.msvc_monopatines.web;
 
 import com.integrador.msvc_monopatines.service.MonopatinService;
 import com.integrador.msvc_monopatines.service.dto.request.MonopatinRequestDTO;
+import com.integrador.msvc_monopatines.service.dto.response.MonoParaParadaResponseDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonopatinResponseDTO;
+import com.integrador.msvc_monopatines.service.dto.response.ReporteUsoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,11 @@ public class MonopatinResource {
     @PostMapping
     public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@RequestBody MonopatinRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(monopatinService.saveMonopatin(dto));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleParadaInvalida(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
     @GetMapping
@@ -44,6 +51,13 @@ public class MonopatinResource {
         }
     }
 
+    //Poner en mantenimiento monopatin
+    @PatchMapping("/{idMonopatin}/mantenimiento")
+    public ResponseEntity<String> ponerEnMantenimiento(@PathVariable String idMonopatin) {
+        monopatinService.marcarComoEnMantenimiento(idMonopatin);
+        return ResponseEntity.ok("Monopatín " + idMonopatin + " puesto en mantenimiento.");
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteMonopatin(@PathVariable String id) {
         boolean deleted = monopatinService.deleteMonopatin(id);
@@ -52,6 +66,19 @@ public class MonopatinResource {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
     }
 
+    //Devolver los monopatines inactivos (no alquilados, disponibles para uso, que tienen estado 0
+    @GetMapping("/disponibles")
+    public ResponseEntity<List<MonoParaParadaResponseDTO>> getMonopatinesDisponibles() {
+        List<MonoParaParadaResponseDTO> disponibles = monopatinService.obtenerDisponibles();
+        return ResponseEntity.ok(disponibles);
+    }
+
+    //Crea el reporte de todos los monopatines por km recorridos y opcionalmente tiempo pausado.
+    @GetMapping("/reporte-uso")
+    public ResponseEntity<List<ReporteUsoDTO>> generarReporte(@RequestParam(defaultValue = "false") boolean incluirPausa) {
+        List<ReporteUsoDTO> reporte = monopatinService.generarReporteUso(incluirPausa);
+        return ResponseEntity.ok(reporte);
+    }
 
 }
 

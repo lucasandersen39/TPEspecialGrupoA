@@ -13,8 +13,7 @@ public class Monopatin {
     @Id
     private String idMonopatin;
     private int estado;
-    private String coordenadas;
-    private LocalDateTime fechaInicioPausa;
+    private Long idParada;
     private double kmRecorridos;
     private double tiempoUsado;
 }
