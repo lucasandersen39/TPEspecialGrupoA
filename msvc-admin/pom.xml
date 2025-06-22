@@ -4,15 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.integrador</groupId>
+		<artifactId>grupoA</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.integrador</groupId>
-	<artifactId>grupoA</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>msvc-admin</artifactId>
 	<name>msvc-admin</name>
 	<description>Microservicio de Administrador</description>
 	<packaging>jar</packaging>
