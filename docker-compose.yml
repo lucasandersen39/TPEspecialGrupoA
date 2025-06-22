@@ -54,6 +54,25 @@ services:
     networks:
       - msvc_network
 
+  msvc-admin:
+    build:
+      context: .
+      dockerfile: msvc-admin/Dockerfile
+    container_name: msvc-admin
+    ports:
+      - "8005:8005"
+    environment:
+      - SERVER_PORT=8005
+      - DB_HOST=db
+      - DB_NAME=db_admin
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
   msvc-usuarios:
     build:
       context: .
