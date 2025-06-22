@@ -1,5 +1,5 @@
  
-# Microservicio: Gestión de Monopatines y Viajes
+# Microservicio: Gestión Viajes
 Este proyecto implementa un servicio RESTful que permite gestionar los viajes realizados por usuarios en monopatines, obtener estadísticas de uso, y calcular costos según tarifas vigentes.
 
 
