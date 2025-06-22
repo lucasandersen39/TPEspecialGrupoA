@@ -1,13 +1,11 @@
- 
 # Microservicio: Gestión Viajes
 Este proyecto implementa un servicio RESTful que permite gestionar los viajes realizados por usuarios en monopatines, obtener estadísticas de uso, y calcular costos según tarifas vigentes.
-
-
 ## Descripción
 Este microservicio forma parte de un sistema más amplio para la gestión de monopatines. Se enfoca en:
 - Registrar, modificar y eliminar viajes.
 - Obtener reportes de uso y estadísticas.
 - Calcular costos según tarifas externas proporcionadas por otro microservicio (`msvc-admin`).
+- **Registrar y reportar el tiempo pausado** (tiempo en el cual no se ha utilizado el monopatín durante el viaje).
 
 ## Requisitos Previos
 - **Java Development Kit (JDK):** Versión 21 o superior.
@@ -17,7 +15,6 @@ Este microservicio forma parte de un sistema más amplio para la gestión de mon
 - **Postman:** Para probar los endpoints proporcionados (opcional).
 
 El servidor estará disponible en [http://localhost:8007]
-
 ## Endpoints
 ### Viajes
 
@@ -38,15 +35,29 @@ El servidor estará disponible en [http://localhost:8007]
   "fechaInicio": "2023-01-01 10:00:00",
   "fechaFin": "2023-01-01 11:00:00",
   "kmRecorridos": 5.0,
-  "costoTotal": 20.0
+  "costoTotal": 20.0,
+  "tiempoPausado": 10.0
 }
 ```
+> **Nota:** El campo `tiempoPausado` representa el tiempo (en minutos) en el cual el monopatín estuvo inactivo durante el viaje.
+> 
+
 ### Estadísticas de Monopatines
 
 | Método | URL | Descripción |
 | --- | --- | --- |
 | GET | `/api/viaje/pausas` | Obtener tiempos pausados por monopatín. |
 | GET | `/api/viaje/monopatines/mas-viajes` | Monopatines con más viajes en un período. |
+#### Ejemplo de Response - Obtener Tiempos Pausados (GET `/api/viaje/pausas`)
+``` json
+{
+  "MP1234": 45.0,
+  "MP5678": 30.5
+}
+```
+> **Nota:** Este endpoint devuelve un mapa donde las claves son los identificadores de monopatines y los valores corresponden al tiempo total pausado en minutos.
+> 
+
 ### Estadísticas de Usuarios
 
 | Método | URL | Descripción |
@@ -59,6 +70,15 @@ El servidor estará disponible en [http://localhost:8007]
   { "idUsuario": 1 }
 ]
 ```
+### Campos Registrados en un Viaje
+- **idUsuario:** Identificador único del usuario.
+- **idMonopatin:** Identificador único del monopatín.
+- **fechaInicio:** Fecha y hora del inicio del viaje.
+- **fechaFin:** Fecha y hora del final del viaje.
+- **kmRecorridos:** Distancia total recorrida en kilómetros.
+- **costoTotal:** Monto total del viaje.
+- **tiempoPausado:** Tiempo (en minutos) en el cual el viaje estuvo pausado.
+
 ## Manejo de Excepciones
 El servicio incluye excepciones personalizadas para una mejor gestión de errores.
 
@@ -79,7 +99,6 @@ Ejemplo de respuesta para un error `404`:
     "path": "/api/viaje/1"
 }
 ```
-
 ## Tecnologías Usadas
 - **Java 21**
 - **Spring Boot 3.x**
