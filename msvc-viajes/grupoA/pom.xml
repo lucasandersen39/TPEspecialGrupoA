@@ -3,13 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.integrador</groupId>
+		<artifactId>grupoA</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>com.integrador</groupId>
-	<artifactId>grupoA</artifactId>
+	<artifactId>msvc-viajes</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>msvc-viajes</name>
 	<description>Microservicio Viaje</description>
@@ -73,6 +71,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot</artifactId>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
