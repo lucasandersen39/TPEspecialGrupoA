@@ -20,38 +20,36 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Service @Slf4j
+@Service
+@Slf4j
 public class JwtService {
-	@Value("${jwt.secret.key}")
-	private String secretKey;
-	private static final Long TIME_EXPIRATION = 3600000L;
+    @Value("${jwt.secret.key}")
+    private String secretKey;
+    // Son 60.000 por cada minuto
+    private static final Long TIME_EXPIRATION = 180000L;
 
-	public String getToken(final UserDetails usuario) {
-		final Map<String, Object> extraClaims = new HashMap<>();
+    public String getToken(final UserDetails usuario) {
+        final Map<String, Object> extraClaims = new HashMap<>();
 
-		final List<String> authorities = usuario.getAuthorities()
-				.stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toList());
-		extraClaims.put("authorities", authorities);
-		return buildToken(extraClaims, usuario);
-	}
+        final List<String> authorities = usuario.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+        extraClaims.put("authorities", authorities);
+        return buildToken(extraClaims, usuario);
+    }
 
-	private String buildToken(final Map<String, Object> extraClaims, final UserDetails usuario) {
-		return Jwts.builder()
-				.claims(extraClaims)
-				.subject(usuario.getUsername())
-				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + TIME_EXPIRATION))
-				.signWith(getSignatureKey(), Jwts.SIG.HS256)
-				.compact();
-	}
+    private String buildToken(final Map<String, Object> extraClaims, final UserDetails usuario) {
+        return Jwts.builder()
+                .claims(extraClaims)
+                .subject(usuario.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + TIME_EXPIRATION))
+                .signWith(getSignatureKey(), Jwts.SIG.HS512).compact();
+    }
 
-	private SecretKey getSignatureKey() {
-		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
-	}
+    private SecretKey getSignatureKey() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+    }
 
-	public String getClaim(final String token, final String claim) {
+    public String getClaim(final String token, final String claim) {
         return switch (claim.toLowerCase()) {
             case "sub" -> getClaim(token, Claims::getSubject);
             case "iat" -> getClaim(token, Claims::getIssuedAt).toString();
@@ -59,26 +57,26 @@ public class JwtService {
             case "exp" -> getClaim(token, Claims::getExpiration).toString();
             default -> null;
         };
-	}
+    }
 
-	public <T> T getClaim(final String token, final Function<Claims, T> claimsFunction) {
-		return isTokenValid(token) ? claimsFunction.apply(extractAllClaims(token)) : null;
-	}
+    public <T> T getClaim(final String token, final Function<Claims, T> claimsFunction) {
+        return isTokenValid(token) ? claimsFunction.apply(extractAllClaims(token)) : null;
+    }
 
-	public Claims extractAllClaims(final String token) {
-		return Jwts.parser().verifyWith(getSignatureKey()).build().parseSignedClaims(token).getPayload();
-	}
+    public Claims extractAllClaims(final String token) {
+        return Jwts.parser().verifyWith(getSignatureKey()).build().parseSignedClaims(token).getPayload();
+    }
 
-	public boolean isTokenValid(final String token) {
-		if (token == null) {
-			return false;
-		}
-		try {
-			extractAllClaims(token);
-			return true;
-		} catch (Exception e) {
-			log.error("Token invalido, error: " + e.getMessage());
-			return false;
-		}
-	}
+    public boolean isTokenValid(final String token) {
+        if (token == null) {
+            return false;
+        }
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            log.error("Token invalido, error: " + e.getMessage());
+            return false;
+        }
+    }
 }
