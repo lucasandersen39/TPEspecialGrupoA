@@ -8,9 +8,6 @@
 		<version>3.5.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<modules>
-		<module>msvc-usuarios</module>
-	</modules>
 	<groupId>com.integrador</groupId>
 	<artifactId>grupoA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -27,6 +24,7 @@
 	<modules>
 		<module>msvc-autorizacion</module>
 		<module>msvc-ejemploautorizacion</module>
+		<module>msvc-usuarios</module>
 	</modules>
 	<scm>
 		<connection/>
