@@ -1,9 +1,9 @@
-FROM openjdk:21
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
 COPY target/*.jar app.jar
 
-EXPOSE 8002
+EXPOSE 8005
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

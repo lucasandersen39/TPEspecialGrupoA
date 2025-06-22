@@ -3,30 +3,25 @@ services:
     image: 'mysql:latest'
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      MYSQL_ROOT_PASSWORD: ""
-    volumes:
-      - mysql_data:/var/lib/mysql
+      MYSQL_ROOT_PASSWORD : ""
     ports:
       - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - spring-net
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 10
+
 
   msvc-admin:
     build: .
     ports:
-      - "8005:8005"
+      - "8085:8005"
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/msvc_admin?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/msvc_admin?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: ""
+      SPRING_DATASOURCE_PASSWORD:
     networks:
       - spring-net
 

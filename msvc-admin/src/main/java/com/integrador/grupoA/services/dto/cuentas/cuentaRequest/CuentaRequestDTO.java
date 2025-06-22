@@ -12,8 +12,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class CuentaRequestDTO {
 
-    private Long id;
-
     @NotBlank(message = "El campo entidad_bancaria no puede estar vacío")
     private String entidad_bancaria;
 
