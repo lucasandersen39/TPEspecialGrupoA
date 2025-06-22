@@ -70,7 +70,8 @@ services:
       - DB_PASS=${DB_PASS}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - msvc_network
 
