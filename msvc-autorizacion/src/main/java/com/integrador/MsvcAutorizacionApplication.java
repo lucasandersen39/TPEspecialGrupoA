@@ -15,9 +15,6 @@ import java.util.HashSet;
 
 @SpringBootApplication
 public class MsvcAutorizacionApplication {
-    public static final String API_VERSION = "1";
-    public static final String FIRST_PART = "/api/v" + API_VERSION;
-
     public static void main(String[] args) {
         SpringApplication.run(MsvcAutorizacionApplication.class, args);
     }

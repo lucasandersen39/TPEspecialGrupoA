@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(MsvcAutorizacionApplication.FIRST_PART + "/auth")
+@RequestMapping("/auth")
 public class AuthController {
 	@Autowired
 	private AuthService service;

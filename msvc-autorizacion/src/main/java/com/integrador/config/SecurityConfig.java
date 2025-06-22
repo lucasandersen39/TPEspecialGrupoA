@@ -35,7 +35,7 @@ public class SecurityConfig {
 		final AuthenticationFilter authenticationFilter = new AuthenticationFilter(jwtService);
 		final AuthenticationManager authenticationManager = authenticationManager(http);
 		authenticationFilter.setAuthenticationManager(authenticationManager);
-		authenticationFilter.setFilterProcessesUrl(MsvcAutorizacionApplication.FIRST_PART + "/auth/login");
+		authenticationFilter.setFilterProcessesUrl("/auth/login");
 
 		return http.authenticationManager(authenticationManager).csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
