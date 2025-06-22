@@ -1,0 +1,134 @@
+package com.integrador.grupoA.Web;
+
+import com.integrador.grupoA.DTO.*;
+import com.integrador.grupoA.Domain.Viaje;
+import com.integrador.grupoA.Service.ViajeService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/api/viaje")
+public class ViajeController {
+    @Autowired
+    private ViajeService viajeService;
+
+    @GetMapping
+    public List<ViajeResponseDTO> listarViajes() {
+        return viajeService.listarViajes();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ViajeResponseDTO> getViaje(@PathVariable int id) {
+        try {
+            ViajeResponseDTO viaje = viajeService.obtenerViajePorId(id);
+            return ResponseEntity.ok(viaje);
+        } catch (RuntimeException e) {
+            // Devuelve un código HTTP 404 si el viaje no existe
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+
+    @PostMapping
+    public ResponseEntity<ViajeResponseDTO> createViaje(@Valid @RequestBody ViajeDTO viajeCreateDTO) {
+        ViajeResponseDTO viajeGuardado = viajeService.createViaje(viajeCreateDTO);
+        return ResponseEntity.status(201).body(viajeGuardado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteViaje(@PathVariable int id) {
+        try {
+            viajeService.deleteViaje(id);
+            return ResponseEntity.noContent().build(); // Devuelve código HTTP 204 No Content
+        } catch (RuntimeException e) {
+            // Devuelve un error HTTP 404 si no se encuentra el ID
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ViajeResponseDTO> updateViaje(
+            @PathVariable int id,
+            @Valid @RequestBody ViajeDTO dto) {
+        try {
+            ViajeResponseDTO actualizado = viajeService.updateViaje(id, dto);
+            return ResponseEntity.ok(actualizado); // Retorna el nuevo estado del viaje
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 si no se encuentra el recurso
+        }
+    }
+
+    @PostMapping("/costo")
+    public ResponseEntity<Viaje> calcularCostoViaje(@RequestBody Viaje viaje) {
+        try {
+            Viaje viajeCalculado = viajeService.calcularCostoViaje(viaje);
+            return ResponseEntity.ok(viajeCalculado);
+        } catch (RuntimeException ex) {
+            return ResponseEntity.badRequest().body(null); // Error si hay algún problema
+        }
+    }
+
+    @GetMapping("/facturacion") //con monto esta bien
+    public ResponseEntity<Double> obtenerFacturacionEntreFechas(
+            @RequestParam("fechaInicio") LocalDateTime fechaInicio,
+            @RequestParam("fechaFin") LocalDateTime fechaFin) {
+        try {
+            // Llama al servicio para calcular la facturación
+            double totalFacturacion = viajeService.calcularFacturacionEntreFechas(fechaInicio, fechaFin);
+            return ResponseEntity.ok(totalFacturacion);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/pausas")
+    public ResponseEntity<Map<String, Double>> obtenerTiemposPausadosPorMonopatin() {
+        Map<String, Double> reporte = viajeService.obtenerTiempoPausadoTotal();
+        return ResponseEntity.ok(reporte);
+    }
+
+    @GetMapping("/monopatines/mas-viajes")
+    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
+            @RequestParam int anio,
+            @RequestParam long minViajes) {
+
+        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes( anio, minViajes);
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @PostMapping("/usuarios/mas-viajes")
+    public ResponseEntity<List<DtoResponseUsuarioConViajes>> obtenerUsuariosConMasViajes(
+            @RequestParam LocalDateTime fechaInicio,
+            @RequestParam LocalDateTime fechaFin,
+            @RequestParam(required = false) String tipoUsuario,
+            @RequestBody List<DtoUsuario> usuarios) {
+
+        List<DtoResponseUsuarioConViajes> respuesta = viajeService.obtenerUsuariosConMasViajes(
+                fechaInicio, fechaFin, usuarios, tipoUsuario);
+
+        return ResponseEntity.ok(respuesta);
+    }
+
+    @PostMapping("/estadisticas-uso")
+    public ResponseEntity<List<DtoUsoMonopatin>> obtenerEstadisticasDeUso(
+            @RequestParam LocalDateTime fechaInicio,
+            @RequestParam LocalDateTime fechaFin,
+            @RequestBody List<Integer> idsUsuarios) {
+
+        // Llamar al servicio para procesar las estadísticas
+        List<DtoUsoMonopatin> estadisticas = viajeService.obtenerEstadisticasDeUso(fechaInicio, fechaFin, idsUsuarios);
+
+        return ResponseEntity.ok(estadisticas);
+    }
+
+
+
+
+}
