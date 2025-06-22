@@ -1,5 +1,6 @@
 package com.integrador.msvc_monopatines.web;
 
+import com.integrador.msvc_monopatines.repository.MonopatinRepository;
 import com.integrador.msvc_monopatines.service.MonopatinService;
 import com.integrador.msvc_monopatines.service.dto.request.MonopatinRequestDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonoParaParadaResponseDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MonopatinResource {
     private final MonopatinService monopatinService;
+    private final MonopatinRepository monopatinRepository;
 
     @PostMapping
     public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@RequestBody MonopatinRequestDTO dto) {
@@ -79,6 +81,14 @@ public class MonopatinResource {
         List<ReporteUsoDTO> reporte = monopatinService.generarReporteUso(incluirPausa);
         return ResponseEntity.ok(reporte);
     }
+
+    //Verifica si el id recibido corresponde a un monopatin existente
+    @GetMapping("/existe/{id}")
+    public ResponseEntity<Boolean> existeMonopatin(@PathVariable("id") String idMonopatin) {
+        boolean existe = monopatinRepository.existsById(idMonopatin);
+        return ResponseEntity.ok(existe);
+    }
+
 
 }
 
