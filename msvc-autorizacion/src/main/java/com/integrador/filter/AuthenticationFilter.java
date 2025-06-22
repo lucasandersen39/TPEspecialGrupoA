@@ -7,6 +7,7 @@ import java.util.Map;
 import com.integrador.dto.LoginRequestDTO;
 import com.integrador.entites.Usuario;
 import com.integrador.services.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,41 +23,37 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-	private JwtService jwtService;
+    private JwtService jwtService;
 
-	@Override
-	public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response)
-			throws AuthenticationException {
-		LoginRequestDTO loginData = null;
-		final String username;
-		final String password;
-		try {
-			loginData = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDTO.class);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		username = loginData.getUsername();
-		password = loginData.getPassword();
-		UsernamePasswordAuthenticationToken autenticationToken = new UsernamePasswordAuthenticationToken(username,
-				password);
-		return super.getAuthenticationManager().authenticate(autenticationToken);
-	}
+    @Override
+    public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) throws AuthenticationException {
+        LoginRequestDTO loginData = null;
+        try {
+            loginData = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDTO.class);
+        } catch (IOException e) {
+            log.error("Error: " + e.getMessage());
+            throw new RuntimeException("Error al leer datos de autenticación", e);
+        }
 
-	@Override
-	protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain,
-											final Authentication authResult) throws IOException, ServletException {
-		final Usuario usuario = (Usuario) authResult.getPrincipal();
-		final String token = jwtService.getToken(usuario);
-		response.addHeader("authorization", token);
-		final Map<String, Object> httpResponse = new HashMap<>();
-		httpResponse.put("token", token);
-		httpResponse.put("message", "autenticaci\u00F3n correcta");
-		httpResponse.put("usuario", usuario.getUsername());
-		response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
-		response.setStatus(HttpStatus.OK.value());
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().flush();
-		super.successfulAuthentication(request, response, chain, authResult);
-	}
+        final UsernamePasswordAuthenticationToken autenticationToken =
+                new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword());
+        return super.getAuthenticationManager().authenticate(autenticationToken);
+    }
+
+    @Override
+    protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain, final Authentication authResult) throws IOException, ServletException {
+        final Usuario usuario = (Usuario) authResult.getPrincipal();
+        final String token = jwtService.getToken(usuario);
+        response.addHeader("authorization", token);
+
+        final Map<String, Object> httpResponse = new HashMap<>();
+        httpResponse.put("token", token);
+        httpResponse.put("message", "autenticaci\u00F3n correcta");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().flush();
+    }
 }
