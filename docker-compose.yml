@@ -47,6 +47,26 @@ services:
     networks:
       - msvc_network
 
+  msvc-usuarios:
+    build:
+      context: .
+      dockerfile: msvc-usuarios/Dockerfile
+    container_name: msvc-usuarios
+    restart: always
+    ports:
+      - "8002:8002"
+    environment:
+      - SERVER_PORT=8002
+      - DB_HOST=db
+      - DB_NAME=db_usuarios
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      - db
+    networks:
+      - msvc_network
+
 volumes:
   db_data:
 
