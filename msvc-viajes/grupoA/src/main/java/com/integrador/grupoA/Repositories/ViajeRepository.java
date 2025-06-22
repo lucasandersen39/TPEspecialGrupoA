@@ -1,7 +1,7 @@
 package com.integrador.grupoA.Repositories;
 
 import com.integrador.grupoA.DTO.DtoResponseMonopatinesMasViajes;
-import com.integrador.grupoA.DTO.TiempoPausadoDTO;
+import com.integrador.grupoA.DTO.DtoTiempoPausado;
 import com.integrador.grupoA.Domain.Viaje;
 import feign.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,9 +19,9 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
     List<Viaje> findViajesEntreFechas(@Param("fechaInicio") LocalDateTime fechaInicio,
                                       @Param("fechaFin") LocalDateTime fechaFin);
 
-    @Query("SELECT new com.integrador.grupoA.DTO.TiempoPausadoDTO(v.idMonopatin, SUM(v.tiempoPausado)) " +
+    @Query("SELECT new com.integrador.grupoA.DTO.DtoTiempoPausado(v.idMonopatin, SUM(v.tiempoPausado)) " +
             "FROM Viaje v GROUP BY v.idMonopatin")
-    List<TiempoPausadoDTO> obtenerTiemposPausados();
+    List<DtoTiempoPausado> obtenerTiemposPausados();
 
     @Query("SELECT v.idMonopatin, COUNT(v) as totalViajes " +
             "FROM Viaje v " +

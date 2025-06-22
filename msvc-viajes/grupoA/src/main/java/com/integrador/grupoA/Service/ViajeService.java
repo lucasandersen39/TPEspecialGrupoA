@@ -4,8 +4,9 @@ import com.integrador.grupoA.Client.MonopatinClient;
 import com.integrador.grupoA.Client.TarifaFeignClient;
 import com.integrador.grupoA.Client.UsuarioFeignClient;
 import com.integrador.grupoA.DTO.*;
-import com.integrador.grupoA.DTO.DtoTarifa;
+import com.integrador.grupoA.DTO.DtoTarifaResponse;
 import com.integrador.grupoA.Domain.Viaje;
+import com.integrador.grupoA.ExceptionHandler.ExceptionHandlerController;
 import com.integrador.grupoA.Repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ViajeService {
     @Autowired
     private MonopatinClient monopatinClient;
 
-    public List<ViajeResponseDTO> listarViajes() {
+    public List<DtoViajeResponse> listarViajes() {
         // Consulta todos los viajes desde la base de datos, los convierte a ViajeResponseDTO y los retorna
         return viajeRepository.findAll().stream()
                 .map(this::convertToResponseDTO)
@@ -35,47 +36,49 @@ public class ViajeService {
     }
 
 
-    public ViajeResponseDTO obtenerViajePorId(int id) {
-        // Busca el viaje por ID, lanza una excepción si no se encuentra
-        Viaje viaje = viajeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Viaje no encontrado con ID: " + id));
-        // Convierte y retorna el viaje como un ViajeResponseDTO
-        return convertToResponseDTO(viaje);
+    public DtoViajeResponse obtenerViajePorId(int id) {
+        try {
+            Viaje viaje = viajeRepository.findById(id)
+                    .orElseThrow(() -> new ExceptionHandlerController.ViajeNotFoundException("El viaje con ID " + id + " no fue encontrado."));
+            return convertToResponseDTO(viaje);
+        } catch (ExceptionHandlerController.ViajeNotFoundException e) {
+            throw e; // Propaga la excepción para que la manejen las capas superiores.
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperado al obtener el viaje con ID " + id, e);
+        }
     }
 
-//    public ViajeResponseDTO createViaje(ViajeDTO viajeCreateDTO) {
-//        // Convierte el DTO a una entidad, la guarda en la base de datos y retorna el resultado como ResponseDTO
-//        Viaje nuevoViaje = convertToEntity(viajeCreateDTO);
-//        Viaje viajeGuardado = viajeRepository.save(nuevoViaje);
-//        return convertToResponseDTO(viajeGuardado);
-//    }
 
-    public ViajeResponseDTO createViaje(ViajeDTO viajeCreateDTO) {
-        // Verificar que el monopatín existe en el microservicio de monopatines
-        boolean exists = monopatinClient.existeMonopatin(viajeCreateDTO.getIdMonopatin());
-        if (!exists) {
-            throw new IllegalArgumentException("El ID del monopatín no existe: " + viajeCreateDTO.getIdMonopatin());
+    public DtoViajeResponse createViaje(DtoViajeRequest viajeCreateDTO) {
+        try {
+            Viaje nuevoViaje = convertToEntity(viajeCreateDTO);
+            Viaje viajeGuardado = viajeRepository.save(nuevoViaje);
+            return convertToResponseDTO(viajeGuardado);
+        } catch (IllegalArgumentException e) {
+            throw new ExceptionHandlerController.ViajeCreationException("Error al crear el viaje: los datos proporcionados son inválidos.");
+        } catch (Exception e) {
+            throw new RuntimeException("Error inesperado al crear un nuevo viaje.", e);
         }
-
-        // Convierte el DTO a una entidad, la guarda en la base de datos y retorna el resultado como ResponseDTO
-        Viaje nuevoViaje = convertToEntity(viajeCreateDTO);
-        Viaje viajeGuardado = viajeRepository.save(nuevoViaje);
-        return convertToResponseDTO(viajeGuardado);
     }
 
 
     public void deleteViaje(int id) {
-        // Valida si el viaje existe antes de eliminarlo
-        if (!viajeRepository.existsById(id)) {
-            throw new RuntimeException("Viaje no encontrado con ID: " + id);
+        try {
+            if (!viajeRepository.existsById(id)) {
+                throw new ExceptionHandlerController.ViajeNotFoundException("No se puede eliminar. El viaje con ID " + id + " no fue encontrado.");
+            }
+            viajeRepository.deleteById(id);
+        } catch (ExceptionHandlerController.ViajeNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ExceptionHandlerController.ViajeDeletionException("Error inesperado al eliminar el viaje con ID " + id);
         }
-        // Elimina el viaje de la base de datos
-        viajeRepository.deleteById(id);
     }
-    public ViajeResponseDTO updateViaje(int id, ViajeDTO viajeUpdateDTO) {
+
+    public DtoViajeResponse updateViaje(int id, DtoViajeRequest viajeUpdateDTO) {
         // Valida si el viaje existe
         Viaje viajeExistente = viajeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Viaje no encontrado con ID: " + id));
+                .orElseThrow(() -> new ExceptionHandlerController.ViajeUpdateException("Viaje no encontrado con ID: " + id));
 
         // Actualiza los valores del viaje con los datos del DTO
         viajeExistente.setIdUsuario(viajeUpdateDTO.getIdUsuario());
@@ -93,8 +96,8 @@ public class ViajeService {
     }
 
     // Convierte una entidad Viaje a un DTO de respuesta
-    private ViajeResponseDTO convertToResponseDTO(Viaje viaje) {
-        ViajeResponseDTO dto = new ViajeResponseDTO();
+    private DtoViajeResponse convertToResponseDTO(Viaje viaje) {
+        DtoViajeResponse dto = new DtoViajeResponse();
         dto.setId(viaje.getId());
         dto.setIdUsuario(viaje.getIdUsuario());
         dto.setIdMonopatin(viaje.getIdMonopatin());
@@ -106,7 +109,7 @@ public class ViajeService {
     }
 
     // Convierte un DTO a una entidad Viaje
-    private Viaje convertToEntity(ViajeDTO dto) {
+    private Viaje convertToEntity(DtoViajeRequest dto) {
         Viaje viaje = new Viaje();
         viaje.setIdUsuario(dto.getIdUsuario());
         viaje.setIdMonopatin(dto.getIdMonopatin());
@@ -120,11 +123,11 @@ public class ViajeService {
 
     public Viaje calcularCostoViaje(Viaje viaje) {
         // Consultar el usuario por su id
-        DtoUsuario usuario = usuarioFeignClient.obtenerUsuarioPorId(viaje.getIdUsuario());
+        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viaje.getIdUsuario());
 
         // Determinar la tarifa según el tipo de usuario (Premium o Básico)
         String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
-        DtoTarifa tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
+        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
 
         // Calcular costo total del viaje
         if (tarifa != null) {
@@ -153,11 +156,11 @@ public class ViajeService {
     }
 
     public Map<String, Double> obtenerTiempoPausadoTotal() {
-        List<TiempoPausadoDTO> lista = viajeRepository.obtenerTiemposPausados();
+        List<DtoTiempoPausado> lista = viajeRepository.obtenerTiemposPausados();
 
         return lista.stream()
                 .collect(Collectors.toMap(
-                        TiempoPausadoDTO::getIdMonopatin,
+                        DtoTiempoPausado::getIdMonopatin,
                         dto -> Optional.ofNullable(dto.getTiempoTotalPausado()).orElse(0.0)
                 ));
     }
@@ -179,7 +182,7 @@ public class ViajeService {
 
     public List<DtoResponseUsuarioConViajes> obtenerUsuariosConMasViajes(
             LocalDateTime fechaInicio, LocalDateTime fechaFin,
-            List<com.integrador.grupoA.DTO.DtoUsuario> usuarios, String tipoUsuario) {
+            List<DtoUsuarioResponse> usuarios, String tipoUsuario) {
 
         // Obtener los usuarios con más viajes en el período
         List<Object[]> viajesPorUsuario = viajeRepository.findUsuariosConMasViajes(fechaInicio, fechaFin);

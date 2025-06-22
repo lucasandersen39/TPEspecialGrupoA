@@ -20,14 +20,14 @@ public class ViajeController {
     private ViajeService viajeService;
 
     @GetMapping
-    public List<ViajeResponseDTO> listarViajes() {
+    public List<DtoViajeResponse> listarViajes() {
         return viajeService.listarViajes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ViajeResponseDTO> getViaje(@PathVariable int id) {
+    public ResponseEntity<DtoViajeResponse> getViaje(@PathVariable int id) {
         try {
-            ViajeResponseDTO viaje = viajeService.obtenerViajePorId(id);
+            DtoViajeResponse viaje = viajeService.obtenerViajePorId(id);
             return ResponseEntity.ok(viaje);
         } catch (RuntimeException e) {
             // Devuelve un código HTTP 404 si el viaje no existe
@@ -37,8 +37,8 @@ public class ViajeController {
 
 
     @PostMapping
-    public ResponseEntity<ViajeResponseDTO> createViaje(@Valid @RequestBody ViajeDTO viajeCreateDTO) {
-        ViajeResponseDTO viajeGuardado = viajeService.createViaje(viajeCreateDTO);
+    public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viajeCreateDTO) {
+        DtoViajeResponse viajeGuardado = viajeService.createViaje(viajeCreateDTO);
         return ResponseEntity.status(201).body(viajeGuardado);
     }
 
@@ -54,11 +54,11 @@ public class ViajeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ViajeResponseDTO> updateViaje(
+    public ResponseEntity<DtoViajeResponse> updateViaje(
             @PathVariable int id,
-            @Valid @RequestBody ViajeDTO dto) {
+            @Valid @RequestBody DtoViajeRequest dto) {
         try {
-            ViajeResponseDTO actualizado = viajeService.updateViaje(id, dto);
+            DtoViajeResponse actualizado = viajeService.updateViaje(id, dto);
             return ResponseEntity.ok(actualizado); // Retorna el nuevo estado del viaje
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 404 si no se encuentra el recurso
@@ -108,7 +108,7 @@ public class ViajeController {
             @RequestParam LocalDateTime fechaInicio,
             @RequestParam LocalDateTime fechaFin,
             @RequestParam(required = false) String tipoUsuario,
-            @RequestBody List<DtoUsuario> usuarios) {
+            @RequestBody List<DtoUsuarioResponse> usuarios) {
 
         List<DtoResponseUsuarioConViajes> respuesta = viajeService.obtenerUsuariosConMasViajes(
                 fechaInicio, fechaFin, usuarios, tipoUsuario);
