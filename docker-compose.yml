@@ -13,6 +13,12 @@ services:
     networks:
       - msvc_network
 
+    healthcheck:
+        test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
   msvc-autorizacion:
     build:
       context: .
@@ -29,7 +35,8 @@ services:
       - DB_PASS=${DB_PASS}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - msvc_network
 
@@ -44,6 +51,25 @@ services:
     environment:
       - SERVER_PORT=8050
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    networks:
+      - msvc_network
+
+  msvc-admin:
+    build:
+      context: .
+      dockerfile: msvc-admin/Dockerfile
+    container_name: msvc-admin
+    ports:
+      - "8005:8005"
+    environment:
+      - SERVER_PORT=8005
+      - DB_HOST=db
+      - DB_NAME=db_admin
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - msvc_network
 
@@ -63,7 +89,8 @@ services:
       - DB_PASS=${DB_PASS}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - msvc_network
 
