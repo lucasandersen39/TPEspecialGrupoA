@@ -13,6 +13,10 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>grupoA</name>
 	<description>Integrador Especial Grupo A</description>
+	<modules>
+		<module>api-gateway</module>
+	</modules>
+	<packaging>pom</packaging>
 	<url/>
 	<licenses>
 		<license/>

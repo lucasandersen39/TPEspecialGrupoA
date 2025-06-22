@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+        - id: msvc-monopatines
+          uri: http://localhost:8001
+          predicates:
+            - Path=/api/monopatines/**
+        - id: msvc-admin
+          uri: http://localhost:8005
+          predicates:
+            - Path=/api/administracion/**
+        - id: msvc-paradas
+          uri: http://localhost:8003
+          predicates:
+            - Path=/api/paradas/**
+        - id: msvc-usuarios
+          uri: http://localhost:8002
+          predicates:
+            - Path=/api/paradas/**
