@@ -11,16 +11,20 @@ spring:
         - id: msvc-monopatines
           uri: http://localhost:8001
           predicates:
-            - Path=/api/monopatines/**
+            - Path=/api/monopatin/**
         - id: msvc-admin
           uri: http://localhost:8005
           predicates:
-            - Path=/api/administracion/**
+            - Path=/api/admin/**
         - id: msvc-paradas
           uri: http://localhost:8003
           predicates:
-            - Path=/api/paradas/**
+            - Path=/api/parada/**
         - id: msvc-usuarios
           uri: http://localhost:8002
           predicates:
-            - Path=/api/paradas/**
+            - Path=/api/usuario/**
+        - id: msvc-viajes
+          uri: http://localhost:8007
+          predicates:
+            - Path=/api/viaje/**
