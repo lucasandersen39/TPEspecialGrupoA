@@ -11,6 +11,7 @@
 	<groupId>com.integrador</groupId>
 	<artifactId>grupoA</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<name>grupoA</name>
 	<description>Integrador Especial Grupo A</description>
 	<url/>
@@ -20,6 +21,10 @@
 	<developers>
 		<developer/>
 	</developers>
+	<modules>
+		<module>msvc-autorizacion</module>
+		<module>msvc-ejemploautorizacion</module>
+	</modules>
 	<scm>
 		<connection/>
 		<developerConnection/>
@@ -28,19 +33,30 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<jjwt.version>0.12.6</jjwt.version>
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-api</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-impl</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.jsonwebtoken</groupId>
+				<artifactId>jjwt-jackson</artifactId>
+				<version>${jjwt.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
