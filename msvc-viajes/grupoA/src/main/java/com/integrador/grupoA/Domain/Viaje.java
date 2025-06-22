@@ -1,5 +1,6 @@
 package com.integrador.grupoA.Domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,14 +17,18 @@ public class Viaje {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column
     private int idUsuario;
     @Column
     private String idMonopatin;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+
     private LocalDateTime fechaInicio;
     @Column
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+
     private LocalDateTime fechaFin;
     @Column
     private double kmRecorridos;
@@ -32,67 +37,4 @@ public class Viaje {
     @Column
     private double tiempoPausado;
 
-    public int getId() {
-        return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getIdMonopatin() {
-        return idMonopatin;
-    }
-
-    public void setIdMonopatin(String idMonopatin) {
-        this.idMonopatin = idMonopatin;
-    }
-
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public LocalDateTime getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public void setFechaInicio(LocalDateTime fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public LocalDateTime getFechaFin() {
-        return fechaFin;
-    }
-
-    public void setFechaFin(LocalDateTime fechaFin) {
-        this.fechaFin = fechaFin;
-    }
-
-    public double getKmRecorridos() {
-        return kmRecorridos;
-    }
-
-    public void setKmRecorridos(double kmRecorridos) {
-        this.kmRecorridos = kmRecorridos;
-    }
-
-    public double getCostoTotal() {
-        return costoTotal;
-    }
-
-    public void setCostoTotal(double costoTotal) {
-        this.costoTotal = costoTotal;
-    }
-
-    public double getTiempoPausado() {
-        return tiempoPausado;
-    }
-
-    public void setTiempoPausado(double tiempoPausado) {
-        this.tiempoPausado = tiempoPausado;
-    }
-}

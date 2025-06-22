@@ -23,12 +23,13 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
             "FROM Viaje v GROUP BY v.idMonopatin")
     List<DtoTiempoPausado> obtenerTiemposPausados();
 
-    @Query("SELECT v.idMonopatin, COUNT(v) as totalViajes " +
+    @Query("SELECT v.idMonopatin, COUNT(v) " +
             "FROM Viaje v " +
             "WHERE YEAR(v.fechaInicio) = :anio " +
             "GROUP BY v.idMonopatin " +
-            "HAVING totalViajes > :minViajes")
-    List<DtoResponseMonopatinesMasViajes> findMonopatinesConMasDeXViajesEnAnio(@Param("anio") int anio, @Param("minViajes") long minViajes);
+            "HAVING COUNT(v) > :minViajes")
+    List<Object[]> findMonopatinesConMasDeXViajesEnAnio(@Param("anio") int anio, @Param("minViajes") Long minViajes);
+
 
 
     @Query("SELECT v.idUsuario, COUNT(v.id) as totalViajes " +
@@ -40,15 +41,15 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
             @Param("fechaInicio") LocalDateTime fechaInicio,
             @Param("fechaFin") LocalDateTime fechaFin);
 
-    @Query("SELECT v.idUsuario, COUNT(v.id) as totalViajes, SUM(v.kmRecorridos) as totalKm, SUM(TIMESTAMPDIFF(MINUTE, v.fechaInicio, v.fechaFin)) as totalTiempo " +
-            "FROM Viaje v " +
-            "WHERE v.fechaInicio BETWEEN :fechaInicio AND :fechaFin " +
-            "AND v.idUsuario IN :idsUsuarios " +
-            "GROUP BY v.idUsuario ")
-    List<Object[]> obtenerEstadisticasDeUsuarios(
-            @Param("fechaInicio") LocalDateTime fechaInicio,
-            @Param("fechaFin") LocalDateTime fechaFin,
-            @Param("idsUsuarios") List<Integer> idsUsuarios);
+//    @Query("SELECT v.idUsuario, COUNT(v.id) as totalViajes, SUM(v.kmRecorridos) as totalKm, SUM(TIMESTAMPDIFF(MINUTE, v.fechaInicio, v.fechaFin)) as totalTiempo " +
+//            "FROM Viaje v " +
+//            "WHERE v.fechaInicio BETWEEN :fechaInicio AND :fechaFin " +
+//            "AND v.idUsuario IN :idsUsuarios " +
+//            "GROUP BY v.idUsuario ")
+//    List<Object[]> obtenerEstadisticasDeUsuarios(
+//            @Param("fechaInicio") LocalDateTime fechaInicio,
+//            @Param("fechaFin") LocalDateTime fechaFin,
+//            @Param("idsUsuarios") List<Integer> idsUsuarios);
 
 
 

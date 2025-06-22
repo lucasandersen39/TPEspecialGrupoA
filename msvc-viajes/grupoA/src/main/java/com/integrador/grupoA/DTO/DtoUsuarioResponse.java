@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DtoUsuarioResponse {
     private int idUsuario;
+    private String tipoUsuario;
 
 }

@@ -35,11 +35,17 @@ public class ViajeController {
         }
     }
 
+//
+//    @PostMapping
+//    public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viajeCreateDTO) {
+//        DtoViajeResponse viajeGuardado = viajeService.createViaje(viajeCreateDTO);
+//        return ResponseEntity.status(201).body(viajeGuardado);
+//    }
 
     @PostMapping
-    public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viajeCreateDTO) {
-        DtoViajeResponse viajeGuardado = viajeService.createViaje(viajeCreateDTO);
-        return ResponseEntity.status(201).body(viajeGuardado);
+    public ResponseEntity<Viaje> createViaje(@Valid @RequestBody Viaje viaje) {
+        Viaje nuevoViaje = viajeService.crearViaje(viaje);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoViaje);
     }
 
     @DeleteMapping("/{id}")
@@ -99,11 +105,11 @@ public class ViajeController {
             @RequestParam int anio,
             @RequestParam long minViajes) {
 
-        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes( anio, minViajes);
+        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
         return ResponseEntity.ok(respuesta);
     }
 
-    @PostMapping("/usuarios/mas-viajes")
+    @GetMapping("/usuarios/mas-viajes")
     public ResponseEntity<List<DtoResponseUsuarioConViajes>> obtenerUsuariosConMasViajes(
             @RequestParam LocalDateTime fechaInicio,
             @RequestParam LocalDateTime fechaFin,
@@ -116,17 +122,7 @@ public class ViajeController {
         return ResponseEntity.ok(respuesta);
     }
 
-    @PostMapping("/estadisticas-uso")
-    public ResponseEntity<List<DtoUsoMonopatin>> obtenerEstadisticasDeUso(
-            @RequestParam LocalDateTime fechaInicio,
-            @RequestParam LocalDateTime fechaFin,
-            @RequestBody List<Integer> idsUsuarios) {
 
-        // Llamar al servicio para procesar las estadísticas
-        List<DtoUsoMonopatin> estadisticas = viajeService.obtenerEstadisticasDeUso(fechaInicio, fechaFin, idsUsuarios);
-
-        return ResponseEntity.ok(estadisticas);
-    }
 
 
 

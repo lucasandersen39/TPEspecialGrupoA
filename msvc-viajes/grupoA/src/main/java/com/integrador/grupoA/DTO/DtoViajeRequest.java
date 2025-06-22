@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @RequiredArgsConstructor

@@ -47,6 +47,18 @@ public class ViajeService {
             throw new RuntimeException("Error inesperado al obtener el viaje con ID " + id, e);
         }
     }
+    public Viaje crearViaje(Viaje viaje) {
+        // Validaciones adicionales (si es necesario)
+        if (viaje.getFechaInicio() == null || viaje.getFechaFin() == null) {
+            throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
+        }
+        if (viaje.getFechaFin().isBefore(viaje.getFechaInicio())) {
+            throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
+        }
+
+        // Guardar el viaje en la base de datos
+        return viajeRepository.save(viaje);
+    }
 
 
     public DtoViajeResponse createViaje(DtoViajeRequest viajeCreateDTO) {
@@ -167,11 +179,11 @@ public class ViajeService {
 
     public List<DtoResponseMonopatinesMasViajes> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
         // Obtener los monopatines y sus IDs que superan los "X" viajes
-        List<DtoResponseMonopatinesMasViajes> resultados = viajeRepository.findMonopatinesConMasDeXViajesEnAnio(anio, minViajes);
+        List<Object[]> resultados = viajeRepository.findMonopatinesConMasDeXViajesEnAnio(anio, minViajes);
 
         // Extraer los IDs de los monopatines
         List<String> idsMonopatines = resultados.stream()
-                .map(DtoResponseMonopatinesMasViajes::getIdMonopatin) // Accede al atributo "idMonopatin"
+                .map(obj -> (String) obj[0]) // Suponiendo que el ID está en la primera posición
                 .collect(Collectors.toList());
 
         // Llamada al microservicio de monopatines para obtener detalles
@@ -179,6 +191,7 @@ public class ViajeService {
 
         return detallesMonopatines;
     }
+
 
     public List<DtoResponseUsuarioConViajes> obtenerUsuariosConMasViajes(
             LocalDateTime fechaInicio, LocalDateTime fechaFin,
@@ -207,19 +220,19 @@ public class ViajeService {
 
 
 
-    public List<DtoUsoMonopatin> obtenerEstadisticasDeUso(LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Integer> idsUsuarios) {
-        // Obtener las estadísticas desde el repositorio
-        List<Object[]> resultados = viajeRepository.obtenerEstadisticasDeUsuarios(fechaInicio, fechaFin, idsUsuarios);
-
-        // Convertir resultados en una lista de DtoUsoMonopatin
-        return resultados.stream()
-                .map(resultado -> new DtoUsoMonopatin(
-                        (Integer) resultado[0],   // idUsuario
-                        (Long) resultado[1],     // totalViajes
-                        (Double) resultado[2],   // totalKm
-                        (Double) resultado[3]))  // totalTiempo
-                .collect(Collectors.toList());
-    }
+//    public List<DtoUsoMonopatin> obtenerEstadisticasDeUso(LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Integer> idsUsuarios) {
+//        // Obtener las estadísticas desde el repositorio
+//        List<Object[]> resultados = viajeRepository.obtenerEstadisticasDeUsuarios(fechaInicio, fechaFin, idsUsuarios);
+//
+//        // Convertir resultados en una lista de DtoUsoMonopatin
+//        return resultados.stream()
+//                .map(resultado -> new DtoUsoMonopatin(
+//                        (Integer) resultado[0],   // idUsuario
+//                        (Long) resultado[1],     // totalViajes
+//                        (Double) resultado[2],   // totalKm
+//                        (Double) resultado[3]))  // totalTiempo
+//                .collect(Collectors.toList());
+//    }
 
 
 

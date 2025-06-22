@@ -1,15 +1,49 @@
-version: '3.7'
+#version: '3.7'
+#services:
+#  mysql:
+#    image: mysql:latest
+#    container_name: TPEspecial
+#    restart: always
+#    ports:
+#      - "3306:3306" # Mapea el puerto 3306 del contenedor al host
+#    environment:
+#      MYSQL_ROOT_PASSWORD: grupoA   # Contraseña para el usuario root
+#      MYSQL_DATABASE: Viajes        # Base de datos por defecto
+#    volumes:
+#      - db_data:/var/lib/mysql      # Persistencia de datos
+#volumes:
+#  db_data:
+
+version: '3.9'
 services:
   mysql:
-    image: mysql:latest
-    container_name: TPEspecial
-    restart: always
-    ports:
-      - "3306:3306" # Mapea el puerto 3306 del contenedor al host
+    image: mysql:8.0
+    container_name: mysql-container
     environment:
-      MYSQL_ROOT_PASSWORD: grupoA   # Contraseña para el usuario root
-      MYSQL_DATABASE: Viajes        # Base de datos por defecto
-    volumes:
-      - db_data:/var/lib/mysql      # Persistencia de datos
-volumes:
-  db_data:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Viajes
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: contraseña
+    ports:
+      - "3306:3306"
+    networks:
+      - default  # Conectado a la red predeterminada
+
+  app:
+    build:
+      context: .
+    container_name: TPEspecial
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/nombre_base_datos
+      SPRING_DATASOURCE_USERNAME: usuario
+      SPRING_DATASOURCE_PASSWORD: contraseña
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
