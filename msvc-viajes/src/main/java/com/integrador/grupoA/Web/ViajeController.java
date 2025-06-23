@@ -88,14 +88,7 @@ public class ViajeController {
         return ResponseEntity.ok(reporte);
     }
 
-//    @GetMapping("/monopatines/mas-viajes")
-//    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
-//            @RequestParam int anio,
-//            @RequestParam long minViajes) {
-//
-//        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
-//        return ResponseEntity.ok(respuesta);
-//    }
+
 
     @PostMapping("/monopatines/mas-viajes")
     public ResponseEntity<List<DtoResponseMonopatin>> obtenerMonopatinesConMasDeXViajes(
