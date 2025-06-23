@@ -23,16 +23,13 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
-		http
-				.cors(Customizer.withDefaults())
-				.csrf(AbstractHttpConfigurer::disable)
-				.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(authz -> authz
-						.requestMatchers("/prueba-auth/hola").permitAll()
-						.anyRequest().authenticated()
-				);
-
-		return http.build();
+		return http.cors(Customizer.withDefaults())
+			.csrf(AbstractHttpConfigurer::disable)
+			.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.authorizeHttpRequests(authz -> authz
+					.requestMatchers("/prueba-auth/hola").permitAll()
+					.anyRequest().authenticated()
+			).build();
 	}
 }
