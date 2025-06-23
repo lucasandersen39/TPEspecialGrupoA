@@ -116,6 +116,37 @@
 			"response": []
 		},
 		{
+        			"name": "Cambiar estado a usuario por ID",
+        			"request": {
+        				"method": "PUT",
+        				"header": [],
+        				"body": {
+        					"mode": "raw",
+        					"raw": "{\r\n    \"nombre\": \"Pablo\",\r\n    \"apellido\": \"Piliavsky\",\r\n    \"email\": \"pablo@gmail.com\",\r\n    \"telefono\": \"226257996\",\r\n    \"nombreUsuario\": \"PabloP\"\r\n}",
+        					"options": {
+        						"raw": {
+        							"language": "json"
+        						}
+        					}
+        				},
+        				"url": {
+        					"raw": "http://localhost:8080/api/usuario/estado/2",
+        					"protocol": "http",
+        					"host": [
+        						"localhost"
+        					],
+        					"port": "8002",
+        					"path": [
+        						"api",
+        						"usuario",
+        						"estado",
+        						"2"
+        					]
+        				}
+        			},
+        			"response": []
+        		},
+		{
 			"name": "tipo tarifa",
 			"request": {
 				"method": "POST",
