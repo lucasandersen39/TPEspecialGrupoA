@@ -28,6 +28,7 @@
 		<module>msvc-admin</module>
 		<module>msvc-monopatines</module>
 		<module>msvc-paradas</module>
+		<module>api-gateway</module>
 	</modules>
 	<scm>
 		<connection/>
