@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "msvc-monopatines/api/monopatin", url="http://localhost:8003/api/monopatin")
+@FeignClient(name = "msvc-monopatines", url = "http://msvc-monopatines:8001/api/monopatin")
 public interface MonopatinFeignClient {
 
-    @GetMapping("/api/monopatin")
+    @GetMapping("/disponibles")
     List<MonopatinResponseDTO> getAllMonopatines();
 }

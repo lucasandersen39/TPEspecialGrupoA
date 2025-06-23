@@ -1,6 +1,7 @@
 package com.integrador.grupoA.controllers;
 
 import com.integrador.grupoA.dto.ParadaMonopatinResponseDTO;
+import com.integrador.grupoA.repositories.ParadaRepository;
 import com.integrador.grupoA.services.ParadaService;
 import com.integrador.grupoA.dto.ParadaRequestDTO;
 import com.integrador.grupoA.dto.ParadaResponseDTO;
@@ -19,6 +20,9 @@ public class ParadaController {
 
     @Autowired
     private ParadaService paradaService;
+
+    @Autowired
+    private ParadaRepository paradaRepository;
 
     @GetMapping("")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
@@ -45,14 +49,14 @@ public class ParadaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarParada(@PathVariable Long id){paradaService.eliminarParada(id);}
 
-    @GetMapping("/monopatinesCercanos")
-    public ParadaMonopatinResponseDTO monopatinesCercanos(@RequestParam  Double x, @RequestParam  Double y){
+    @GetMapping("/monopatinesCercanos/x/{x}/y/{y}")
+    public ParadaMonopatinResponseDTO monopatinesCercanos(@PathVariable  Double x, @PathVariable  Double y){
         return paradaService.buscarMonopatinesCercanos(x, y);
     }
 
     @GetMapping("/id_valido/{id}")
     public ResponseEntity<Void> validarParada(@PathVariable Long id) {
-        boolean existe = paradaService.validarParada(id);
+        boolean existe = paradaRepository.existsById(id);
         return existe ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
