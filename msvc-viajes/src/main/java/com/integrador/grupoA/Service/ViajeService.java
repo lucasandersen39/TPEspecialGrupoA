@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,17 +52,21 @@ public class ViajeService {
     }
     @Transactional
     public DtoViajeResponse crearViaje(DtoViajeRequest viajeRequest) {
-
+        LocalDateTime fechaInicio;
+        LocalDateTime fechaFin;
         if (viajeRequest.getFechaInicio() == null || viajeRequest.getFechaFin() == null) {
             throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
+
         }
-        if (viajeRequest.getFechaFin().isBefore(viajeRequest.getFechaInicio())) {
+        fechaInicio = parseFecha(viajeRequest.getFechaInicio());
+        fechaFin = parseFecha(viajeRequest.getFechaFin());
+        if (fechaFin.isBefore(fechaInicio)) {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
-        Viaje viaje= convertToEntity(viajeRequest);
-        if (viaje == null) {
-            throw new IllegalArgumentException("El viaje no puede serrrr.");
-        }
+
+
+        Viaje viaje= convertToEntity(viajeRequest,fechaInicio,fechaFin);
+
         viajeRepository.save(viaje);
 
         return convertToResponseDTO(viaje);
@@ -86,6 +91,17 @@ public class ViajeService {
 
     @Transactional
     public DtoViajeResponse updateViaje(int id, DtoViajeRequest viajeUpdateDTO) {
+        LocalDateTime fechaInicio;
+        LocalDateTime fechaFin;
+        if (viajeUpdateDTO.getFechaInicio() == null || viajeUpdateDTO.getFechaFin() == null) {
+            throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
+
+        }
+        fechaInicio = parseFecha(viajeUpdateDTO.getFechaInicio());
+        fechaFin = parseFecha(viajeUpdateDTO.getFechaFin());
+        if (fechaFin.isBefore(fechaInicio)) {
+            throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
+        }
         // Valida si el viaje existe
         Viaje viajeExistente = viajeRepository.findById(id)
                 .orElseThrow(() -> new ExceptionHandlerController.ViajeUpdateException("Viaje no encontrado con ID: " + id));
@@ -93,8 +109,8 @@ public class ViajeService {
         // Actualiza los valores del viaje con los datos del DTO
         viajeExistente.setIdUsuario(viajeUpdateDTO.getIdUsuario());
         viajeExistente.setIdMonopatin(viajeUpdateDTO.getIdMonopatin());
-        viajeExistente.setFechaInicio(viajeUpdateDTO.getFechaInicio());
-        viajeExistente.setFechaFin(viajeUpdateDTO.getFechaFin());
+        viajeExistente.setFechaInicio(fechaInicio);
+        viajeExistente.setFechaFin(fechaFin);
         viajeExistente.setKmRecorridos(viajeUpdateDTO.getKmRecorridos());
 
 
@@ -103,6 +119,18 @@ public class ViajeService {
 
         // Retorna el viaje actualizado como un DTO de respuesta
         return convertToResponseDTO(viajeActualizado);
+    }
+
+    private LocalDateTime parseFecha(String fecha) {
+        LocalDateTime fechaL = null;
+        try {
+            fechaL = LocalDateTime.parse(fecha);
+
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("El formato de fecha es inválido. Usá 'yyyy-MM-ddTHH:mm:ss', por ejemplo: '2025-06-23T14:50:00'");
+        }
+        return fechaL;
+
     }
 
     // Convierte una entidad Viaje a un DTO de respuesta
@@ -121,12 +149,12 @@ public class ViajeService {
 
     @Transactional(readOnly = true)
     // Convierte un DTO a una entidad Viaje
-    public Viaje convertToEntity(DtoViajeRequest dto) {
+    public Viaje convertToEntity(DtoViajeRequest dto, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         Viaje viaje = new Viaje();
         viaje.setIdUsuario(dto.getIdUsuario());
         viaje.setIdMonopatin(dto.getIdMonopatin());
-        viaje.setFechaInicio(dto.getFechaInicio());
-        viaje.setFechaFin(dto.getFechaFin());
+        viaje.setFechaInicio(fechaInicio);
+        viaje.setFechaFin(fechaFin);
         viaje.setKmRecorridos(dto.getKmRecorridos());
         viaje.setCostoTotal(calcularCostoViaje(dto));
         viaje.setTiempoPausado(0.0);
@@ -135,20 +163,20 @@ public class ViajeService {
 
     @Transactional(readOnly = true)
     public double calcularCostoViaje(DtoViajeRequest viajeRequest) {
-        // Consultar el usuario por su id
-//        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viajeRequest.getIdUsuario());
-//
-//        // Determinar la tarifa según el tipo de usuario (Premium o Básico)
-//        String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
-//        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
+//         Consultar el usuario por su id
+        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viajeRequest.getIdUsuario());
+
+        // Determinar la tarifa según el tipo de usuario (Premium o Básico)
+        String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
+        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
         double costo =0.0;
-//        // Calcular costo total del viaje
-//        if (tarifa != null) {
-//            costo = tarifa.getMonto() * viajeRequest.getKmRecorridos();
-//            viajeRequest.setCostoTotal(costo);
-//        } else {
-//            throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
-//        }
+        // Calcular costo total del viaje
+        if (tarifa != null) {
+            costo = tarifa.getMonto() * viajeRequest.getKmRecorridos();
+
+        } else {
+            throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
+        }
 
         return costo; // Devuelve el viaje con el costo calculado
     }
@@ -203,9 +231,9 @@ public class ViajeService {
         List<Object[]> viajesPorUsuario = viajeRepository.findUsuariosConMasViajes(fechaInicio, fechaFin);
 
         // Mapear los resultados del repositorio
-        Map<Integer, Long> mapaViajes = viajesPorUsuario.stream()
+        Map<Long, Long> mapaViajes = viajesPorUsuario.stream()
                 .collect(Collectors.toMap(
-                        resultado -> (Integer) resultado[0],      // idUsuario
+                        resultado -> (Long) resultado[0],      // idUsuario
                         resultado -> (Long) resultado[1]));      // totalViajes
 
         // Enlazar con los usuarios por tipo recibido desde el MSVC Usuarios y filtrar

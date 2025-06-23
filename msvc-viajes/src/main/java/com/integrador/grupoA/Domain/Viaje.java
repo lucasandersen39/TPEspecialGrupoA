@@ -16,7 +16,7 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column
-    private int idUsuario;
+    private Long idUsuario;
     @Column
     private String idMonopatin;
     @Column

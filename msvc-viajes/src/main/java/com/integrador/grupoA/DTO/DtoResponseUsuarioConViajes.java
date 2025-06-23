@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DtoResponseUsuarioConViajes {
-    private int idUsuario;          // Identificador único del usuario
+    private Long idUsuario;          // Identificador único del usuario
     private long totalViajes;       // Cantidad de viajes realizados
     private String tipoUsuario;     // Tipo de usuario (ej. "Premium", "Regular")
 }

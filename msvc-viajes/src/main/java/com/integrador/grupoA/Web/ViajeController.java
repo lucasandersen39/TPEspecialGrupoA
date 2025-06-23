@@ -66,12 +66,15 @@ public class ViajeController {
     }
 
 
-    @GetMapping("/facturacion")
-    public ResponseEntity<Double> obtenerFacturacionEntreFechas(
-            @RequestParam("fechaInicio") LocalDateTime fechaInicio,
-            @RequestParam("fechaFin") LocalDateTime fechaFin) {
+
+    @PostMapping("/facturacion")
+    public ResponseEntity<Double> obtenerFacturacionEntreFechas(@RequestBody DtoFacturacionRequest request) {
         try {
-            // Llama al servicio para calcular la facturación
+            // Obtén los parámetros del JSON recibido
+            LocalDateTime fechaInicio = request.getFechaInicio();
+            LocalDateTime fechaFin = request.getFechaFin();
+
+            // Llama al servicio con las fechas proporcionadas
             double totalFacturacion = viajeService.calcularFacturacionEntreFechas(fechaInicio, fechaFin);
             return ResponseEntity.ok(totalFacturacion);
         } catch (RuntimeException e) {

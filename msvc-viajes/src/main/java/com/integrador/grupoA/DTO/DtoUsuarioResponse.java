@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DtoUsuarioResponse {
-    private int idUsuario;
+    private Long idUsuario;
     private String tipoUsuario;
 
 }

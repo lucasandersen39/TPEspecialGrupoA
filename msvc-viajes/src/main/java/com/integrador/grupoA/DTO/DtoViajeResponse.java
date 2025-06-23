@@ -16,7 +16,7 @@ public class DtoViajeResponse {
 
         private int id; // es correcto que vaya?
 
-        private int idUsuario;
+        private Long idUsuario;
 
         private String idMonopatin;
 
