@@ -1,0 +1,160 @@
+services:
+  db:
+    image: mysql:8.0.33
+    container_name: mysql-db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - msvc_network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+  mongo-db:
+    image: mongo:7.0
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - msvc_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  msvc-autorizacion:
+    build:
+      context: .
+      dockerfile: msvc-autorizacion/Dockerfile
+    container_name: msvc-autorizacion
+    restart: always
+    ports:
+      - "8010:8010"
+    environment:
+      - SERVER_PORT=8010
+      - DB_HOST=db
+      - DB_NAME=db_autorizacion
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
+  msvc-ejemploautorizacion:
+    build:
+      context: .
+      dockerfile: msvc-ejemploautorizacion/Dockerfile
+    container_name: msvc-ejemploautorizacion
+    restart: always
+    ports:
+      - "8050:8050"
+    environment:
+      - SERVER_PORT=8050
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    networks:
+      - msvc_network
+
+  msvc-paradas:
+    build:
+      context: .
+      dockerfile: msvc-paradas/Dockerfile
+    container_name: msvc-paradas
+    restart: always
+    ports:
+      - "8003:8003"
+    environment:
+      - SERVER_PORT=8003
+      - DB_HOST=db
+      - DB_NAME=db_paradas
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
+  msvc-admin:
+    build:
+      context: .
+      dockerfile: msvc-admin/Dockerfile
+    container_name: msvc-admin
+    ports:
+      - "8005:8005"
+    environment:
+      - SERVER_PORT=8005
+      - DB_HOST=db
+      - DB_NAME=db_admin
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
+  msvc-usuarios:
+    build:
+      context: .
+      dockerfile: msvc-usuarios/Dockerfile
+    container_name: msvc-usuarios
+    restart: always
+    ports:
+      - "8002:8002"
+    environment:
+      - SERVER_PORT=8002
+      - DB_HOST=db
+      - DB_NAME=db_usuarios
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
+  msvc-monopatines:
+    build:
+      context: .
+      dockerfile: msvc-monopatines/Dockerfile
+    container_name: msvc-monopatines
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      - SERVER_PORT=8001
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
+volumes:
+  db_data:
+  mongo_data:
+
+networks:
+  msvc_network:
