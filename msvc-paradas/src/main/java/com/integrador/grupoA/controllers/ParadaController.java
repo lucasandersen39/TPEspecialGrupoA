@@ -1,7 +1,7 @@
 package com.integrador.grupoA.controllers;
 
+import com.integrador.grupoA.dto.ParadaMonopatinResponseDTO;
 import com.integrador.grupoA.services.ParadaService;
-import com.integrador.grupoA.dto.MonopatinResponseDTO;
 import com.integrador.grupoA.dto.ParadaRequestDTO;
 import com.integrador.grupoA.dto.ParadaResponseDTO;
 import jakarta.validation.Valid;
@@ -31,7 +31,7 @@ public class ParadaController {
 
     @PostMapping("")
     public ResponseEntity<Optional<ParadaResponseDTO>> crearParada(@RequestBody @Valid ParadaRequestDTO parada){
-        final Optional<ParadaResponseDTO> result =paradaService.crearParada(parada);
+        final Optional<ParadaResponseDTO> result = paradaService.crearParada(parada);
         return ResponseEntity.accepted().body(result);
     }
 
@@ -46,7 +46,9 @@ public class ParadaController {
     public void eliminarParada(@PathVariable Long id){paradaService.eliminarParada(id);}
 
     @GetMapping("/monopatinesCercanos")
-    public List<MonopatinResponseDTO> monopatinesCercanos(@RequestParam  Double x, @RequestParam  Double y){return paradaService.buscarMonopatinesCercanos(x, y);}
+    public ParadaMonopatinResponseDTO monopatinesCercanos(@RequestParam  Double x, @RequestParam  Double y){
+        return paradaService.buscarMonopatinesCercanos(x, y);
+    }
 
     @GetMapping("/id_valido/{id}")
     public ResponseEntity<Void> validarParada(@PathVariable Long id) {
