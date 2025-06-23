@@ -40,10 +40,13 @@ public interface CuentaRepository extends JpaRepository<Cuenta, Long> {
             "c.entidad_bancaria, c.numero_cuenta, c.saldo, c.id_titular) " +
             "FROM Cuenta c " +
             "WHERE c.id_titular = :id_titular")
-    CuentaResponseDTO findCuentaByTitular(@Param("id_titular")String id_titular);
+    CuentaResponseDTO findCuentaByTitular(@Param("id_titular")Long id_titular);
 
     @Modifying
-    @Query("UPDATE Cuenta c SET c.saldo = :nuevoSaldo WHERE c.id = :id")
-    void actualizarSaldo(@Param("id") Long id, @Param("nuevoSaldo") double nuevoSaldo);
+    @Query("UPDATE Cuenta c SET c.saldo = :nuevoSaldo WHERE c.id = :id AND c.id_titular = :id_titular")
+    void actualizarSaldo(@Param("id") Long id, @Param("id_titular") Long id_titular , @Param("nuevoSaldo") double nuevoSaldo);
+
+    @Query("SELECT c FROM Cuenta c WHERE c.id_titular = :id_titular")
+    Cuenta findCuentaByIdTitular(@Param("id_titular")Long id_titular);
 
 }

@@ -58,7 +58,7 @@ public class CuentaService {
 
     // Obtiene una cuenta por su id de titular
     @Transactional(readOnly = true)
-    public CuentaResponseDTO findCuentaByTitular(String id_titular) {
+    public CuentaResponseDTO findCuentaByTitular(Long id_titular) {
         CuentaResponseDTO cuenta = cuentaRepository.findCuentaByTitular(id_titular);
         if (cuenta == null)
             throw new ResourceNotFoundException(String.format("No existe cuenta con el titular :%s", id_titular));
@@ -106,20 +106,21 @@ public class CuentaService {
     }
 
     @Transactional
-    public CuentaResponseDTO verificarYDescontarSaldo(Long id, Double monto) {
+    public CuentaResponseDTO verificarYDescontarSaldo(Long id_titular, Double monto) {
         validarSaldoADescontar(monto);
-        Cuenta cuenta = findById(id);
+        Cuenta cuenta = findByIdTitular(id_titular);
         validarSaldoSuficiente(monto, cuenta);
 
         double nuevoSaldo = cuenta.getSaldo() - monto;
-        cuentaRepository.actualizarSaldo(id, nuevoSaldo);
+        cuentaRepository.actualizarSaldo(cuenta.getId(), id_titular, nuevoSaldo);
 
         cuenta.setSaldo(nuevoSaldo);
         return crearCuentaDTO(cuenta);
     }
 
-
-    /**----- MÉTODOS AUXILIARES CON MANEJO DE EXCEPCIONES ------*/
+    /**
+     * ----- MÉTODOS AUXILIARES CON MANEJO DE EXCEPCIONES ------
+     */
 
 // Valída que el número de cuenta no exista, si existe lanza una excepción y corta el flujo de ejecución
     @Transactional(readOnly = true)
@@ -130,7 +131,7 @@ public class CuentaService {
 
     // Valída que el id de titular no exista, si existe lanza una excepción y corta el flujo de ejecución.
     @Transactional(readOnly = true)
-    public void validarIdTitular(String id_titular) {
+    public void validarIdTitular(Long id_titular) {
         if (cuentaRepository.findCuentaByTitular(id_titular) != null)
             throw new BusinessValidationException(String.format("Ya existe el id de titular :%s", id_titular));
     }
@@ -176,5 +177,13 @@ public class CuentaService {
     public Cuenta findById(Long id) {
         return cuentaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("No existe una cuenta con el id :%d", id)));
+    }
+
+    @Transactional(readOnly = true)
+    public Cuenta findByIdTitular(Long id_titular) {
+        Cuenta cuenta = cuentaRepository.findCuentaByIdTitular(id_titular);
+        if (cuenta == null)
+            throw new ResourceNotFoundException(String.format("No existe una cuenta con el id titular :%d", id_titular));
+        return cuenta;
     }
 }
