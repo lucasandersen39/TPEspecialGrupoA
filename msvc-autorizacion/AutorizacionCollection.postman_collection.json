@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "8b6231ee-dc75-4466-8617-59a375fa5773",
+		"name": "AutorizacionCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28337439"
+	},
+	"item": [
+		{
+			"name": "login admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port-msvc-autorizacion}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-autorizacion}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port-msvc-autorizacion}}/auth/login",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-autorizacion}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc1MDYxNDE2NCwiZXhwIjoxNzUwNjE3NzY0fQ.xvDYRPWan8fojCQRnAbozz7L4hOtwkEtBGB8KOhx6OI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"idUsuario\": \"2\",\r\n    \"password\": \"1234\",\r\n    \"roles\" : [\"USER\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}:{{port-msvc-autorizacion}}/auth/register",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-autorizacion}}",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcyNTY4Mzc0MiwiZXhwIjoxNzI1Njg3MzQyfQ.H40h0nPZ-zA4fuFtjF3_Fd_ZtJ2DaZYzgSmHvWFRDGw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost",
+			"type": "string"
+		},
+		{
+			"key": "port-msvc-autorizacion",
+			"value": "8010",
+			"type": "string"
+		},
+		{
+			"key": "port-msvc-ejemploautorizacion",
+			"value": "8050",
+			"type": "string"
+		}
+	]
+}

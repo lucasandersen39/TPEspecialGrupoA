@@ -14,7 +14,6 @@
 	<packaging>pom</packaging>
 	<name>grupoA</name>
 	<description>Integrador Especial Grupo A</description>
-
 	<url/>
 	<licenses>
 		<license/>
@@ -27,7 +26,9 @@
 		<module>msvc-ejemploautorizacion</module>
 		<module>msvc-usuarios</module>
 		<module>msvc-admin</module>
-		<module>msvc-viajes</module>
+		<module>msvc-monopatines</module>
+		<module>msvc-paradas</module>
+		<module>api-gateway</module>
 	</modules>
 	<scm>
 		<connection/>
