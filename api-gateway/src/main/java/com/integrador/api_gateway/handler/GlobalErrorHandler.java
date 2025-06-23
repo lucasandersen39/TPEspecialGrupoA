@@ -1,4 +1,4 @@
-package com.integrador.api_gateway.handler;
+/*package com.integrador.api_gateway.handler;
 
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -20,11 +20,11 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
         String body = String.format("""
             {
-              "error": "Ruta no válida",
+              "error": "%s",
               "status": 404,
               "timestamp": "%s"
             }
-            """, Instant.now());
+            """,ex.getMessage(), Instant.now());
 
         exchange.getResponse().setStatusCode(HttpStatus.NOT_FOUND);
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
@@ -37,3 +37,4 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
     }
 }
 
+*/

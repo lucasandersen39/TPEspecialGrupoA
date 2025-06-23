@@ -9,22 +9,22 @@ spring:
     gateway:
       routes:
         - id: msvc-monopatines
-          uri: http://localhost:8001
+          uri: http://msvc-monopatines:8001
           predicates:
             - Path=/api/monopatin/**
         - id: msvc-admin
-          uri: http://localhost:8005
+          uri: http://msvc-admin:8005
           predicates:
             - Path=/api/admin/**
         - id: msvc-paradas
-          uri: http://localhost:8003
+          uri: http://msvc-paradas:8003
           predicates:
             - Path=/api/parada/**
         - id: msvc-usuarios
-          uri: http://localhost:8002
+          uri: http://msvc-usuarios:8002
           predicates:
             - Path=/api/usuario/**
         - id: msvc-viajes
-          uri: http://localhost:8007
+          uri: http://msvc-viajes:8007
           predicates:
             - Path=/api/viaje/**
