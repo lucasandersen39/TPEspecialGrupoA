@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "d55fac62-7940-4051-aa27-6f895b66b0fd",
+		"name": "ParadasCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24319812"
+	},
+	"item": [
+		{
+			"name": "getAllParadas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8003/api/parada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getParadaByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8003/api/parada/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getParadaByCoordenadas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8003/api/parada/coordenadas?x=1&y=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada",
+						"coordenadas"
+					],
+					"query": [
+						{
+							"key": "x",
+							"value": "1"
+						},
+						{
+							"key": "y",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addParada",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"parada1\",\r\n    \"x\" : 1,\r\n    \"y\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8003/api/parada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteParadaById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"parada1\",\r\n    \"x\" : 1,\r\n    \"y\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8003/api/parada/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMonopatinesCercanos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"parada1\",\r\n    \"x\" : 1,\r\n    \"y\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8003/api/parada/monopatinesCercanos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada",
+						"monopatinesCercanos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "existeParada",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\" : \"parada1\",\r\n    \"x\" : 1,\r\n    \"y\" : 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8003/api/parada/id_valido/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"api",
+						"parada",
+						"id_valido",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
