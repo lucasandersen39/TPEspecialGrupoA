@@ -1,5 +1,6 @@
 package com.integrador.grupoA.services;
 
+import com.integrador.grupoA.FeignClient.MonopatinFeignClient;
 import com.integrador.grupoA.entities.Parada;
 import com.integrador.grupoA.repositories.ParadaRepository;
 import com.integrador.grupoA.dto.MonopatinResponseDTO;
@@ -8,16 +9,21 @@ import com.integrador.grupoA.dto.ParadaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ParadaServiceImpl implements ParadaService{
+
+    @Autowired
+    private MonopatinFeignClient monopatinFeignClient;
 
     @Autowired
     private ParadaRepository paradaRepository;
@@ -93,17 +99,24 @@ public class ParadaServiceImpl implements ParadaService{
     @Override
     @Transactional(readOnly = true)
     public List<MonopatinResponseDTO> buscarMonopatinesCercanos(Double x, Double y) {
-        List<Parada>lp = paradaRepository.findAll();
-
+        List<Parada> lp = paradaRepository.findAll();
+        List<MonopatinResponseDTO> ml = monopatinFeignClient.getAllMonopatines();
+        List<MonopatinResponseDTO> resul = new ArrayList<>();
         lp.sort(Comparator.comparingDouble(p -> Math.abs(p.getX() - x) + Math.abs(p.getY() - y)));
 
-        for (Parada p : lp){
-            // Consulta a Monopatines con p.getId
-            // if(!List<Monopatines>.isEmpty())  return List<Monopatines>.map(MonopatinResponseDTO::toMonopatinResponseDTO);
+        for (Parada p : lp) {
+            for (MonopatinResponseDTO m : ml) {
+                if (m.getIdParada() != null && m.getIdParada().equals(p.getId())) {
+                    resul.add(m);
+                }
+            }
+            if (!resul.isEmpty()) {
+                return resul;
+            }
         }
-
-        return List.of();
+        return resul;
     }
+
 
     @Override
     public boolean validarParada(Long id) {
