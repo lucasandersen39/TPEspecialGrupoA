@@ -32,6 +32,7 @@ public class DtoViajeRequest {
     @Positive(message = "Los kilómetros recorridos deben ser un número positivo.")
     private double kmRecorridos;
 
+    //no deberia estar
     @NotNull(message = "El costo total no puede ser nulo.")
     @Positive(message = "El costo total debe ser un número positivo.")
     private double costoTotal;

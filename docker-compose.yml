@@ -94,8 +94,31 @@ services:
     networks:
       - msvc_network
 
+  msvc-viajes:
+    build:
+      context: .
+      dockerfile: msvc-viajes/Dockerfile
+    container_name: msvc-viajes
+    restart: always
+    ports:
+      - "8007:8007"
+    environment:
+      - SERVER_PORT=8007
+      - DB_HOST=db
+      - DB_NAME=db_viajes
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
 volumes:
   db_data:
 
 networks:
   msvc_network:
+
+

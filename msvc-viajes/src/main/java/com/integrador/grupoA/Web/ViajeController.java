@@ -35,17 +35,10 @@ public class ViajeController {
         }
     }
 
-//
-//    @PostMapping
-//    public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viajeCreateDTO) {
-//        DtoViajeResponse viajeGuardado = viajeService.createViaje(viajeCreateDTO);
-//        return ResponseEntity.status(201).body(viajeGuardado);
-//    }
-
     @PostMapping
-    public ResponseEntity<Viaje> createViaje(@Valid @RequestBody Viaje viaje) {
-        Viaje nuevoViaje = viajeService.crearViaje(viaje);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoViaje);
+    public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viaje) {
+       DtoViajeResponse viajeResponse = viajeService.crearViaje(viaje);
+        return ResponseEntity.status(HttpStatus.CREATED).body(viajeResponse);
     }
 
     @DeleteMapping("/{id}")
@@ -71,15 +64,15 @@ public class ViajeController {
         }
     }
 
-    @PostMapping("/costo")
-    public ResponseEntity<Viaje> calcularCostoViaje(@RequestBody Viaje viaje) {
-        try {
-            Viaje viajeCalculado = viajeService.calcularCostoViaje(viaje);
-            return ResponseEntity.ok(viajeCalculado);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.badRequest().body(null); // Error si hay algún problema
-        }
-    }
+//    @PostMapping("/costo")
+//    public ResponseEntity<Viaje> calcularCostoViaje(@RequestBody Viaje viaje) {
+//        try {
+//            Viaje viajeCalculado = viajeService.calcularCostoViaje(viaje);
+//            return ResponseEntity.ok(viajeCalculado);
+//        } catch (RuntimeException ex) {
+//            return ResponseEntity.badRequest().body(null); // Error si hay algún problema
+//        }
+//    }
 
     @GetMapping("/facturacion") //con monto esta bien
     public ResponseEntity<Double> obtenerFacturacionEntreFechas(

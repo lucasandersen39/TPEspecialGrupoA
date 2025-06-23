@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 public class DtoViajeResponse {
 
 
-        private int id;
+        private int id; // es correcto que vaya?
 
         private int idUsuario;
 

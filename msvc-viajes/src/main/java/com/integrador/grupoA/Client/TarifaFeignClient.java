@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "msvc-admin", url = "http://localhost:8005/api/admin/tarifas")
 public interface TarifaFeignClient {
 
-    @GetMapping("/{tipoTarifa}")
+    @GetMapping("vigente/{tipoTarifa}")
     DtoTarifaResponse obtenerTarifaPorTipo(@PathVariable("tipoTarifa") String tipoTarifa);
 
 

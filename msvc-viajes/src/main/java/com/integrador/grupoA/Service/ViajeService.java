@@ -10,6 +10,7 @@ import com.integrador.grupoA.ExceptionHandler.ExceptionHandlerController;
 import com.integrador.grupoA.Repositories.ViajeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ViajeService {
     @Autowired
     private MonopatinClient monopatinClient;
 
+    @Transactional(readOnly = true)
     public List<DtoViajeResponse> listarViajes() {
         // Consulta todos los viajes desde la base de datos, los convierte a ViajeResponseDTO y los retorna
         return viajeRepository.findAll().stream()
@@ -35,7 +37,7 @@ public class ViajeService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional(readOnly = true)
     public DtoViajeResponse obtenerViajePorId(int id) {
         try {
             Viaje viaje = viajeRepository.findById(id)
@@ -47,33 +49,24 @@ public class ViajeService {
             throw new RuntimeException("Error inesperado al obtener el viaje con ID " + id, e);
         }
     }
-    public Viaje crearViaje(Viaje viaje) {
+    @Transactional
+    public DtoViajeResponse crearViaje(DtoViajeRequest viajeRequest) {
         // Validaciones adicionales (si es necesario)
-        if (viaje.getFechaInicio() == null || viaje.getFechaFin() == null) {
+        if (viajeRequest.getFechaInicio() == null || viajeRequest.getFechaFin() == null) {
             throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
         }
-        if (viaje.getFechaFin().isBefore(viaje.getFechaInicio())) {
+        if (viajeRequest.getFechaFin().isBefore(viajeRequest.getFechaInicio())) {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
-
+        Viaje viaje= convertToEntity(viajeRequest);
+        viajeRepository.save(viaje);
         // Guardar el viaje en la base de datos
-        return viajeRepository.save(viaje);
+        return convertToResponseDTO(viaje);
     }
 
 
-    public DtoViajeResponse createViaje(DtoViajeRequest viajeCreateDTO) {
-        try {
-            Viaje nuevoViaje = convertToEntity(viajeCreateDTO);
-            Viaje viajeGuardado = viajeRepository.save(nuevoViaje);
-            return convertToResponseDTO(viajeGuardado);
-        } catch (IllegalArgumentException e) {
-            throw new ExceptionHandlerController.ViajeCreationException("Error al crear el viaje: los datos proporcionados son inválidos.");
-        } catch (Exception e) {
-            throw new RuntimeException("Error inesperado al crear un nuevo viaje.", e);
-        }
-    }
 
-
+    @Transactional
     public void deleteViaje(int id) {
         try {
             if (!viajeRepository.existsById(id)) {
@@ -87,6 +80,8 @@ public class ViajeService {
         }
     }
 
+
+    @Transactional
     public DtoViajeResponse updateViaje(int id, DtoViajeRequest viajeUpdateDTO) {
         // Valida si el viaje existe
         Viaje viajeExistente = viajeRepository.findById(id)
@@ -128,12 +123,13 @@ public class ViajeService {
         viaje.setFechaInicio(dto.getFechaInicio());
         viaje.setFechaFin(dto.getFechaFin());
         viaje.setKmRecorridos(dto.getKmRecorridos());
-        viaje.setCostoTotal(dto.getCostoTotal());
+        viaje.setCostoTotal(calcularCostoViaje(//pasarDTO));//viaje.calcularcostototal
+        viaje.setTiempoPausado(0);
         return viaje;
     }
 
-
-    public Viaje calcularCostoViaje(Viaje viaje) {
+    @Transactional(readOnly = true)
+    public Viaje calcularCostoViaje(Viaje viaje) { //requestdto y devolver un double
         // Consultar el usuario por su id
         DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viaje.getIdUsuario());
 
@@ -152,7 +148,7 @@ public class ViajeService {
         return viaje; // Devuelve el viaje con el costo calculado
     }
 
-
+    @Transactional(readOnly = true)
     public double calcularFacturacionEntreFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         try {
             // Consulta los viajes entre las fechas dadas
@@ -166,7 +162,7 @@ public class ViajeService {
             throw new RuntimeException("Error al calcular la facturación: " + e.getMessage(), e);
         }
     }
-
+    @Transactional(readOnly = true)
     public Map<String, Double> obtenerTiempoPausadoTotal() {
         List<DtoTiempoPausado> lista = viajeRepository.obtenerTiemposPausados();
 
@@ -177,6 +173,7 @@ public class ViajeService {
                 ));
     }
 
+    @Transactional(readOnly = true)
     public List<DtoResponseMonopatinesMasViajes> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
         // Obtener los monopatines y sus IDs que superan los "X" viajes
         List<Object[]> resultados = viajeRepository.findMonopatinesConMasDeXViajesEnAnio(anio, minViajes);
@@ -192,7 +189,7 @@ public class ViajeService {
         return detallesMonopatines;
     }
 
-
+    @Transactional(readOnly = true)
     public List<DtoResponseUsuarioConViajes> obtenerUsuariosConMasViajes(
             LocalDateTime fechaInicio, LocalDateTime fechaFin,
             List<DtoUsuarioResponse> usuarios, String tipoUsuario) {
@@ -218,21 +215,6 @@ public class ViajeService {
                 .collect(Collectors.toList());
     }
 
-
-
-//    public List<DtoUsoMonopatin> obtenerEstadisticasDeUso(LocalDateTime fechaInicio, LocalDateTime fechaFin, List<Integer> idsUsuarios) {
-//        // Obtener las estadísticas desde el repositorio
-//        List<Object[]> resultados = viajeRepository.obtenerEstadisticasDeUsuarios(fechaInicio, fechaFin, idsUsuarios);
-//
-//        // Convertir resultados en una lista de DtoUsoMonopatin
-//        return resultados.stream()
-//                .map(resultado -> new DtoUsoMonopatin(
-//                        (Integer) resultado[0],   // idUsuario
-//                        (Long) resultado[1],     // totalViajes
-//                        (Double) resultado[2],   // totalKm
-//                        (Double) resultado[3]))  // totalTiempo
-//                .collect(Collectors.toList());
-//    }
 
 
 
