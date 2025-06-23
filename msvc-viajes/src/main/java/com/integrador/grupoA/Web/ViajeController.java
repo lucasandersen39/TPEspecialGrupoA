@@ -35,9 +35,10 @@ public class ViajeController {
         }
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<DtoViajeResponse> createViaje(@Valid @RequestBody DtoViajeRequest viaje) {
-       DtoViajeResponse viajeResponse = viajeService.crearViaje(viaje);
+        System.out.println("Viaje a crear: " + viaje);
+        DtoViajeResponse viajeResponse = viajeService.crearViaje(viaje);
         return ResponseEntity.status(HttpStatus.CREATED).body(viajeResponse);
     }
 
@@ -64,17 +65,8 @@ public class ViajeController {
         }
     }
 
-//    @PostMapping("/costo")
-//    public ResponseEntity<Viaje> calcularCostoViaje(@RequestBody Viaje viaje) {
-//        try {
-//            Viaje viajeCalculado = viajeService.calcularCostoViaje(viaje);
-//            return ResponseEntity.ok(viajeCalculado);
-//        } catch (RuntimeException ex) {
-//            return ResponseEntity.badRequest().body(null); // Error si hay algún problema
-//        }
-//    }
 
-    @GetMapping("/facturacion") //con monto esta bien
+    @GetMapping("/facturacion")
     public ResponseEntity<Double> obtenerFacturacionEntreFechas(
             @RequestParam("fechaInicio") LocalDateTime fechaInicio,
             @RequestParam("fechaFin") LocalDateTime fechaFin) {
@@ -114,10 +106,6 @@ public class ViajeController {
 
         return ResponseEntity.ok(respuesta);
     }
-
-
-
-
 
 
 }

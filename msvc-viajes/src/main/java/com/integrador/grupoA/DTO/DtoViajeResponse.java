@@ -28,6 +28,8 @@ public class DtoViajeResponse {
 
         private double costoTotal;
 
+        private double tiempoPausado;
+
 
 }
 

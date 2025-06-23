@@ -1,6 +1,7 @@
 package com.integrador.grupoA.DTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 @RequiredArgsConstructor
 public class DtoViajeRequest {
 
@@ -18,13 +20,12 @@ public class DtoViajeRequest {
     private int idUsuario;
 
     @NotNull(message = "El id del monopatín es obligatorio.")
-    @Positive(message = "El id del monopatín debe ser un número positivo.")
     private String idMonopatin;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Indica el formato esperado
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaInicio;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // Indica el formato esperado
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime fechaFin;
 
 
@@ -32,19 +33,18 @@ public class DtoViajeRequest {
     @Positive(message = "Los kilómetros recorridos deben ser un número positivo.")
     private double kmRecorridos;
 
-    //no deberia estar
-    @NotNull(message = "El costo total no puede ser nulo.")
-    @Positive(message = "El costo total debe ser un número positivo.")
-    private double costoTotal;
+//    //no deberia estar
+//    @NotNull(message = "El costo total no puede ser nulo.")
+//    @Positive(message = "El costo total debe ser un número positivo.")
+//    private double costoTotal;
 
 
     public DtoViajeRequest(int idUsuario, String idMonopatin, LocalDateTime fechaInicio,
-                           LocalDateTime fechaFin, double kmRecorridos, double costoTotal) {
+                           LocalDateTime fechaFin, double kmRecorridos) {
         this.idUsuario = idUsuario;
         this.idMonopatin = idMonopatin;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.kmRecorridos = kmRecorridos;
-        this.costoTotal = costoTotal;
     }
 }

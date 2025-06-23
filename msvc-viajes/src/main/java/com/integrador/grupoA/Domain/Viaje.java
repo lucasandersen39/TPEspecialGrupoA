@@ -1,9 +1,8 @@
 package com.integrador.grupoA.Domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,12 +20,8 @@ public class Viaje {
     @Column
     private String idMonopatin;
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-
     private LocalDateTime fechaInicio;
     @Column
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-
     private LocalDateTime fechaFin;
     @Column
     private double kmRecorridos;

@@ -51,7 +51,7 @@ public class ViajeService {
     }
     @Transactional
     public DtoViajeResponse crearViaje(DtoViajeRequest viajeRequest) {
-        // Validaciones adicionales (si es necesario)
+
         if (viajeRequest.getFechaInicio() == null || viajeRequest.getFechaFin() == null) {
             throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
         }
@@ -59,8 +59,11 @@ public class ViajeService {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
         Viaje viaje= convertToEntity(viajeRequest);
+        if (viaje == null) {
+            throw new IllegalArgumentException("El viaje no puede serrrr.");
+        }
         viajeRepository.save(viaje);
-        // Guardar el viaje en la base de datos
+
         return convertToResponseDTO(viaje);
     }
 
@@ -93,7 +96,7 @@ public class ViajeService {
         viajeExistente.setFechaInicio(viajeUpdateDTO.getFechaInicio());
         viajeExistente.setFechaFin(viajeUpdateDTO.getFechaFin());
         viajeExistente.setKmRecorridos(viajeUpdateDTO.getKmRecorridos());
-        viajeExistente.setCostoTotal(viajeUpdateDTO.getCostoTotal());
+
 
         // Guarda los cambios en la base de datos
         Viaje viajeActualizado = viajeRepository.save(viajeExistente);
@@ -112,40 +115,42 @@ public class ViajeService {
         dto.setFechaFin(viaje.getFechaFin());
         dto.setKmRecorridos(viaje.getKmRecorridos());
         dto.setCostoTotal(viaje.getCostoTotal());
+        dto.setTiempoPausado(viaje.getTiempoPausado());
         return dto;
     }
 
+    @Transactional(readOnly = true)
     // Convierte un DTO a una entidad Viaje
-    private Viaje convertToEntity(DtoViajeRequest dto) {
+    public Viaje convertToEntity(DtoViajeRequest dto) {
         Viaje viaje = new Viaje();
         viaje.setIdUsuario(dto.getIdUsuario());
         viaje.setIdMonopatin(dto.getIdMonopatin());
         viaje.setFechaInicio(dto.getFechaInicio());
         viaje.setFechaFin(dto.getFechaFin());
         viaje.setKmRecorridos(dto.getKmRecorridos());
-        viaje.setCostoTotal(calcularCostoViaje(//pasarDTO));//viaje.calcularcostototal
-        viaje.setTiempoPausado(0);
+        viaje.setCostoTotal(calcularCostoViaje(dto));
+        viaje.setTiempoPausado(0.0);
         return viaje;
     }
 
     @Transactional(readOnly = true)
-    public Viaje calcularCostoViaje(Viaje viaje) { //requestdto y devolver un double
+    public double calcularCostoViaje(DtoViajeRequest viajeRequest) {
         // Consultar el usuario por su id
-        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viaje.getIdUsuario());
+//        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viajeRequest.getIdUsuario());
+//
+//        // Determinar la tarifa según el tipo de usuario (Premium o Básico)
+//        String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
+//        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
+        double costo =0.0;
+//        // Calcular costo total del viaje
+//        if (tarifa != null) {
+//            costo = tarifa.getMonto() * viajeRequest.getKmRecorridos();
+//            viajeRequest.setCostoTotal(costo);
+//        } else {
+//            throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
+//        }
 
-        // Determinar la tarifa según el tipo de usuario (Premium o Básico)
-        String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
-        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
-
-        // Calcular costo total del viaje
-        if (tarifa != null) {
-            double costo = tarifa.getMonto() * viaje.getKmRecorridos();
-            viaje.setCostoTotal(costo);
-        } else {
-            throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
-        }
-
-        return viaje; // Devuelve el viaje con el costo calculado
+        return costo; // Devuelve el viaje con el costo calculado
     }
 
     @Transactional(readOnly = true)

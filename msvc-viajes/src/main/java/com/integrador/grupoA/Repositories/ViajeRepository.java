@@ -41,15 +41,6 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
             @Param("fechaInicio") LocalDateTime fechaInicio,
             @Param("fechaFin") LocalDateTime fechaFin);
 
-//    @Query("SELECT v.idUsuario, COUNT(v.id) as totalViajes, SUM(v.kmRecorridos) as totalKm, SUM(TIMESTAMPDIFF(MINUTE, v.fechaInicio, v.fechaFin)) as totalTiempo " +
-//            "FROM Viaje v " +
-//            "WHERE v.fechaInicio BETWEEN :fechaInicio AND :fechaFin " +
-//            "AND v.idUsuario IN :idsUsuarios " +
-//            "GROUP BY v.idUsuario ")
-//    List<Object[]> obtenerEstadisticasDeUsuarios(
-//            @Param("fechaInicio") LocalDateTime fechaInicio,
-//            @Param("fechaFin") LocalDateTime fechaFin,
-//            @Param("idsUsuarios") List<Integer> idsUsuarios);
 
 
 
