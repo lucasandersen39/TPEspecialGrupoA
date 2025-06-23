@@ -132,8 +132,8 @@ public class TarifaService {
     // Valida la fecha de vigencia
     public void validarFecha(LocalDate fecha, String tipo_tarifa) {
         // 1. Valída que la fecha no sea anterior a hoy
-//        if (fecha.isBefore(LocalDate.now()))
-//            throw new BusinessValidationException("La fecha de vigencia no puede ser anterior a hoy");
+        if (fecha.isBefore(LocalDate.now()))
+            throw new BusinessValidationException("La fecha de vigencia no puede ser anterior a hoy");
 
         // 2. Valída que la fecha sea posterior a la última fecha vigente
         TarifaResponseDTO tarifaVigente = tarifaRepository.findTarifaVigente(tipo_tarifa);
