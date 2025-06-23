@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -207,7 +208,7 @@ public class ViajeService {
     }
 
     @Transactional(readOnly = true)
-    public List<DtoResponseMonopatinesMasViajes> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
+    public List<DtoResponseMonopatin> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
         // Obtener los monopatines y sus IDs que superan los "X" viajes
         List<Object[]> resultados = viajeRepository.findMonopatinesConMasDeXViajesEnAnio(anio, minViajes);
 
@@ -217,9 +218,13 @@ public class ViajeService {
                 .collect(Collectors.toList());
 
         // Llamada al microservicio de monopatines para obtener detalles
-        List<DtoResponseMonopatinesMasViajes> detallesMonopatines = monopatinClient.obtenerDetallesMonopatines(idsMonopatines);
+        List<DtoResponseMonopatin> detallesMonopatin= new ArrayList<DtoResponseMonopatin>();
+        for (String idMonopatin : idsMonopatines) {
+            DtoResponseMonopatin monopatin = monopatinClient.obtenerMonopatinPorId(idMonopatin);
+            detallesMonopatin.add(monopatin);
+        }
 
-        return detallesMonopatines;
+        return detallesMonopatin;
     }
 
     @Transactional(readOnly = true)

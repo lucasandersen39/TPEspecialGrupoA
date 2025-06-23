@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "msvc-monopatin", url = "http://localhost:8001/api/monopatin")
+@FeignClient(name = "msvc-monopatines", url = "http://msvc-monopatines:8001/api/monopatin")
 public interface MonopatinClient {
 
-    @PostMapping("/detalles")
+    @GetMapping("/detalles")
     List<DtoResponseMonopatinesMasViajes> obtenerDetallesMonopatines(@RequestBody List<String> idsMonopatines);
+
+    @GetMapping("/{id}")
+    DtoResponseMonopatin obtenerMonopatinPorId(@PathVariable("id") String idMonopatin);
 
     @GetMapping("/monopatines/existe/{id}")
     boolean existeMonopatin(@PathVariable("id") String idMonopatin);

@@ -98,7 +98,7 @@ public class ViajeController {
 //    }
 
     @PostMapping("/monopatines/mas-viajes")
-    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
+    public ResponseEntity<List<DtoResponseMonopatin>> obtenerMonopatinesConMasDeXViajes(
             @RequestBody DtoMonopatinesRequest request) {
 
         // Extraer los valores del DTO
@@ -106,7 +106,7 @@ public class ViajeController {
         long minViajes = request.getMinViajes();
 
         // Usar el servicio con los datos extraídos
-        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
+        List<DtoResponseMonopatin> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
         return ResponseEntity.ok(respuesta);
     }
 
