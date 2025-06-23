@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.0.33
     container_name: mysql-db
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -12,12 +12,31 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - msvc_network
-
     healthcheck:
-        test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-p${MYSQL_ROOT_PASSWORD}" ]
-        interval: 10s
-        timeout: 5s
-        retries: 5
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+  mongo-db:
+    image: mongo:7.0
+    container_name: mongo-db
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - msvc_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   msvc-autorizacion:
     build:
@@ -51,6 +70,27 @@ services:
     environment:
       - SERVER_PORT=8050
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    networks:
+      - msvc_network
+
+  msvc-paradas:
+    build:
+      context: .
+      dockerfile: msvc-paradas/Dockerfile
+    container_name: msvc-paradas
+    restart: always
+    ports:
+      - "8003:8003"
+    environment:
+      - SERVER_PORT=8003
+      - DB_HOST=db
+      - DB_NAME=db_paradas
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - msvc_network
 
@@ -94,25 +134,27 @@ services:
     networks:
       - msvc_network
 
-  api-gateway:
+  msvc-monopatines:
     build:
       context: .
-      dockerfile: api-gateway/Dockerfile
-    container_name: api-gateway
+      dockerfile: msvc-monopatines/Dockerfile
+    container_name: msvc-monopatines
     restart: always
     ports:
-      - "8080:8080"
+      - "8001:8001"
     environment:
-      - SERVER_PORT=8080
-      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - SERVER_PORT=8001
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
     depends_on:
-      db:
+      mongo-db:
         condition: service_healthy
     networks:
       - msvc_network
 
 volumes:
   db_data:
+  mongo_data:
 
 networks:
   msvc_network:
