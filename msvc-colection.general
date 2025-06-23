@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "obtener todos los viajes",
+			"name": "Obtener todos los viajes",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -28,7 +28,7 @@
 			"response": []
 		},
 		{
-			"name": "agregar un nuevo viaje",
+			"name": "Agregar un nuevo viaje",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -57,7 +57,7 @@
 			"response": []
 		},
 		{
-			"name": "modificar un viaje",
+			"name": "Modificar un viaje",
 			"request": {
 				"method": "PUT",
 				"header": [],
@@ -87,7 +87,7 @@
 			"response": []
 		},
 		{
-			"name": "crear nuevo usuario",
+			"name": "Crear nuevo usuario",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -116,7 +116,7 @@
 			"response": []
 		},
 		{
-        			"name": "Cambiar estado a usuario por ID",
+        			"name": "Cambiar estado a un usuario por su ID",
         			"request": {
         				"method": "PUT",
         				"header": [],
@@ -147,7 +147,7 @@
         			"response": []
         		},
 		{
-			"name": "tipo tarifa",
+			"name": "Crear un nuevo tipo de tarifa",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -177,7 +177,7 @@
 			"response": []
 		},
 		{
-			"name": "crear nueva tarifa",
+			"name": "Crear una nueva tarifa",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -207,7 +207,7 @@
 			"response": []
 		},
 		{
-			"name": "obtener usuario x id",
+			"name": "Obtener un usuario por su ID",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -228,7 +228,7 @@
 			"response": []
 		},
 		{
-			"name": "obtener tarifa por tpo",
+			"name": "Obtener una tarifa por tipo",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -251,7 +251,7 @@
 			"response": []
 		},
 		{
-			"name": "obtener facturacion entre fechas",
+			"name": "Obtener facturacion entre fechas",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -281,7 +281,7 @@
 			"response": []
 		},
 		{
-			"name": "pausas",
+			"name": "Obtener pausas",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -309,7 +309,7 @@
 			"response": []
 		},
 		{
-			"name": "monopatinesMasViajes",
+			"name": "Obtener los monopatines con mas de X viajes en un año especifico",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -340,7 +340,7 @@
 			"response": []
 		},
 		{
-			"name": "crear monopatin",
+			"name": "Crear un nuevo monopatin",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -369,7 +369,7 @@
 			"response": []
 		},
 		{
-			"name": "crear parada",
+			"name": "Crear una nueva parada",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -398,7 +398,7 @@
 			"response": []
 		},
 		{
-			"name": "agregar cuenta",
+			"name": "Agregar una nueva cuenta",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -428,7 +428,7 @@
 			"response": []
 		},
 		{
-			"name": "ver si tiene saldo disponible",
+			"name": "Verificar si tiene saldo disponible",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -460,7 +460,7 @@
 			"response": []
 		},
 		{
-			"name": "obtener monopatines cercanos",
+			"name": "Obtener monopatines cercanos",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
