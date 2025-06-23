@@ -1,7 +1,7 @@
 package com.integrador.grupoA.Service;
 
 import com.integrador.grupoA.Client.MonopatinClient;
-import com.integrador.grupoA.Client.TarifaFeignClient;
+import com.integrador.grupoA.Client.AdminFeignClient;
 import com.integrador.grupoA.Client.UsuarioFeignClient;
 import com.integrador.grupoA.DTO.*;
 import com.integrador.grupoA.DTO.DtoTarifaResponse;
@@ -24,7 +24,7 @@ public class ViajeService {
     @Autowired
     private ViajeRepository viajeRepository;
     @Autowired
-    private TarifaFeignClient tarifaFeignClient;
+    private AdminFeignClient tarifaFeignClient;
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
     @Autowired

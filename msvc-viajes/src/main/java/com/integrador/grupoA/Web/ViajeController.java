@@ -88,11 +88,24 @@ public class ViajeController {
         return ResponseEntity.ok(reporte);
     }
 
-    @GetMapping("/monopatines/mas-viajes")
-    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
-            @RequestParam int anio,
-            @RequestParam long minViajes) {
+//    @GetMapping("/monopatines/mas-viajes")
+//    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
+//            @RequestParam int anio,
+//            @RequestParam long minViajes) {
+//
+//        List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
+//        return ResponseEntity.ok(respuesta);
+//    }
 
+    @PostMapping("/monopatines/mas-viajes")
+    public ResponseEntity<List<DtoResponseMonopatinesMasViajes>> obtenerMonopatinesConMasDeXViajes(
+            @RequestBody DtoMonopatinesRequest request) {
+
+        // Extraer los valores del DTO
+        int anio = request.getAnio();
+        long minViajes = request.getMinViajes();
+
+        // Usar el servicio con los datos extraídos
         List<DtoResponseMonopatinesMasViajes> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
         return ResponseEntity.ok(respuesta);
     }
