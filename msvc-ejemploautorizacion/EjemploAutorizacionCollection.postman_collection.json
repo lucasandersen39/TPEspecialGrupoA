@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "e0a6823a-f714-4763-8ccc-ef3a7d02488a",
+		"name": "EjemploAutorizacionCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28337439"
+	},
+	"item": [
+		{
+			"name": "holaPublico",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port-msvc-ejemploautorizacion}}/prueba-auth/hola",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-ejemploautorizacion}}",
+					"path": [
+						"prueba-auth",
+						"hola"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "holaUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwic3ViIjoidGVzdCIsImlhdCI6MTc1MDYyOTI2MywiZXhwIjoxNzUwNjI5NDQzfQ.omUPFpqKHzdH_oriaan90qQ5eaSqjtqFmHemfzi_1xt5zaxUNzxxfcek9bzuANF-UCoy8I97NU4VY5RRmfzn_w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port-msvc-ejemploautorizacion}}/prueba-auth/hola1",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-ejemploautorizacion}}",
+					"path": [
+						"prueba-auth",
+						"hola1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "holaAdmin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUwNjI5MjQ3LCJleHAiOjE3NTA2Mjk0Mjd9.rf52rvXTGKaM68tu-IPVHnRRkq7UIhuR14lHEFOxofFWapUCjosRN1stjXyLpzBT-myJ6R9iu6KJ8RmhKPi06Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}:{{port-msvc-ejemploautorizacion}}/prueba-auth/hola2",
+					"host": [
+						"{{url}}"
+					],
+					"port": "{{port-msvc-ejemploautorizacion}}",
+					"path": [
+						"prueba-auth",
+						"hola2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
