@@ -17,20 +17,19 @@ public class MsvcUsuariosApplication {
 		SpringApplication.run(MsvcUsuariosApplication.class, args);
 	}
 
-	/*
 	@Autowired
 	private UsuarioService usuarioService;
 
 	@Bean
 	CommandLineRunner init() {
 		return args -> {
-			if (usuarioService.buscarPorId(1L).isEmpty()) {
+			if (usuarioService.buscarPorNombreUsuario("admin").isEmpty()) {
 				UsuarioRequestDTO defaultAdminUser = new UsuarioRequestDTO(
 						"admin", "admin", "admin@admin.com", "0800-admin", "admin"
 				);
 				usuarioService.crearUsuario(defaultAdminUser);
 			}
 		};
-	}*/
+	}
 
 }

@@ -18,4 +18,6 @@ public interface UsuarioService {
 
     @Transactional
     List<UsuarioResponseDTO> obtenerUsuariosPorTipo(String tipo);
+
+    Optional<UsuarioResponseDTO> buscarPorNombreUsuario(String nombreUsuario);
 }
