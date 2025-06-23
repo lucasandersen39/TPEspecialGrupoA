@@ -48,7 +48,7 @@ public class CuentaController implements SwaggerErrorResponsesCuentas {
 
     @Operation(summary = "Obtener una cuenta por el id del titular")
     @GetMapping("id_titular/{id_titular}")
-    public ResponseEntity<CuentaResponseDTO> findCuentaByTitular(@PathVariable String id_titular){
+    public ResponseEntity<CuentaResponseDTO> findCuentaByTitular(@PathVariable Long id_titular){
         return ResponseEntity.ok(cuentaService.findCuentaByTitular(id_titular));
     }
 
