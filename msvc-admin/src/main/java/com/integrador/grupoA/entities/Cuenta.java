@@ -32,7 +32,7 @@ public class Cuenta {
     private double saldo;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "El campo id_titular no puede estar vacío")
-    private String id_titular;
+    @NotNull(message = "El campo id_titular no puede estar vacío")
+    private Long id_titular;
 
 }

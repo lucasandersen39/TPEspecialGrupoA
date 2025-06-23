@@ -12,5 +12,5 @@ public class CuentaResponseDTO {
     private String entidad_bancaria;
     private int numero_cuenta;
     private double saldo;
-    private String id_titular;
+    private Long id_titular;
 }

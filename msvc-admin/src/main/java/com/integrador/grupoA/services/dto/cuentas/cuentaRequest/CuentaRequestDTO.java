@@ -22,5 +22,5 @@ public class CuentaRequestDTO {
     private double saldo;
 
     @NotBlank(message = "El campo id_titular no puede estar vacío")
-    private String id_titular;
+    private Long id_titular;
 }
