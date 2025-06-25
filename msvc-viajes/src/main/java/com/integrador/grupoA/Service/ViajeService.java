@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -252,6 +253,31 @@ public class ViajeService {
                 .sorted((u1, u2) -> Long.compare(u2.getTotalViajes(), u1.getTotalViajes())) // Ordenar de mayor a menor
                 .collect(Collectors.toList());
     }
+
+
+    public double obtenerTiempoUso(String usuarioId, LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        // Obtiene la lista de viajes del usuario entre las fechas indicadas
+        List<Viaje> viajes = viajeRepository.findByUsuarioIdAndFechaInicioBetween(usuarioId, fechaInicio, fechaFin);
+
+        // Calcula el tiempo total de uso
+        return viajes.stream()
+                .mapToDouble(viaje -> calcularDuracionEnHoras(viaje.getFechaInicio(), viaje.getFechaFin()))
+                .sum();
+    }
+
+    // Calcula la duración en horas de un viaje usando fechaInicio y fechaFin
+    private double calcularDuracionEnHoras(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        if (fechaInicio != null && fechaFin != null) {
+            // Calcula la duración entre las dos fechas
+            Duration duracion = Duration.between(fechaInicio, fechaFin);
+            // Convierte la duración a horas (con decimales)
+            return duracion.toMinutes() / 60.0;
+        }
+        return 0.0;
+    }
+
+
+
 
 
 

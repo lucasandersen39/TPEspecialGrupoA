@@ -116,5 +116,14 @@ public class ViajeController {
         return ResponseEntity.ok(respuesta);
     }
 
+    @PostMapping("/uso")
+    public ResponseEntity<DtoUsoResponse> obtenerTiempoUso(@RequestBody @Valid DtoUsoRequest request) {
+        double tiempoTotal = viajeService.obtenerTiempoUso(request.getUsuarioId(), request.getFechaInicio(), request.getFechaFin());
+        return ResponseEntity.ok(new DtoUsoResponse(tiempoTotal));
+    }
+
+
+
+
 
 }

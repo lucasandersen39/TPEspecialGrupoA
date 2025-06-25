@@ -41,6 +41,10 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
             @Param("fechaInicio") LocalDateTime fechaInicio,
             @Param("fechaFin") LocalDateTime fechaFin);
 
+    List<Viaje> findByUsuarioIdAndFechaInicioBetween(String usuarioId, LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+
+
 
 
 
