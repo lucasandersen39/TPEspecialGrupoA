@@ -209,7 +209,7 @@ public class ViajeService {
     }
 
     @Transactional(readOnly = true)
-    public List<DtoResponseMonopatin> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
+    public List<DtoMonopatinResponse> obtenerDetallesMonopatinesConMasViajes(int anio, long minViajes) {
         // Obtener los monopatines y sus IDs que superan los "X" viajes
         List<Object[]> resultados = viajeRepository.findMonopatinesConMasDeXViajesEnAnio(anio, minViajes);
 
@@ -219,9 +219,9 @@ public class ViajeService {
                 .collect(Collectors.toList());
 
         // Llamada al microservicio de monopatines para obtener detalles
-        List<DtoResponseMonopatin> detallesMonopatin= new ArrayList<DtoResponseMonopatin>();
+        List<DtoMonopatinResponse> detallesMonopatin= new ArrayList<DtoMonopatinResponse>();
         for (String idMonopatin : idsMonopatines) {
-            DtoResponseMonopatin monopatin = monopatinClient.obtenerMonopatinPorId(idMonopatin);
+            DtoMonopatinResponse monopatin = monopatinClient.obtenerMonopatinPorId(idMonopatin);
             detallesMonopatin.add(monopatin);
         }
 

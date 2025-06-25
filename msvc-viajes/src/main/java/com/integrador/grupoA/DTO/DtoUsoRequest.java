@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DtoUsoRequest {
-    private String usuarioId;
+    private String idUsuario;
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
 

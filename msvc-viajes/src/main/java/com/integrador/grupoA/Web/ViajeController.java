@@ -1,7 +1,6 @@
 package com.integrador.grupoA.Web;
 
 import com.integrador.grupoA.DTO.*;
-import com.integrador.grupoA.Domain.Viaje;
 import com.integrador.grupoA.Service.ViajeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +90,7 @@ public class ViajeController {
 
 
     @PostMapping("/monopatines/mas-viajes")
-    public ResponseEntity<List<DtoResponseMonopatin>> obtenerMonopatinesConMasDeXViajes(
+    public ResponseEntity<List<DtoMonopatinResponse>> obtenerMonopatinesConMasDeXViajes(
             @RequestBody DtoMonopatinesRequest request) {
 
         // Extraer los valores del DTO
@@ -99,7 +98,7 @@ public class ViajeController {
         long minViajes = request.getMinViajes();
 
         // Usar el servicio con los datos extraídos
-        List<DtoResponseMonopatin> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
+        List<DtoMonopatinResponse> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
         return ResponseEntity.ok(respuesta);
     }
 
@@ -118,7 +117,7 @@ public class ViajeController {
 
     @PostMapping("/uso")
     public ResponseEntity<DtoUsoResponse> obtenerTiempoUso(@RequestBody @Valid DtoUsoRequest request) {
-        double tiempoTotal = viajeService.obtenerTiempoUso(request.getUsuarioId(), request.getFechaInicio(), request.getFechaFin());
+        double tiempoTotal = viajeService.obtenerTiempoUso(request.getIdUsuario(), request.getFechaInicio(), request.getFechaFin());
         return ResponseEntity.ok(new DtoUsoResponse(tiempoTotal));
     }
 
