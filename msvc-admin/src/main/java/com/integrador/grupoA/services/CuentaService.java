@@ -105,6 +105,7 @@ public class CuentaService {
         return crearCuentaDTO(cuenta);
     }
 
+    // Verifica si tiene saldo y lo descuenta y sino devuelve saldo insuficiente
     @Transactional
     public CuentaResponseDTO verificarYDescontarSaldo(Long id_titular, Double monto) {
         validarSaldoADescontar(monto);

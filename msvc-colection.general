@@ -1,0 +1,554 @@
+{
+	"info": {
+		"_postman_id": "223e98b0-1887-4522-8f5a-46f82dfbc922",
+		"name": "TP Especial Grupo A",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28169376",
+		"_collection_link": "https://solar-flare-747172.postman.co/workspace/rolling_stones~1ecdd61b-2e05-478f-bf1c-1db348fe51ae/collection/28169376-223e98b0-1887-4522-8f5a-46f82dfbc922?action=share&source=collection_link&creator=28169376"
+	},
+	"item": [
+		{
+			"name": "Crear una nueva parada",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Ubicación 3\",\r\n  \"x\": 4.75,\r\n  \"y\": -8.584\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/parada",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"parada"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un nuevo monopatin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"estado\": 0,\r\n  \"idParada\": 1,\r\n  \"kmRecorridos\": 1.75,\r\n  \"tiempoUsado\": 2.4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/monopatin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"monopatin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear un nuevo tipo de tarifa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"tipo_tarifa\" : \"PREMIUM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/tipo_tarifas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"tipo_tarifas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear una nueva tarifa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 20.50,\r\n  \"fechaVigencia\": \"2025-05-29\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/tarifas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"tarifas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear nuevo usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Vani\",\r\n    \"apellido\": \"Pozzobon\",\r\n    \"email\": \"juanwez@example.com\",\r\n    \"telefono\": \"12347890\",\r\n    \"nombreUsuario\": \"Senorasss\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/usuario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"usuario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar una nueva cuenta",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"entidad_bancaria\": \"Banco Nacional\",\r\n  \"numero_cuenta\": 1274545678,\r\n  \"saldo\": 1500.75,\r\n  \"id_titular\": 9876452210\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/cuentas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar un nuevo viaje",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idUsuario\": 1,\r\n    \"idMonopatin\": \"6859d4b5b0e8deed224b1610\",\r\n    \"fechaInicio\": \"2021-06-23T13:50:00\",\r\n    \"fechaFin\": \"2021-06-23T15:50:00\",\r\n    \"kmRecorridos\": 11\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener facturacion entre fechas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n   {\r\n       \"fechaInicio\": \"2024-06-01T00:00:00\",\r\n       \"fechaFin\": \"2025-06-30T23:59:59\"\r\n   }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje/facturacion",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje",
+						"facturacion"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener los monopatines con mas de X viajes en un año especifico",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "   {\r\n       \"anio\": 2021,\r\n       \"minViajes\": 0\r\n\r\n   }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje/monopatines/mas-viajes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje",
+						"monopatines",
+						"mas-viajes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar si tiene saldo disponible",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \r\n  \"saldo\": 200.75\r\n  \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/cuentas/9876452210/verificar-saldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"cuentas",
+						"9876452210",
+						"verificar-saldo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener uso de monopatines por usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idUsuario\": 1,\r\n    \"fechaInicio\": \"2021-06-23T13:50:00\",\r\n    \"fechaFin\": \"2025-07-23T15:50:00\"\r\n    \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje/uso",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje",
+						"uso"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener todos los viajes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/viaje",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener un usuario por su ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/usuario/1\n",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"usuario",
+						"1\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener una tarifa por tipo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/admin/tarifas/vigente/BASICO",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"tarifas",
+						"vigente",
+						"BASICO"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener pausas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idUsuario\": 9,\r\n    \"idMonopatin\": \"M33223\",\r\n    \"fechaInicio\": \"2025-06-23T14:50:00\",\r\n    \"fechaFin\": \"2025-06-23T15:50:00\",\r\n    \"kmRecorridos\": 1000.5\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje/pausas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje",
+						"pausas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener monopatines cercanos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n   {\r\n       \"fechaInicio\": \"2024-06-01T00:00:00\",\r\n       \"fechaFin\": \"2025-06-30T23:59:59\"\r\n   }\r\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/parada/monopatinesCercanos/x/4.75/y/-8.584",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"parada",
+						"monopatinesCercanos",
+						"x",
+						"4.75",
+						"y",
+						"-8.584"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cambiar estado a un usuario por su ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"Pablo\",\r\n    \"apellido\": \"Piliavsky\",\r\n    \"email\": \"pablo@gmail.com\",\r\n    \"telefono\": \"226257996\",\r\n    \"nombreUsuario\": \"PabloP\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8002/api/usuario/estado/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8002",
+					"path": [
+						"api",
+						"usuario",
+						"estado",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modificar un viaje",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"idUsuario\": 1,\r\n    \"idMonopatin\": \"M33223\",\r\n    \"fechaInicio\": \"2025-06-23T14:50:00\",\r\n    \"fechaFin\": \"2025-06-23T15:50:00\",\r\n    \"kmRecorridos\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/viaje/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"viaje",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "obtener todos los monopatines",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "obtener monopatines disponibles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/monopatin/disponibles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"monopatin",
+						"disponibles"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
