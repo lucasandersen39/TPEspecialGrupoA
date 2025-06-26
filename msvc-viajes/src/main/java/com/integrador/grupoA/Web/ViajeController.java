@@ -121,8 +121,4 @@ public class ViajeController {
         return ResponseEntity.ok(new DtoUsoResponse(tiempoTotal));
     }
 
-
-
-
-
 }
