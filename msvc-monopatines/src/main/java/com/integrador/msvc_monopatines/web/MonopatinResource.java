@@ -1,5 +1,6 @@
 package com.integrador.msvc_monopatines.web;
 
+import com.integrador.msvc_monopatines.domain.Monopatin;
 import com.integrador.msvc_monopatines.repository.MonopatinRepository;
 import com.integrador.msvc_monopatines.service.MonopatinService;
 import com.integrador.msvc_monopatines.service.dto.request.MonopatinRequestDTO;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/monopatin")
@@ -100,6 +102,17 @@ public class MonopatinResource {
         return ResponseEntity.ok(existe);
     }
 
+    @PutMapping("sumarKm/{id}")
+    public ResponseEntity<Void> sumarKilometros(@PathVariable String id, @RequestBody double km){
+        monopatinService.sumarKilometros(id, km);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("sumarTiempoUsado/{id}")
+    public ResponseEntity<Void> sumarTiempoUso(@PathVariable String id, @RequestBody double tiempo){
+        monopatinService.sumarTiempoUso(id, tiempo);
+        return ResponseEntity.ok().build();
+    }
 
 }
 

@@ -58,23 +58,22 @@ public class ViajeService {
         LocalDateTime fechaFin;
         if (viajeRequest.getFechaInicio() == null || viajeRequest.getFechaFin() == null) {
             throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
-
         }
+
         fechaInicio = parseFecha(viajeRequest.getFechaInicio());
         fechaFin = parseFecha(viajeRequest.getFechaFin());
         if (fechaFin.isBefore(fechaInicio)) {
             throw new IllegalArgumentException("La fecha de fin no puede ser anterior a la fecha de inicio.");
         }
 
-
         Viaje viaje= convertToEntity(viajeRequest,fechaInicio,fechaFin);
 
         viajeRepository.save(viaje);
+        monopatinClient.sumarKmMonopatin(viaje.getIdMonopatin(), viaje.getKmRecorridos());
+        monopatinClient.sumarTiempoUsoMonopatin(viaje.getIdMonopatin(), calcularDuracionEnHoras(viaje.getFechaInicio(), viaje.getFechaFin()));
 
         return convertToResponseDTO(viaje);
     }
-
-
 
     @Transactional
     public void deleteViaje(int id) {
@@ -97,8 +96,8 @@ public class ViajeService {
         LocalDateTime fechaFin;
         if (viajeUpdateDTO.getFechaInicio() == null || viajeUpdateDTO.getFechaFin() == null) {
             throw new IllegalArgumentException("Las fechas de inicio y fin son obligatorias.");
-
         }
+
         fechaInicio = parseFecha(viajeUpdateDTO.getFechaInicio());
         fechaFin = parseFecha(viajeUpdateDTO.getFechaFin());
         if (fechaFin.isBefore(fechaInicio)) {
@@ -114,7 +113,8 @@ public class ViajeService {
         viajeExistente.setFechaInicio(fechaInicio);
         viajeExistente.setFechaFin(fechaFin);
         viajeExistente.setKmRecorridos(viajeUpdateDTO.getKmRecorridos());
-
+        viajeExistente.setCostoTotal(calcularCostoViaje(viajeUpdateDTO));
+        viajeExistente.setTiempoPausado(viajeUpdateDTO.getTiempoPausado());
 
         // Guarda los cambios en la base de datos
         Viaje viajeActualizado = viajeRepository.save(viajeExistente);
@@ -159,7 +159,7 @@ public class ViajeService {
         viaje.setFechaFin(fechaFin);
         viaje.setKmRecorridos(dto.getKmRecorridos());
         viaje.setCostoTotal(calcularCostoViaje(dto));
-        viaje.setTiempoPausado(0.0);
+        viaje.setTiempoPausado(dto.getTiempoPausado());
         return viaje;
     }
 

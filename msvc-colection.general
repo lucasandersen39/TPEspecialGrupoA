@@ -549,6 +549,47 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "obtener tiempos de pausa",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "obtener monopatin x id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/monopatin/685c9f2942338f1061319031",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"monopatin",
+						"685c9f2942338f1061319031"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
