@@ -8,7 +8,9 @@ import com.integrador.msvc_monopatines.service.dto.response.MonoParaParadaRespon
 import com.integrador.msvc_monopatines.service.dto.response.MonopatinResponseDTO;
 import com.integrador.msvc_monopatines.feignClients.ParadaFeignClient;
 import com.integrador.msvc_monopatines.service.dto.response.ReporteUsoDTO;
+import com.integrador.msvc_monopatines.service.exception.ParadaInvalidaException;
 import com.integrador.msvc_monopatines.service.exception.RecursoNoEncontradoException;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,14 +35,22 @@ public class MonopatinService {
     private ViajeFeignClient viajeFeignClient;
 
     public MonopatinResponseDTO saveMonopatin(MonopatinRequestDTO dto) {
-        ResponseEntity<Void> respuesta = paradaFeignClient.validarParada(dto.getIdParada());
-        if (respuesta.getStatusCode() == HttpStatus.NOT_FOUND) {
-            throw new IllegalArgumentException("La parada con ID "+ dto.getIdParada() + " no existe.");
+        try {
+            ResponseEntity<Void> respuesta = paradaFeignClient.validarParada(dto.getIdParada());
+
+            if (respuesta.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new ParadaInvalidaException("La parada con ID " + dto.getIdParada() + " no existe.");
+            }
+
+        } catch (FeignException.NotFound e) {
+            throw new ParadaInvalidaException("La parada con ID " + dto.getIdParada() + " no existe.");
         }
+
         Monopatin monopatin = new Monopatin(null, dto.getEstado(), dto.getIdParada(), dto.getKmRecorridos(), dto.getTiempoUsado());
         Monopatin saved = monopatinRepository.save(monopatin);
         return new MonopatinResponseDTO(saved);
     }
+
 
     public List<MonopatinResponseDTO> getAllMonopatines() {
         return monopatinRepository.findAll().stream().map(monopatin ->
@@ -54,8 +64,19 @@ public class MonopatinService {
     }
 
     public MonopatinResponseDTO updateMonopatin(String id, MonopatinRequestDTO dto) {
+        try {
+            ResponseEntity<Void> respuesta = paradaFeignClient.validarParada(dto.getIdParada());
+
+            if (respuesta.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new ParadaInvalidaException("La parada con ID " + dto.getIdParada() + " no existe.");
+            }
+
+        } catch (FeignException.NotFound e) {
+            throw new ParadaInvalidaException("La parada con ID " + dto.getIdParada() + " no existe.");
+        }
+
         Monopatin monopatin = monopatinRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Monopatín no encontrado"));
+                .orElseThrow(() -> new RuntimeException("Monopatín con ID " + id + " no encontrado"));
 
         monopatin.setEstado(dto.getEstado());
         monopatin.setIdParada(dto.getIdParada());

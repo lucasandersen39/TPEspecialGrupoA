@@ -39,4 +39,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
             "FROM Usuario u WHERE u.tipoUsuario = :tipoUsuario")
     List<UsuarioResponseDTO> obtenerUsuariosPorTipo(@Param("tipoUsuario") String tipoUsuario);
 
+    //buscarPorNombreUsuario
+    @Query("SELECT new com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO.UsuarioResponseDTO(" +
+            "u.nombre, u.apellido, u.email, u.telefono, u.tipoUsuario, u.nombreUsuario, u.dinero, u.fechaAlta, u.activo) " +
+            "FROM Usuario u WHERE u.nombreUsuario = :nombreUsuario")
+    Optional<UsuarioResponseDTO> buscarPorNombreUsuario(@Param("nombreUsuario") String nombreUsuario);
+
 }

@@ -29,6 +29,7 @@
 		<module>msvc-monopatines</module>
 		<module>msvc-paradas</module>
 		<module>api-gateway</module>
+		<module>msvc-viajes</module>
 	</modules>
 	<scm>
 		<connection/>

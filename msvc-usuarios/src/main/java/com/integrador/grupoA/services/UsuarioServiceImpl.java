@@ -118,4 +118,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         //controlar el hecho de poner un tipo de usuario que no exista
         return usuarioRepository.obtenerUsuariosPorTipo(tipo);
     }
+
+    @Transactional
+    @Override
+    public Optional<UsuarioResponseDTO> buscarPorNombreUsuario(String nombreUsuario) {
+        return usuarioRepository.buscarPorNombreUsuario(nombreUsuario);
+    }
 }
