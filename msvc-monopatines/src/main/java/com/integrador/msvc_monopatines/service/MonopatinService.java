@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -134,6 +135,21 @@ public class MonopatinService {
                 .toList();
     }
 
+    public void sumarKilometros(String id, double km){
+        Optional<Monopatin> monopatin = monopatinRepository.findById(id);
+        if(monopatin.isPresent()){
+            monopatin.get().setKmRecorridos(monopatin.get().getKmRecorridos() + km);
+            monopatinRepository.save(monopatin.get());
+        }
+    }
 
+    public void sumarTiempoUso(String id, double tiempo){
+        Optional<Monopatin> monopatin = monopatinRepository.findById(id);
+        if(monopatin.isPresent()){
+            double tiempoActualUso = monopatin.get().getTiempoUsado();
+            monopatin.get().setTiempoUsado(tiempoActualUso + tiempo);
+            monopatinRepository.save(monopatin.get());
+        }
+    }
 }
 

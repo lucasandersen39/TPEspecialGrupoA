@@ -12,5 +12,4 @@ public class DtoTiempoPausado {
     private String idMonopatin;
     private Double tiempoTotalPausado;
 
-
 }

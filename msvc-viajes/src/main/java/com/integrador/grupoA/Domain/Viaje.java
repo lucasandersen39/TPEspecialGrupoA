@@ -30,4 +30,4 @@ public class Viaje {
     @Column
     private double tiempoPausado;
 
-    }
+}
