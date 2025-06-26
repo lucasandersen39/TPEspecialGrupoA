@@ -37,7 +37,7 @@ public class DtoViajeRequest {
     @Positive(message = "Los kilómetros recorridos deben ser un número positivo.")
     private double kmRecorridos;
 
-    @Positive(message = "El tiempo pausado deben ser un número positivo.")
+
     private double tiempoPausado;
 
 

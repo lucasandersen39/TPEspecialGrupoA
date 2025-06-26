@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.HashMap;
@@ -35,6 +36,7 @@ public class MonopatinService {
     @Autowired
     private ViajeFeignClient viajeFeignClient;
 
+    @Transactional
     public MonopatinResponseDTO saveMonopatin(MonopatinRequestDTO dto) {
         try {
             ResponseEntity<Void> respuesta = paradaFeignClient.validarParada(dto.getIdParada());
@@ -52,18 +54,20 @@ public class MonopatinService {
         return new MonopatinResponseDTO(saved);
     }
 
-
+    @Transactional
     public List<MonopatinResponseDTO> getAllMonopatines() {
         return monopatinRepository.findAll().stream().map(monopatin ->
-                        new MonopatinResponseDTO(monopatin)).collect(Collectors.toList());
+                new MonopatinResponseDTO(monopatin)).collect(Collectors.toList());
     }
 
+    @Transactional
     public MonopatinResponseDTO getMonopatinById(String id) {
         return monopatinRepository.findById(id)
                 .map(monopatin -> new MonopatinResponseDTO(monopatin))
                 .orElseThrow(() -> new RuntimeException("Monopatín no encontrado"));
     }
 
+    @Transactional
     public MonopatinResponseDTO updateMonopatin(String id, MonopatinRequestDTO dto) {
         try {
             ResponseEntity<Void> respuesta = paradaFeignClient.validarParada(dto.getIdParada());
@@ -88,6 +92,7 @@ public class MonopatinService {
         return new MonopatinResponseDTO(updated);
     }
 
+    @Transactional
     public void marcarComoEnMantenimiento(String idMonopatin) {
         Monopatin monopatin = monopatinRepository.findById(idMonopatin)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Monopatín no encontrado con ID: " + idMonopatin));
@@ -96,7 +101,7 @@ public class MonopatinService {
         monopatinRepository.save(monopatin);
     }
 
-
+    @Transactional
     public boolean deleteMonopatin(String id) {
         if (!monopatinRepository.existsById(id)) {
             return false; // Si no existe el monopatín, retornamos false.
@@ -105,6 +110,7 @@ public class MonopatinService {
         return true; // Si se eliminó correctamente, retornamos true.
     }
 
+    @Transactional
     public List<MonoParaParadaResponseDTO> obtenerDisponibles() {
         List<Monopatin> disponibles = monopatinRepository.findByEstado(0);
         return disponibles.stream()
@@ -112,6 +118,7 @@ public class MonopatinService {
                 .toList();
     }
 
+    @Transactional
     public List<ReporteUsoDTO> generarReporteUso(boolean incluirPausa) {
         List<Monopatin> monopatines = monopatinRepository.findAll();
 
@@ -135,17 +142,32 @@ public class MonopatinService {
                 .toList();
     }
 
-    public void sumarKilometros(String id, double km){
-        Optional<Monopatin> monopatin = monopatinRepository.findById(id);
-        if(monopatin.isPresent()){
-            monopatin.get().setKmRecorridos(monopatin.get().getKmRecorridos() + km);
-            monopatinRepository.save(monopatin.get());
-        }
-    }
+//    @Transactional
+//    public void sumarKilometros(String id, double km) {
+//        Optional<Monopatin> monopatin = monopatinRepository.findById(id);
+//        if (monopatin.isPresent()) {
+//            monopatin.get().setKmRecorridos(monopatin.get().getKmRecorridos() + km);
+//            monopatinRepository.save(monopatin.get());
+//        }
+//    }
+@Transactional
+public void sumarKilometros(String id, double km) {
+    try {
+        Monopatin monopatin = monopatinRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Monopatín no encontrado con id: " + id));
 
-    public void sumarTiempoUso(String id, double tiempo){
+        monopatin.setKmRecorridos(monopatin.getKmRecorridos() + km);
+        monopatinRepository.save(monopatin);
+    } catch (Exception e) {
+        // Registra el error para depuración
+        throw new IllegalArgumentException("Error al sumar kilómetros al monopatín con id {}: {}");
+    }
+}
+
+    @Transactional
+    public void sumarTiempoUso(String id, double tiempo) {
         Optional<Monopatin> monopatin = monopatinRepository.findById(id);
-        if(monopatin.isPresent()){
+        if (monopatin.isPresent()) {
             double tiempoActualUso = monopatin.get().getTiempoUsado();
             monopatin.get().setTiempoUsado(tiempoActualUso + tiempo);
             monopatinRepository.save(monopatin.get());
