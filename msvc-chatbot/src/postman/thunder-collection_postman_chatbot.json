@@ -1,0 +1,58 @@
+{
+    "info": {
+        "_postman_id": "9b19845a-9e6a-472f-9e56-106a1069e432",
+        "name": "chatbot",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "message",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "http://localhost:3010/api/chat/chatbot",
+                    "path": [
+                        "api",
+                        "chat",
+                        "chatbot"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3010"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"userId\": 3,\n  \"message\": \"Hola\"\n}"
+                }
+            }
+        },
+        {
+            "name": "historialPorUserId",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://localhost:3010/api/chat/historial/3",
+                    "path": [
+                        "api",
+                        "chat",
+                        "historial",
+                        "3"
+                    ],
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "3010"
+                }
+            }
+        }
+    ]
+}
