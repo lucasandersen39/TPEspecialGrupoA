@@ -1,5 +1,6 @@
 package com.integrador.grupoA.controllers;
 
+import com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO.UsuarioResponseIdDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -48,7 +49,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Crear un nuevo usuario")
     @PostMapping("")
-    public ResponseEntity<Optional<UsuarioResponseDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario) {
+    public ResponseEntity<Optional<UsuarioResponseIdDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario) {
         final var result = this.usuarioService.crearUsuario(usuario);
         return ResponseEntity.accepted().body(result);
     }

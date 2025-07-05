@@ -1,6 +1,7 @@
 package com.integrador.grupoA.services;
 
 import com.integrador.grupoA.entities.Usuario;
+import com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO.UsuarioResponseIdDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public Optional<UsuarioResponseDTO> crearUsuario(UsuarioRequestDTO usuario) {
+    public Optional<UsuarioResponseIdDTO> crearUsuario(UsuarioRequestDTO usuario) {
         Optional<UsuarioResponseDTO> o = usuarioRepository.findByNombreUsuario(usuario.getNombreUsuario());
         Optional<UsuarioResponseDTO> p = usuarioRepository.findByEmail(usuario.getEmail());
 
@@ -52,9 +53,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             nuevoUsuario.setFechaAlta(LocalDateTime.now());
             nuevoUsuario.setActivo(true);
             usuarioRepository.save(nuevoUsuario);
-            return Optional.of(new UsuarioResponseDTO(nuevoUsuario.getNombre(), nuevoUsuario.getApellido(), nuevoUsuario.getEmail(), nuevoUsuario.getTelefono(),
-                    nuevoUsuario.getTipoUsuario(), nuevoUsuario.getNombreUsuario(), nuevoUsuario.getDinero(), nuevoUsuario.getFechaAlta(),
-                    nuevoUsuario.isActivo()));
+            return Optional.of(new UsuarioResponseIdDTO(nuevoUsuario.getId()));
         } else {
             System.err.println("Error: Ya existe un usuario con ese nombre o email.");
             return Optional.empty();
