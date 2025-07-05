@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoTiempoPausado {
+public class DtoUsoResponse {
 
-    private String idMonopatin;
-    private Double tiempoTotalPausado;
-
+    private double tiempoTotalUso;
 }

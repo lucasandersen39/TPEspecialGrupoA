@@ -77,3 +77,33 @@ Busca una parada por sus coordenadas x e y.
 "y": -58.6789
 }
 ```
+
+### 📍 GET /api/parada/monopatinesCercanos/x/{x}/y/{y}
+Busca una la lista de monopatines que se encuentran en la parada mas cercana.
+
+**Respuesta (JSON):**
+```json
+{
+  "parada": {
+    "nombre": "Parada Central",
+    "x": -34.12345,
+    "y": -58.6789
+  },
+  "monopatines": [
+    {
+      "idMonopatin": "1",
+      "estado": 1,
+      "idParada": 1,
+      "kmRecorridos": 12.5,
+      "tiempoUsado": 45.0
+    },
+    {
+      "idMonopatin": "2",
+      "estado": 2,
+      "idParada": 1,
+      "kmRecorridos": 20.3,
+      "tiempoUsado": 80.5
+    }
+  ]
+}
+```

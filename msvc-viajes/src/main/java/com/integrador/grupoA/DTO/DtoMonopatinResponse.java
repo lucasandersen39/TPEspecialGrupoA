@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DtoResponseMonopatin {
+public class DtoMonopatinResponse {
     private String idMonopatin;
     private int estado;           // 0: Inactivo, 1: Activo, 2: Mantenimiento
     private double kmRecorridos;

@@ -73,9 +73,9 @@ public class CuentaController implements SwaggerErrorResponsesCuentas {
     }
 
     @Operation(summary = "Realizar cobro")
-    @PostMapping("/{id}/verificar-saldo")
-    public ResponseEntity<CuentaResponseDTO> verificarYActualizarSaldo(@PathVariable Long id, @RequestBody Map<String, Double> request) {
-        return ResponseEntity.ok(cuentaService.verificarYDescontarSaldo(id, request.get("saldo")));
+    @PostMapping("/{id_titular}/verificar-saldo")
+    public ResponseEntity<CuentaResponseDTO> verificarYActualizarSaldo(@PathVariable Long id_titular, @RequestBody Map<String, Double> request) {
+        return ResponseEntity.ok(cuentaService.verificarYDescontarSaldo(id_titular, request.get("saldo")));
     }
 
 }

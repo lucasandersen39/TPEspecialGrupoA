@@ -4,6 +4,7 @@ import com.integrador.grupoA.DTO.DtoResponseMonopatinesMasViajes;
 import com.integrador.grupoA.DTO.DtoTiempoPausado;
 import com.integrador.grupoA.Domain.Viaje;
 import feign.Param;
+import org.hibernate.boot.model.source.spi.FetchCharacteristics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -40,6 +41,14 @@ public interface ViajeRepository  extends JpaRepository<Viaje, Integer> {
     List<Object[]> findUsuariosConMasViajes(
             @Param("fechaInicio") LocalDateTime fechaInicio,
             @Param("fechaFin") LocalDateTime fechaFin);
+
+    @Query("SELECT v FROM Viaje v WHERE v.idUsuario = :idUsuario "+
+            "AND v.fechaInicio BETWEEN :fechaInicio AND :fechaFin ")
+    List<Viaje> findByUsuarioIdAndFechaInicioBetween(@Param ("idUsuario")String idUsuario,
+                                                     @Param ("fechaInicio")LocalDateTime fechaInicio,
+                                                     @Param ("fechaFin")LocalDateTime fechaFin);
+
+
 
 
 

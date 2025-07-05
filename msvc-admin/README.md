@@ -474,7 +474,7 @@ Verifica si una cuenta tiene saldo suficiente, descuenta el monto especificado y
 
 ### **POST**: `/api/admin/cuentas/{id}/verificar-saldo`
 
-**Parámetros URL**: `id`: ID de la cuenta (Long)
+**Parámetros URL**: `id`: ID del titular (Long)
 
 **Request body**:
 ``` json 
