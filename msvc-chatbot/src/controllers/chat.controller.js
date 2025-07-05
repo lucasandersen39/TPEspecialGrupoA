@@ -1,6 +1,13 @@
-// controllers/chat.controller.js
-import * as chatService from "../services/chat.service.js"; // Importar el servicio de chat
+import * as chatService from "../services/chat.service.js";
 
+/** * 
+ * @param {Object} req - La solicitud HTTP.
+ * @param {Object} res - La respuesta HTTP.
+ * @returns {Promise<void>} - Respuesta JSON con la respuesta del chat o error.
+ * @throws {Error} - Si ocurre un error al obtener la respuesta del chat o al guardar los mensajes.
+ * @description Este controlador maneja la lógica de negocio relacionada con el chat, guarda los mensajes del usuario y del asistente en la base de datos.
+ 
+ */
 const getGroqChatCompletion = async (req, res) => {
   const { userId, message } = req.body;
   if (!userId || !message) {
@@ -42,6 +49,14 @@ const getGroqChatCompletion = async (req, res) => {
   }
 };
 
+/** *
+ * @description Guarda un mensaje de chat en la base de datos.
+ * @param {string} userId - El ID del usuario.
+ * @param {string} message - El mensaje del chat.
+ * @param {string} role - El rol del mensaje (user o assistant).
+ * @returns {Object} - El objeto del chat guardado.
+ * @throws {Error} - Si ocurre un error al guardar el mensaje.
+ */
 const saveChatMessage = async (userId, message, role) => {
   try {
     const chat = await chatService.saveChatMessage(userId, message, role);
@@ -55,6 +70,14 @@ const saveChatMessage = async (userId, message, role) => {
   }
 };
 
+/**
+ * *
+ * @description Controlador para obtener el historial de chat por ID de usuario.
+ * @param {Object} req - La solicitud HTTP que contiene el ID del usuario.
+ * @param {Object} res - La respuesta HTTP que se enviará al cliente.
+ * @throws {Error} - Si ocurre un error al obtener el historial de chat.
+ * @returns {Object} - El historial de chat del usuario en formato JSON.
+ */
 const getChatByUserId = async (req, res) => {
   const { id } = req.params;
 
