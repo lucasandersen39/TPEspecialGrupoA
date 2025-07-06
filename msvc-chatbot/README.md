@@ -96,10 +96,35 @@ Este archivo `docker-compose.yml` define la configuración de los servicios nece
 
 - **msvc_network:** Red bridge personalizada para la comunicación entre servicios.
 
----
 
 > **Nota:**  
 > El archivo está preparado para desarrollo y producción. El volumen de código permite hot-reload en desarrollo, y la política de reinicio
+---
+
+# Uso de Groq en el Microservicio de Chatbot
+
+## ¿Qué es *Groq*? 
+
+Groq es una plataforma que ofrece modelos de lenguaje avanzados (LLM) para tareas de procesamiento de lenguaje natural, como generación de texto, chatbots, completado de frases, etc. En este microservicio, se utiliza el SDK oficial de Groq (`groq-sdk`) para interactuar con estos modelos y generar respuestas automáticas a los mensajes de los usuarios.
+
+## ¿Dónde y cómo se utiliza Groq?
+
+### 1. Instalación y Configuración
+
+El SDK de Groq se importa y configura en el archivo [`chat.service.js`](src/services/chat.service.js):
+
+```js
+import Groq from "groq-sdk";
+import dotenv from "dotenv";
+dotenv.config();
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+```
+> **Nota:**  
+> Se utiliza la variable de entorno GROQ_API_KEY para autenticar las peticiones al servicio de Groq que tiene validez por **24hs**
+
 
 ---
 
