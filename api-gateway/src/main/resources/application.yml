@@ -1,23 +1,16 @@
 server:
   port: 8080
-jwt:
-    secret-key: ${JWT_SECRET_KEY}
-    token-prefix: Bearer
-    header-string: Authorization
-    expiration: 3600 #En segundos
 
 spring:
   application:
     name: api-gateway
   cloud:
     gateway:
-      default-filters: # Filtro por defecto para todas las rutas
-        - name: AuthenticationFilter
       routes:
         - id: msvc-autorizacion
           uri: http://msvc-autorizacion:8010
           predicates:
-            - Path=/auth/**
+            - Path=/api/auth/**
         - id: msvc-monopatines
           uri: http://msvc-monopatines:8001
           predicates:
@@ -38,3 +31,6 @@ spring:
           uri: http://msvc-viajes:8007
           predicates:
             - Path=/api/viaje/**
+
+jwt:
+  secret: bzI5d2IzaDVZMlZ5ZEdsdmJtUnZZMlZzSUVGMVpYTnJkWEpsY3pCdlppQlBiZ05qYjI1MFpXUWdZbVZwYm1GMGFXOXU
