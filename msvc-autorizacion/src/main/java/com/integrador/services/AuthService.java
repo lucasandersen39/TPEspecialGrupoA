@@ -31,6 +31,11 @@ public class AuthService {
     private UsuarioFeignClient usuarioFeignClient;
 
     public RegisterResponseDTO register(final RegisterRequestDTO request) {
+        final Optional<Usuario> usuarioUsername = usuarioService.findByUsername(request.getUsername());
+        if (usuarioUsername != null && usuarioUsername.isPresent()) {
+            throw new RuntimeException("El username ya fue registrado previamente");
+        }
+
         final UsuarioRequestDTO usuarioRequest = new UsuarioRequestDTO(request.getNombre(), request.getApellido(), request.getEmail(), request.getTelefono(), request.getUsername());
         final ResponseEntity<Optional<UsuarioResponseDTO>> reponseUsuario;
         try {
