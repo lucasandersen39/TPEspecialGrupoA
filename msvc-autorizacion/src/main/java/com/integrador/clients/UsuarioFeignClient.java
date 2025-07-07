@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Optional;
 
 @FeignClient(name = "msvc-usuarios", url = "http://msvc-usuarios:8002/api/usuario")
+//@FeignClient(name = "msvc-usuarios", url = "http://localhost:8002/api/usuario")
 public interface UsuarioFeignClient {
-
     @PostMapping
     ResponseEntity<Optional<UsuarioResponseDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario);
 }

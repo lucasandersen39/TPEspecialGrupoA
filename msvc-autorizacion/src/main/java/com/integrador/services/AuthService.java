@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.integrador.clients.UsuarioFeignClient;
 import com.integrador.dto.RegisterRequestDTO;
+import com.integrador.dto.RegisterResponseDTO;
 import com.integrador.dto.UsuarioRequestDTO;
 import com.integrador.dto.UsuarioResponseDTO;
 import com.integrador.entites.Rol;
@@ -29,7 +30,7 @@ public class AuthService {
     @Autowired
     private UsuarioFeignClient usuarioFeignClient;
 
-    public Usuario register(final RegisterRequestDTO request) {
+    public RegisterResponseDTO register(final RegisterRequestDTO request) {
         final UsuarioRequestDTO usuarioRequest = new UsuarioRequestDTO(request.getNombre(), request.getApellido(), request.getEmail(), request.getTelefono(), request.getUsername());
         final ResponseEntity<Optional<UsuarioResponseDTO>> reponseUsuario;
         try {
@@ -50,7 +51,14 @@ public class AuthService {
             } catch (PropertyValueException e) {
                 return null;
             }
-            return usuario;
+            return new RegisterResponseDTO(
+                    request.getNombre(),
+                    request.getApellido(),
+                    request.getEmail(),
+                    request.getTelefono(),
+                    request.getUsername(),
+                    request.getRoles()
+            );
         }
         throw new RuntimeException("No se pudo crear el usuario.");
     }

@@ -2,6 +2,7 @@ package com.integrador.controllers;
 
 import com.integrador.MsvcAutorizacionApplication;
 import com.integrador.dto.RegisterRequestDTO;
+import com.integrador.dto.RegisterResponseDTO;
 import com.integrador.entites.Usuario;
 import com.integrador.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,7 @@ public class AuthController {
 
 	@PostMapping(value = "register")
 	@PreAuthorize("hasRole('ADMIN')")
-	public ResponseEntity<Usuario> register(@Valid @RequestBody RegisterRequestDTO request) {
-
+	public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
 		return ResponseEntity.ok(service.register(request));
 	}
 }
