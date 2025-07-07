@@ -1,15 +1,21 @@
 package com.integrador.services;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.integrador.clients.UsuarioFeignClient;
 import com.integrador.dto.RegisterRequestDTO;
+import com.integrador.dto.RegisterResponseDTO;
+import com.integrador.dto.UsuarioRequestDTO;
+import com.integrador.dto.UsuarioResponseDTO;
 import com.integrador.entites.Rol;
 import com.integrador.entites.Usuario;
 import com.integrador.enums.RolEnum;
 import com.integrador.repositories.RolRepository;
 import org.hibernate.PropertyValueException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +27,39 @@ public class AuthService {
     private UsuarioService usuarioService;
     @Autowired
     private RolRepository rolRepository;
+    @Autowired
+    private UsuarioFeignClient usuarioFeignClient;
 
-    public Usuario register(final RegisterRequestDTO request) {
-        final String hashedPassword = passwordEncoder.encode(request.getPassword());
-        final Set<Rol> roles = request.getRoles().stream().map(s -> rolRepository.findByRole(RolEnum.valueOf(s.toUpperCase()))
-                .orElse(new Rol(RolEnum.valueOf(s.toUpperCase())))).collect(Collectors.toSet());
-        final Usuario usuario = Usuario.builder().username(request.getUsername()).password(hashedPassword)
-                .roles(roles).idUsuario(request.getIdUsuario()).build();
+    public RegisterResponseDTO register(final RegisterRequestDTO request) {
+        final UsuarioRequestDTO usuarioRequest = new UsuarioRequestDTO(request.getNombre(), request.getApellido(), request.getEmail(), request.getTelefono(), request.getUsername());
+        final ResponseEntity<Optional<UsuarioResponseDTO>> reponseUsuario;
         try {
-            usuarioService.save(usuario);
-        } catch (PropertyValueException e) {
-            return null;
+            reponseUsuario = usuarioFeignClient.crearUsuario(usuarioRequest);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al crear usuario usuarios", e);
         }
-        return usuario;
+
+        final Optional<UsuarioResponseDTO> usuarioOpt = reponseUsuario.getBody();
+        if (usuarioOpt != null && usuarioOpt.isPresent()) {
+            final String hashedPassword = passwordEncoder.encode(request.getPassword());
+            final Set<Rol> roles = request.getRoles().stream().map(s -> rolRepository.findByRole(RolEnum.valueOf(s.toUpperCase()))
+                    .orElse(new Rol(RolEnum.valueOf(s.toUpperCase())))).collect(Collectors.toSet());
+            final Usuario usuario = Usuario.builder().username(request.getUsername()).password(hashedPassword)
+                    .roles(roles).idUsuario(usuarioOpt.get().id()).build();
+            try {
+                usuarioService.save(usuario);
+            } catch (PropertyValueException e) {
+                return null;
+            }
+            return new RegisterResponseDTO(
+                    request.getNombre(),
+                    request.getApellido(),
+                    request.getEmail(),
+                    request.getTelefono(),
+                    request.getUsername(),
+                    request.getRoles()
+            );
+        }
+        throw new RuntimeException("No se pudo crear el usuario.");
     }
 }
