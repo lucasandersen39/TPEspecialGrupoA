@@ -4,10 +4,13 @@ server:
 spring:
   application:
     name: api-gateway
-
   cloud:
     gateway:
       routes:
+        - id: msvc-autorizacion
+          uri: http://msvc-autorizacion:8010
+          predicates:
+            - Path=/api/auth/**
         - id: msvc-monopatines
           uri: http://msvc-monopatines:8001
           predicates:
@@ -28,3 +31,6 @@ spring:
           uri: http://msvc-viajes:8007
           predicates:
             - Path=/api/viaje/**
+
+jwt:
+  secret: bzI5d2IzaDVZMlZ5ZEdsdmJtUnZZMlZzSUVGMVpYTnJkWEpsY3pCdlppQlBiZ05qYjI1MFpXUWdZbVZwYm1GMGFXOXU
