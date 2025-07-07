@@ -160,7 +160,7 @@ public void sumarKilometros(String id, double km) {
         monopatinRepository.save(monopatin);
     } catch (Exception e) {
         // Registra el error para depuración
-        throw new IllegalArgumentException("Error al sumar kilómetros al monopatín con id {}: {}");
+        throw new IllegalArgumentException("Error al sumar kilómetros al monopatín con id: " + id);
     }
 }
 

@@ -7,9 +7,11 @@ import com.integrador.msvc_monopatines.service.dto.request.MonopatinRequestDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonoParaParadaResponseDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonopatinResponseDTO;
 import com.integrador.msvc_monopatines.service.dto.response.ReporteUsoDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +25,7 @@ public class MonopatinResource {
     private final MonopatinRepository monopatinRepository;
 
     @PostMapping
-    public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@RequestBody MonopatinRequestDTO dto) {
+    public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@Valid @RequestBody MonopatinRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(monopatinService.saveMonopatin(dto));
     }
 
@@ -31,6 +33,16 @@ public class MonopatinResource {
     public ResponseEntity<String> handleParadaInvalida(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
+        String mensaje = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .findFirst()
+                .orElse("Error de validación");
+        return ResponseEntity.badRequest().body(mensaje);
+    }
+
 
     @GetMapping
     public List<MonopatinResponseDTO> getAllMonopatines() {
@@ -47,7 +59,7 @@ public class MonopatinResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MonopatinResponseDTO> updateMonopatin(@PathVariable String id, @RequestBody MonopatinRequestDTO dto) {
+    public ResponseEntity<MonopatinResponseDTO> updateMonopatin(@PathVariable String id, @Valid @RequestBody MonopatinRequestDTO dto) {
         try {
             return ResponseEntity.ok(monopatinService.updateMonopatin(id, dto));
         } catch (RuntimeException e) {

@@ -1,0 +1,197 @@
+openapi: 3.0.1
+info:
+  title: API Monopatines
+  description: API del microservicio de monopatines
+  version: "1.0"
+servers:
+  - url: http://localhost:8001
+    description: Servidor local de desarrollo
+paths:
+  /api/monopatin:
+    get:
+      summary: Obtener todos los monopatines
+      responses:
+        '200':
+          description: Lista de monopatines
+    post:
+      summary: Crear un nuevo monopatín
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonopatinRequestDTO'
+      responses:
+        '201':
+          description: Monopatín creado correctamente
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              example: {
+                "mensaje": "estado: El estado solo puede ser 0, 1 o 2"
+              }
+  /api/monopatin/{id}:
+    get:
+      summary: Obtener monopatín por ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Detalle del monopatín
+        '404':
+          description: No encontrado
+    put:
+      summary: Actualizar un monopatín existente
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonopatinRequestDTO'
+      responses:
+        '200':
+          description: Monopatín actualizado
+        '404':
+          description: No encontrado
+        '400':
+          description: Datos inválidos. Revisión fallida del campo estado
+          content:
+            application/json:
+              example: {
+                "mensaje": "estado: El estado solo puede ser 0, 1 o 2"
+              }
+    delete:
+      summary: Eliminar monopatín
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Eliminado correctamente
+        '404':
+          description: No encontrado
+  /api/monopatin/disponibles:
+    get:
+      summary: Obtener monopatines disponibles
+      responses:
+        '200':
+          description: Lista de monopatines disponibles
+  /api/monopatin/reporte-uso:
+    get:
+      summary: Reporte de uso (sin pausas)
+      responses:
+        '200':
+          description: Lista de uso de monopatines
+  /api/monopatin/reporte-uso/{incluirPausa}:
+    get:
+      summary: Reporte de uso (opcionalmente con pausas)
+      parameters:
+        - in: path
+          name: incluirPausa
+          required: true
+          schema:
+            type: string
+            enum: [true, false]
+      responses:
+        '200':
+          description: Reporte generado
+        '400':
+          description: Parámetro inválido
+  /api/monopatin/existe/{id}:
+    get:
+      summary: Verificar existencia de monopatín
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: true si existe, false si no
+  /api/monopatin/sumarKm/{id}:
+    put:
+      summary: Sumar kilómetros recorridos al monopatín
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: number
+              format: double
+              example: 2.0
+      responses:
+        '200':
+          description: Kilómetros actualizados
+  /api/monopatin/sumarTiempoUsado/{id}:
+    put:
+      summary: Sumar tiempo de uso al monopatín
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: number
+              format: double
+              example: 2.0
+      responses:
+        '200':
+          description: Tiempo actualizado
+  /api/monopatin/{idMonopatin}/mantenimiento:
+    patch:
+      summary: Marcar monopatín como en mantenimiento
+      parameters:
+        - in: path
+          name: idMonopatin
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Confirmación de mantenimiento
+
+components:
+  schemas:
+    MonopatinRequestDTO:
+      type: object
+      properties:
+        estado:
+          type: integer
+          example: 0
+        idParada:
+          type: integer
+          example: 101
+        kmRecorridos:
+          type: number
+          format: double
+          example: 12.5
+        tiempoUsado:
+          type: number
+          format: double
+          example: 70.0
