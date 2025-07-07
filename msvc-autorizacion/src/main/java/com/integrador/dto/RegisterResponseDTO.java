@@ -11,7 +11,7 @@ import lombok.Setter;
 import java.util.Set;
 
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor
-public class RegisterRequestDTO {
+public class RegisterResponseDTO {
     @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
@@ -27,9 +27,6 @@ public class RegisterRequestDTO {
 
     @NotBlank(message = "El username es obligatorio")
     private String username;
-
-    @NotBlank(message = "La password es obligatoria")
-    private String password;
 
     @NotNull(message = "Los roles son obligatorios")
     private  Set<String> roles;

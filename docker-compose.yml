@@ -152,8 +152,6 @@ services:
     networks:
       - msvc_network
 
-
-
   api-gateway:
     build:
       context: .
@@ -189,7 +187,6 @@ services:
         condition: service_healthy
     networks:
       - msvc_network
-
 
 volumes:
   db_data:
