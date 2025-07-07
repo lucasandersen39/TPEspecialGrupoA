@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,6 +33,7 @@ public class ParadaController {
 
     @Operation(summary = "Listar todas las paradas")
     @GetMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
 
     @Operation(summary = "Buscar parada por ID")
@@ -40,6 +42,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ParadaResponseDTO> buscarPorId(@PathVariable Long id){
         return paradaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
@@ -66,6 +69,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "409", description = "Ya existe una parada en esas coordenadas")
     })
     @PostMapping("")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ParadaResponseDTO> crearParada(@Parameter(description = "Datos de la parada") @RequestBody @Valid ParadaRequestDTO parada){
         final Optional<ParadaResponseDTO> result = paradaService.crearParada(parada);
         return result
@@ -79,6 +83,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<ParadaResponseDTO> modificarParada(
             @Parameter(description = "Datos actualizados de la parada") @RequestBody @Valid ParadaRequestDTO parada,
             @Parameter(description = "ID de la parada a modificar") @PathVariable Long id){
@@ -94,6 +99,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> eliminarParada(@Parameter(description = "ID de la parada a eliminar") @PathVariable Long id){
         paradaService.eliminarParada(id);

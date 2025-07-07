@@ -13,6 +13,7 @@ import com.integrador.services.JwtService;
 import com.integrador.services.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@AllArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtService jwtService;

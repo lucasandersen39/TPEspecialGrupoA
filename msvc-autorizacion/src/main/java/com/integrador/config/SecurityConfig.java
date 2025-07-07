@@ -13,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -35,10 +37,12 @@ public class SecurityConfig {
 		final AuthenticationFilter authenticationFilter = new AuthenticationFilter(jwtService);
 		final AuthenticationManager authenticationManager = authenticationManager(http);
 		authenticationFilter.setAuthenticationManager(authenticationManager);
-		authenticationFilter.setFilterProcessesUrl("/auth/login");
+		authenticationFilter.setFilterProcessesUrl("/api/auth/login");
 
 		return http.authenticationManager(authenticationManager).csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/**").permitAll()
+						.anyRequest().authenticated())
 				.sessionManagement(
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilter(authenticationFilter)
