@@ -163,25 +163,35 @@ public class ViajeService {
         return viaje;
     }
 
-    @Transactional(readOnly = true)
-    public double calcularCostoViaje(DtoViajeRequest viajeRequest) {
-//         Consultar el usuario por su id
-        DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viajeRequest.getIdUsuario());
 
-        // Determinar la tarifa según el tipo de usuario (Premium o Básico)
-        String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
-        DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
-        double costo =0.0;
-        // Calcular costo total del viaje
-        if (tarifa != null) {
-            costo = tarifa.getMonto() * viajeRequest.getKmRecorridos();
+@Transactional(readOnly = true)
+public double calcularCostoViaje(DtoViajeRequest viajeRequest) {
+    // Consultar el usuario por su ID
+    DtoUsuarioResponse usuario = usuarioFeignClient.obtenerUsuarioPorId(viajeRequest.getIdUsuario());
 
-        } else {
-            throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
+    // Determinar la tarifa según el tipo de usuario (Premium o Básico)
+    String tipoUsuario = usuario != null ? usuario.getTipoUsuario() : "Basico";
+
+    // Obtener la tarifa según el tipo de usuario
+    DtoTarifaResponse tarifa = tarifaFeignClient.obtenerTarifaPorTipo(tipoUsuario);
+    double costo = 0.0;
+
+    // Verificar que se haya encontrado la tarifa
+    if (tarifa != null) {
+        // Calcular el costo base del viaje
+        costo = tarifa.getMonto() * viajeRequest.getKmRecorridos();
+
+        // Verificar si el tiempo pausado excede los 15 minutos
+        if (viajeRequest.getTiempoPausado() > 15) {
+            // Aplicar recargo del 10% por tiempo pausado mayor a 15 minutos
+            costo += costo * 0.10;
         }
-
-        return costo; // Devuelve el viaje con el costo calculado
+    } else {
+        throw new RuntimeException("No se encontró tarifa para el tipo de usuario: " + tipoUsuario);
     }
+
+    return costo; // Devuelve el costo calculado del viaje
+}
 
     @Transactional(readOnly = true)
     public double calcularFacturacionEntreFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {

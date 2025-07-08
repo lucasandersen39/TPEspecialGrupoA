@@ -60,6 +60,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DtoViajeRequest"
+            example: # Esto muestra el ejemplo en Swagger UI
+              idUsuario: 1
+              idMonopatin: "6859d4b5b0e8deed224b1610"
+              fechaInicio: "2025-07-08T00:05:52.699"
+              fechaFin: "2025-07-08T01:00:00.000"
+              kmRecorridos: 77.5
+              tiempoPausado: 10.0
       responses:
         '200':
           description: Viaje actualizado exitosamente.
