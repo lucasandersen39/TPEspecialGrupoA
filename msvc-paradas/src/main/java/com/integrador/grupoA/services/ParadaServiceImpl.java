@@ -53,7 +53,10 @@ public class ParadaServiceImpl implements ParadaService{
 
         } catch (DataIntegrityViolationException e) {
             System.err.println("Error: Ya existe una parada con esas coordenadas (x, y).");
-            return Optional.empty();
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Ya existe una parada con esas coordenadas (x=" + parada.getX() + ", y=" + parada.getY() + ")",
+                    e);
         }
 
     }
