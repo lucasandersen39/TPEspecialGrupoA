@@ -23,8 +23,8 @@ import java.util.Optional;
 @Tag(name = "Usuarios", description = "API para gestión de usuarios")
 @RestController
 @RequestMapping("api/usuario")
-public class UsuarioController implements SwaggerErrorResponseUsuarios {
-
+//public class UsuarioController implements SwaggerErrorResponseUsuarios {
+public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
