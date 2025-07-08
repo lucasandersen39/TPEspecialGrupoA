@@ -1,0 +1,144 @@
+openapi: 3.0.1
+info:
+  title: API de Autenticación
+  version: 1.0.0
+  description: Endpoints para login, registro y manejo de usuarios
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Login de usuario
+      security: []
+      description: Autentica un usuario y devuelve un token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestDTO'
+            example:
+              username: admin
+              password: admin123
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponseDTO'
+              example:
+                token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                message: Login exitoso
+                username: admin
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              example:
+                message: Credenciales inválidas
+
+  /api/auth/register:
+    post:
+      summary: Registro de usuario
+      description: Crea un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequestDTO'
+            example:
+              nombre: Juan
+              apellido: Pérez
+              email: juan.perez@example.com
+              telefono: "+5491122334455"
+              username: juanp
+              password: secreto123
+              roles:
+                - USER
+      responses:
+        '200':
+          description: Usuario registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponseDTO'
+              example:
+                nombre: Juan
+                apellido: Pérez
+                email: juan.perez@example.com
+                telefono: "+5491122334455"
+                username: juanp
+                roles:
+                  - USER
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              example:
+                message: "El email ya está en uso"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginRequestDTO:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthResponseDTO:
+      type: object
+      properties:
+        token:
+          type: string
+        message:
+          type: string
+        username:
+          type: string
+
+    RegisterRequestDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellido:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+
+    RegisterResponseDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellido:
+          type: string
+        email:
+          type: string
+        telefono:
+          type: string
+        username:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+security:
+  - bearerAuth: []
