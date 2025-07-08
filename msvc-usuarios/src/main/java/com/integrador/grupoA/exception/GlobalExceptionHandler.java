@@ -1,6 +1,6 @@
-package com.integrador.msvc_monopatines.service.exception;
+package com.integrador.grupoA.exception;
 
-import com.integrador.msvc_monopatines.service.dto.ErrorResponseDTO;
+import com.integrador.grupoA.services.dto.ErrorResponseDTO;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExcepcionGlobalHandler {
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ParadaInvalidaException.class)
-    public ResponseEntity<String> manejarParadaInvalida(ParadaInvalidaException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    }
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ErrorResponseDTO> handleExpiredToken(ExpiredJwtException ex) {
         final String errorMessage = "Error: El token JWT no es valido o ha expirado.";
@@ -28,9 +24,11 @@ public class ExcepcionGlobalHandler {
         final ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.FORBIDDEN.value(), errorMessage, System.currentTimeMillis());
         return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
     }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> manejarGenerica(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
+    public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex) {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), ex.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 

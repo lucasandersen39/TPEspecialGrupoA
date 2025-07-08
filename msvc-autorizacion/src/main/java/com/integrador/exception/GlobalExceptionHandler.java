@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ErrorResponseDTO> handleExpiredToken(ExpiredJwtException ex) {
-        final String errorMessage = "Error, el token no es valido";
+        final String errorMessage = "Error, el token no es válido.";
         final   ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.UNAUTHORIZED.value(), errorMessage, System.currentTimeMillis());
         return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
     }
@@ -39,6 +39,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception ex) {
+        System.out.println(ex.getMessage());
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Ha ocurrido un error inesperado.", System.currentTimeMillis());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
