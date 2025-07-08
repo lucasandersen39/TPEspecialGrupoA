@@ -177,6 +177,11 @@ paths:
           description: Confirmación de mantenimiento
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     MonopatinRequestDTO:
       type: object
@@ -195,3 +200,5 @@ components:
           type: number
           format: double
           example: 70.0
+security:
+  - bearerAuth: []

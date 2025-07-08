@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class MonopatinResource {
     private final MonopatinService monopatinService;
     private final MonopatinRepository monopatinRepository;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@Valid @RequestBody MonopatinRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(monopatinService.saveMonopatin(dto));
@@ -44,11 +46,13 @@ public class MonopatinResource {
     }
 
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping
     public List<MonopatinResponseDTO> getAllMonopatines() {
         return monopatinService.getAllMonopatines();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}")
     public ResponseEntity<MonopatinResponseDTO> getMonopatinById(@PathVariable String id) {
         try {
@@ -58,6 +62,7 @@ public class MonopatinResource {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<MonopatinResponseDTO> updateMonopatin(@PathVariable String id, @Valid @RequestBody MonopatinRequestDTO dto) {
         try {
@@ -68,12 +73,14 @@ public class MonopatinResource {
     }
 
     //Poner en mantenimiento monopatin
+    @PreAuthorize("hasRole('MANTENIMIENTO')")
     @PatchMapping("/{idMonopatin}/mantenimiento")
     public ResponseEntity<String> ponerEnMantenimiento(@PathVariable String idMonopatin) {
         monopatinService.marcarComoEnMantenimiento(idMonopatin);
         return ResponseEntity.ok("Monopatín " + idMonopatin + " puesto en mantenimiento.");
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteMonopatin(@PathVariable String id) {
         boolean deleted = monopatinService.deleteMonopatin(id);
@@ -83,6 +90,7 @@ public class MonopatinResource {
     }
 
     //Devolver los monopatines inactivos (no alquilados, disponibles para uso, que tienen estado 0
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/disponibles")
     public ResponseEntity<List<MonoParaParadaResponseDTO>> getMonopatinesDisponibles() {
         List<MonoParaParadaResponseDTO> disponibles = monopatinService.obtenerDisponibles();
@@ -90,12 +98,14 @@ public class MonopatinResource {
     }
 
     //Crea el reporte de todos los monopatines por km recorridos y opcionalmente tiempo pausado.
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reporte-uso")
     public ResponseEntity<List<ReporteUsoDTO>> generarReporteUsoDefault() {
         List<ReporteUsoDTO> reporte = monopatinService.generarReporteUso(false); // sin pausas
         return ResponseEntity.ok(reporte);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/reporte-uso/{incluirPausa}")
     public ResponseEntity<List<ReporteUsoDTO>> generarReporteUsoExplicito(@PathVariable String incluirPausa) {
         if (!incluirPausa.equalsIgnoreCase("true") && !incluirPausa.equalsIgnoreCase("false")) {
@@ -108,6 +118,7 @@ public class MonopatinResource {
     }
 
     //Verifica si el id recibido corresponde a un monopatin existente para mantener consistencia con tabla de Viajes
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/existe/{id}")
     public ResponseEntity<Boolean> existeMonopatin(@PathVariable("id") String idMonopatin) {
         boolean existe = monopatinRepository.existsById(idMonopatin);
@@ -115,12 +126,14 @@ public class MonopatinResource {
     }
 
     @PutMapping("sumarKm/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> sumarKilometros(@PathVariable String id, @RequestBody double km){
         monopatinService.sumarKilometros(id, km);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("sumarTiempoUsado/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> sumarTiempoUso(@PathVariable String id, @RequestBody double tiempo){
         monopatinService.sumarTiempoUso(id, tiempo);
         return ResponseEntity.ok().build();
