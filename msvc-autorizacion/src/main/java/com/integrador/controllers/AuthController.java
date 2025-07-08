@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 	@Autowired
 	private AuthService service;
 
-	@PostMapping(value = "register")
+	@PostMapping(value = "/register")
 	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<RegisterResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
 		return ResponseEntity.ok(service.register(request));

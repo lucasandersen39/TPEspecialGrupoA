@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.integrador.grupoA.services.UsuarioService;
@@ -48,6 +49,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Crear un nuevo usuario")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<Optional<UsuarioResponseIdDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario) {
         final var result = this.usuarioService.crearUsuario(usuario);

@@ -41,6 +41,7 @@ public class AuthService {
         try {
             reponseUsuario = usuarioFeignClient.crearUsuario(usuarioRequest);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Error al crear usuario usuarios", e);
         }
 

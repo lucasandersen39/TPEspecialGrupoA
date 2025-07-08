@@ -25,11 +25,11 @@ public class ParadaController {
     @Autowired
     private ParadaRepository paradaRepository;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public Optional<ParadaResponseDTO> buscarPorId(@PathVariable Long id){return paradaService.buscarPorId(id);}
 

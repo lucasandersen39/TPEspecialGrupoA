@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -51,7 +52,6 @@ public class ViajeController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<DtoViajeResponse> updateViaje(
             @PathVariable int id,
@@ -88,7 +88,7 @@ public class ViajeController {
     }
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/monopatines/mas-viajes")
     public ResponseEntity<List<DtoMonopatinResponse>> obtenerMonopatinesConMasDeXViajes(
             @RequestBody DtoMonopatinesRequest request) {
@@ -101,7 +101,7 @@ public class ViajeController {
         List<DtoMonopatinResponse> respuesta = viajeService.obtenerDetallesMonopatinesConMasViajes(anio, minViajes);
         return ResponseEntity.ok(respuesta);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/usuarios/mas-viajes")
     public ResponseEntity<List<DtoResponseUsuarioConViajes>> obtenerUsuariosConMasViajes(
             @RequestParam LocalDateTime fechaInicio,
@@ -114,7 +114,7 @@ public class ViajeController {
 
         return ResponseEntity.ok(respuesta);
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/uso")
     public ResponseEntity<DtoUsoResponse> obtenerTiempoUso(@RequestBody @Valid DtoUsoRequest request) {
         double tiempoTotal = viajeService.obtenerTiempoUso(request.getIdUsuario(), request.getFechaInicio(), request.getFechaFin());
