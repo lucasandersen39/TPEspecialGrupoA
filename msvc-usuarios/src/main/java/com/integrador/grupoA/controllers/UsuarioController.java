@@ -2,6 +2,7 @@ package com.integrador.grupoA.controllers;
 
 import com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO.UsuarioResponseIdDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
@@ -22,13 +23,14 @@ import java.util.Optional;
 @Tag(name = "Usuarios", description = "API para gestión de usuarios")
 @RestController
 @RequestMapping("api/usuario")
-public class UsuarioController implements SwaggerErrorResponseUsuarios {
-
+//public class UsuarioController implements SwaggerErrorResponseUsuarios {
+public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
     @Operation(summary = "Listar todos los usuarios")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("")
     public ResponseEntity<List<UsuarioResponseDTO>> listar() {
         final var result = usuarioService.listar();
@@ -37,6 +39,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Buscar usuario por ID")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UsuarioResponseDTO>> buscarPorId(@PathVariable Long id) {
         final var result = usuarioService.buscarPorId(id);
@@ -45,6 +48,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Obtener usuarios por tipo")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/tipoUsuario/{tipoUsuario}")
     public ResponseEntity<List<UsuarioResponseDTO>> obtenerUsuariosPorTipo(@PathVariable String tipoUsuario) {
         final var result = usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
@@ -53,6 +57,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Crear un nuevo usuario")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("")
     public ResponseEntity<Optional<UsuarioResponseIdDTO>> crearUsuario(@RequestBody @Valid UsuarioRequestDTO usuario) {
         final var result = this.usuarioService.crearUsuario(usuario);
@@ -61,6 +66,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Modificar usuario")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<Optional<UsuarioResponseDTO>> modificarUsuario(@RequestBody @Valid UsuarioRequestDTO usuario,
                                                                          @PathVariable Long id) {
@@ -70,6 +76,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Eliminar usuario")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarUsuario(@PathVariable Long id) {
@@ -78,6 +85,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
 
     @Operation(summary = "Cambiar estado activo del usuario")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/estado/{id}")
     public void cambiarActivoUsuario(@PathVariable Long id) {
         this.usuarioService.cambiarActivoUsuario(id);
