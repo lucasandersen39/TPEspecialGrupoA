@@ -2,6 +2,7 @@ package com.integrador.grupoA.services.dto.usuario.usuarioResponseDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "DTO de respuesta para datos del usuario")
 public class UsuarioResponseDTO {
