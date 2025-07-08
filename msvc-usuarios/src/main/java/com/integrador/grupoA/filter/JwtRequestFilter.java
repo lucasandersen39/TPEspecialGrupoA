@@ -45,7 +45,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 role = request.getHeader("X-Role");
 
             }
-
+            System.out.println(username);
+            System.out.println("ROLE DESDE USUARIO " + role);
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && role != null) {
                 List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
                 UserDetails userDetails = new org.springframework.security.core.userdetails.User(

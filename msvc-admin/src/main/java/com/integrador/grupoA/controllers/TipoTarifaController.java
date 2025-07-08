@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
     }
 
     @Operation(summary = "Dar de alta una nueva tarifa")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("")
     public ResponseEntity<TipoTarifaResponseDTO> agregarTarifa(@Valid @RequestBody TipoTarifaRequestDTO request) {
         TipoTarifaResponseDTO tipo_tarifa = tipoTarifaService.crearTipoTarifa(request);
@@ -47,6 +49,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
     }
 
     @Operation(summary = "Elimina una tarifa existente")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrarTarifa(@PathVariable Long id) {
         tipoTarifaService.eliminarTipoTarifa(id);
@@ -54,6 +57,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
     }
 
     @Operation(summary = "Modificar una tarifa existente")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TipoTarifaResponseDTO> actualizarTipoTarifa(@PathVariable Long id, @Valid @RequestBody TipoTarifaRequestDTO request) {
         return ResponseEntity.ok(tipoTarifaService.actualizarTipoTarifa(id, request));

@@ -45,4 +45,4 @@ volumes:
 
 networks:
   msvc_network:
-    driver: bridge
+    external: true
