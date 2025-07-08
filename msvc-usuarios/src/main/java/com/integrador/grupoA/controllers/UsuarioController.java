@@ -28,6 +28,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     private UsuarioService usuarioService;
 
     @Operation(summary = "Listar todos los usuarios")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("")
     public ResponseEntity<List<UsuarioResponseDTO>> listar() {
         final var result = usuarioService.listar();
@@ -35,6 +36,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Buscar usuario por ID")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Optional<UsuarioResponseDTO>> buscarPorId(@PathVariable Long id) {
         final var result = usuarioService.buscarPorId(id);
@@ -42,6 +44,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Obtener usuarios por tipo")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("/tipoUsuario/{tipoUsuario}")
     public ResponseEntity<List<UsuarioResponseDTO>> obtenerUsuariosPorTipo(@PathVariable String tipoUsuario) {
         final var result = usuarioService.obtenerUsuariosPorTipo(tipoUsuario);
@@ -57,6 +60,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Modificar usuario")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Optional<UsuarioResponseDTO>> modificarUsuario(@RequestBody @Valid UsuarioRequestDTO usuario,
                                                                          @PathVariable Long id) {
@@ -65,6 +69,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Eliminar usuario")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void eliminarUsuario(@PathVariable Long id) {
@@ -72,6 +77,7 @@ public class UsuarioController implements SwaggerErrorResponseUsuarios {
     }
 
     @Operation(summary = "Cambiar estado activo del usuario")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/estado/{id}")
     public void cambiarActivoUsuario(@PathVariable Long id) {
         this.usuarioService.cambiarActivoUsuario(id);
