@@ -6,6 +6,7 @@ import com.integrador.grupoA.services.ParadaService;
 import com.integrador.grupoA.dto.ParadaRequestDTO;
 import com.integrador.grupoA.dto.ParadaResponseDTO;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ public class ParadaController {
     @Operation(summary = "Listar todas las paradas")
     @GetMapping("")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
 
     @Operation(summary = "Buscar parada por ID")
@@ -43,6 +45,7 @@ public class ParadaController {
     })
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ParadaResponseDTO> buscarPorId(@PathVariable Long id){
         return paradaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
@@ -70,6 +73,7 @@ public class ParadaController {
     })
     @PostMapping("")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ParadaResponseDTO> crearParada(@Parameter(description = "Datos de la parada") @RequestBody @Valid ParadaRequestDTO parada){
         final Optional<ParadaResponseDTO> result = paradaService.crearParada(parada);
         return result
@@ -84,6 +88,7 @@ public class ParadaController {
     })
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ParadaResponseDTO> modificarParada(
             @Parameter(description = "Datos actualizados de la parada") @RequestBody @Valid ParadaRequestDTO parada,
             @Parameter(description = "ID de la parada a modificar") @PathVariable Long id){
@@ -100,6 +105,7 @@ public class ParadaController {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> eliminarParada(@Parameter(description = "ID de la parada a eliminar") @PathVariable Long id){
         paradaService.eliminarParada(id);

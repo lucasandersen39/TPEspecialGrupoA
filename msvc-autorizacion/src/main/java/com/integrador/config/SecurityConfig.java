@@ -37,9 +37,18 @@ public class SecurityConfig {
 		authenticationFilter.setAuthenticationManager(authenticationManager);
 		authenticationFilter.setFilterProcessesUrl("/api/auth/login");
 
-		return http.authenticationManager(authenticationManager).csrf(AbstractHttpConfigurer::disable)
+		return http.authenticationManager(authenticationManager)
+				.csrf(AbstractHttpConfigurer::disable)
 				.formLogin(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+				.authorizeHttpRequests(authz -> authz
+						.requestMatchers(
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html",
+								"/docs/openapi.yaml",
+								"/webjars/**"
+						).permitAll()
+						.anyRequest().authenticated())
 				.sessionManagement(
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilter(authenticationFilter)
