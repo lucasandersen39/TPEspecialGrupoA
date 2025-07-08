@@ -37,14 +37,14 @@ public class AuthService {
         }
 
         final UsuarioRequestDTO usuarioRequest = new UsuarioRequestDTO(request.getNombre(), request.getApellido(), request.getEmail(), request.getTelefono(), request.getUsername());
-        final ResponseEntity<Optional<UsuarioResponseDTO>> reponseUsuario;
+        final ResponseEntity<Optional<UsuarioResponseDTO>> responseUsuario;
         try {
-            reponseUsuario = usuarioFeignClient.crearUsuario(usuarioRequest);
+            responseUsuario = usuarioFeignClient.crearUsuario(usuarioRequest);
         } catch (Exception e) {
             throw new RuntimeException("Error al crear usuario usuarios", e);
         }
 
-        final Optional<UsuarioResponseDTO> usuarioOpt = reponseUsuario.getBody();
+        final Optional<UsuarioResponseDTO> usuarioOpt = responseUsuario.getBody();
         if (usuarioOpt != null && usuarioOpt.isPresent()) {
             final String hashedPassword = passwordEncoder.encode(request.getPassword());
             final Set<Rol> roles = request.getRoles().stream().map(s -> rolRepository.findByRole(RolEnum.valueOf(s.toUpperCase()))

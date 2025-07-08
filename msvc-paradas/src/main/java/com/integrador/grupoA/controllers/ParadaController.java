@@ -33,7 +33,7 @@ public class ParadaController {
 
     @Operation(summary = "Listar todas las paradas")
     @GetMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
 
     @Operation(summary = "Buscar parada por ID")
@@ -42,7 +42,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ParadaResponseDTO> buscarPorId(@PathVariable Long id){
         return paradaService.buscarPorId(id)
                 .map(ResponseEntity::ok)
@@ -69,7 +69,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "409", description = "Ya existe una parada en esas coordenadas")
     })
     @PostMapping("")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ParadaResponseDTO> crearParada(@Parameter(description = "Datos de la parada") @RequestBody @Valid ParadaRequestDTO parada){
         final Optional<ParadaResponseDTO> result = paradaService.crearParada(parada);
         return result
@@ -83,7 +83,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ParadaResponseDTO> modificarParada(
             @Parameter(description = "Datos actualizados de la parada") @RequestBody @Valid ParadaRequestDTO parada,
             @Parameter(description = "ID de la parada a modificar") @PathVariable Long id){
@@ -99,7 +99,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> eliminarParada(@Parameter(description = "ID de la parada a eliminar") @PathVariable Long id){
         paradaService.eliminarParada(id);
@@ -123,5 +123,4 @@ public class ParadaController {
         boolean existe = paradaRepository.existsById(id);
         return existe ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
-
 }

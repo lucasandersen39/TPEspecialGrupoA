@@ -1,6 +1,5 @@
 package com.integrador.config;
 
-import com.integrador.MsvcAutorizacionApplication;
 import com.integrador.filter.AuthenticationFilter;
 import com.integrador.filter.JwtAuthorizationFilter;
 import com.integrador.services.JwtService;
@@ -23,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
-@EnableWebSecurity
 public class SecurityConfig {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsServiceImpl;
@@ -40,9 +38,8 @@ public class SecurityConfig {
 		authenticationFilter.setFilterProcessesUrl("/api/auth/login");
 
 		return http.authenticationManager(authenticationManager).csrf(AbstractHttpConfigurer::disable)
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/auth/**").permitAll()
-						.anyRequest().authenticated())
+				.formLogin(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
 				.sessionManagement(
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilter(authenticationFilter)
