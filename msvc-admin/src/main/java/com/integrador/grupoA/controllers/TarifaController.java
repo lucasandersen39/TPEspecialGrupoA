@@ -29,51 +29,51 @@ public class TarifaController implements SwaggerErrorResponsesTarifas {
 
     @Autowired
     TarifaService tarifaService;
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener todas las tarifas")
     @GetMapping("")
     public ResponseEntity<List<TarifaResponseDTO>> obtenerTarifas(){
         return ResponseEntity.ok(tarifaService.obtenerTarifas());
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener una tarifa por su id")
     @GetMapping("/{id}")
     public ResponseEntity<TarifaResponseDTO> obtenerTarifaPorId(@PathVariable Long id){
         return ResponseEntity.ok(tarifaService.findTarifaPorId(id));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener la tarifa vigente según tipo de tarifa")
     @GetMapping("/vigente/{tipo}")
     public ResponseEntity<TarifaResponseDTO> obtenerTarifaVigentePorTipo(@PathVariable String tipo){
         return ResponseEntity.ok(tarifaService.obtenerTarifaVigentePorTipo(tipo));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Obtener una lista de todas las tarifas por su tipo")
     @GetMapping("/tipo/{tipo}")
     public ResponseEntity<List<TarifaResponseDTO>> obtenerTarifasPorTipo(@PathVariable String tipo){
         return ResponseEntity.ok(tarifaService.obtenerTarifasPorTipo(tipo));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Dar de alta una nueva tarifa")
     @PostMapping("")
     public ResponseEntity<TarifaResponseDTO> agregarTarifa(@Valid @RequestBody TarifaRequestDTO request) {
         TarifaResponseDTO tarifa = tarifaService.agregarTarifa(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(tarifa);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Eliminar una tarifa existente")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrarTarifa(@PathVariable Long id) {
         tarifaService.borrarTarifa(id);
         return ResponseEntity.noContent().build();
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Modificar una tarifa existente")
     @PutMapping("/{id}")
     public ResponseEntity<TarifaResponseDTO> modificarTarifa(@PathVariable Long id, @Valid @RequestBody TarifaRequestDTO request) {
         return ResponseEntity.ok(tarifaService.modificarTarifa(id, request));
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Actualizar los precios de las tarifas con una fecha de vigencia.")
     @PutMapping("/actualizar-precios/{id}")
     public ResponseEntity<TarifaResponseDTO> actualizarPrecios(@PathVariable Long id, @Valid @RequestBody TarifaRequestDTO request, @RequestParam LocalDate fecha) {

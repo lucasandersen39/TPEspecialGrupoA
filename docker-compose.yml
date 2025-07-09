@@ -38,6 +38,24 @@ services:
       timeout: 5s
       retries: 5
 
+  msvc-chatbot:
+    build:
+      context: .
+      dockerfile: msvc-chatbot/Dockerfile
+    container_name: msvc-chatbot
+    restart: always
+    ports:
+      - "3010:3010"
+    environment:
+      - SERVER_PORT=3010
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+    networks:
+      - msvc_network
+
   msvc-autorizacion:
     build:
       context: .
@@ -163,9 +181,6 @@ services:
     environment:
       - SERVER_PORT=8080
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-    depends_on:
-      db:
-        condition: service_healthy
     networks:
       - msvc_network
 

@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         System.out.println("🧪 Filtro JWT ejecutado - PATH: " + path);
 
         // ✅ Rutas públicas que no requieren autenticación
-        if (path.startsWith("/api/auth")) {
+        if (path.startsWith("/api/auth/login") || path.startsWith("/api/chat")) {
             System.out.println("✅ Ruta pública: " + path);
             return chain.filter(exchange);
         }
