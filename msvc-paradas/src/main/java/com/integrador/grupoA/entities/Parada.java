@@ -16,9 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Parada {
-
     @Id
-    @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -34,5 +32,9 @@ public class Parada {
     @Column(nullable = false)
     private Double y;
 
-
+    public Parada(final String nombre, final Double x, final Double y) {
+        this.nombre = nombre;
+        this.x = x;
+        this.y = y;
+    }
 }
