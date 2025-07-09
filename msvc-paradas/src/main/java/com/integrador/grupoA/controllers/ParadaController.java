@@ -59,6 +59,7 @@ public class ParadaController {
     })
     @GetMapping("/coordenadas")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ParadaResponseDTO> buscarPorCoordenada(@Parameter(description = "Coordenada X") @RequestParam  Double x,
                                                                  @Parameter(description = "Coordenada Y") @RequestParam  Double y){
         return paradaService.buscarPorCoordenada(x, y)
@@ -116,6 +117,7 @@ public class ParadaController {
     @Operation(summary = "Buscar monopatines cercanos a una coordenada")
     @GetMapping("/monopatinesCercanos/x/{x}/y/{y}")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ParadaMonopatinResponseDTO monopatinesCercanos(@Parameter(description = "Coordenada X") @PathVariable  Double x,
                                                           @Parameter(description = "Coordenada Y") @PathVariable  Double y){
         return paradaService.buscarMonopatinesCercanos(x, y);
@@ -128,6 +130,7 @@ public class ParadaController {
     })
     @GetMapping("/id_valido/{id}")
     @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Void> validarParada(@Parameter(description = "ID de la parada a validar") @PathVariable Long id) {
         boolean existe = paradaRepository.existsById(id);
         return existe ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
