@@ -1,15 +1,127 @@
 {
 	"info": {
-		"_postman_id": "223e98b0-1887-4522-8f5a-46f82dfbc922",
+		"_postman_id": "c7324aca-9958-4ac7-8476-1e84aa5f24b0",
 		"name": "TP Especial Grupo A",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28169376",
-		"_collection_link": "https://solar-flare-747172.postman.co/workspace/rolling_stones~1ecdd61b-2e05-478f-bf1c-1db348fe51ae/collection/28169376-223e98b0-1887-4522-8f5a-46f82dfbc922?action=share&source=collection_link&creator=28169376"
+		"_exporter_id": "28337439"
 	},
 	"item": [
 		{
+			"name": "Login admin",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login user",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test\",\r\n    \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Crear usuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nombre\": \"roberto3\",\r\n    \"apellido\": \"hank3\",\r\n    \"email\": \"abc3@abc.abc\",\r\n    \"telefono\": \"2262123125\",\r\n    \"username\": \"test3\",\r\n    \"password\": \"1234\",\r\n    \"roles\" : [\"MANTENIMIENTO\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Crear una nueva parada",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -39,6 +151,16 @@
 		{
 			"name": "Crear un nuevo monopatin",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -68,11 +190,21 @@
 		{
 			"name": "Crear un nuevo tipo de tarifa",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"tipo_tarifa\" : \"PREMIUM\"\r\n}",
+					"raw": "{\r\n    \"tipo_tarifa\" : \"BASICO\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -98,11 +230,21 @@
 		{
 			"name": "Crear una nueva tarifa",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"tipo_tarifa\": \"PREMIUM\",\r\n  \"monto\": 20.50,\r\n  \"fechaVigencia\": \"2025-05-29\"\r\n}",
+					"raw": "{\r\n  \"tipo_tarifa\": \"BASICO\",\r\n  \"monto\": 20.50,\r\n  \"fechaVigencia\": \"2025-05-29\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -126,37 +268,18 @@
 			"response": []
 		},
 		{
-			"name": "Crear nuevo usuario",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"Vani\",\r\n    \"apellido\": \"Pozzobon\",\r\n    \"email\": \"juanwez@example.com\",\r\n    \"telefono\": \"12347890\",\r\n    \"nombreUsuario\": \"Senorasss\"\r\n}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/usuario",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"usuario"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Agregar una nueva cuenta",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4NjA0LCJleHAiOjE3NTIwMjg3ODR9.8_qLovLXNi0joNSvlOedK6LFeoZJEjbMgfxM0zTXguOb_oKBBcQzZhv0o3CaXxGaXO1QTO1B2g05LzJFBIE0WA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -187,11 +310,21 @@
 		{
 			"name": "Agregar un nuevo viaje",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4NjA0LCJleHAiOjE3NTIwMjg3ODR9.8_qLovLXNi0joNSvlOedK6LFeoZJEjbMgfxM0zTXguOb_oKBBcQzZhv0o3CaXxGaXO1QTO1B2g05LzJFBIE0WA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"idUsuario\": 1,\r\n    \"idMonopatin\": \"6859d4b5b0e8deed224b1610\",\r\n    \"fechaInicio\": \"2021-06-23T13:50:00\",\r\n    \"fechaFin\": \"2021-06-23T15:50:00\",\r\n    \"kmRecorridos\": 11\r\n}\r\n",
+					"raw": "{\r\n    \"idUsuario\": 1,\r\n    \"idMonopatin\": \"686dd5169b1707349c6f3839\",\r\n    \"fechaInicio\": \"2021-06-23T13:50:00\",\r\n    \"fechaFin\": \"2021-06-23T15:50:00\",\r\n    \"kmRecorridos\": 11\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -216,6 +349,16 @@
 		{
 			"name": "Obtener facturacion entre fechas",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4NjA0LCJleHAiOjE3NTIwMjg3ODR9.8_qLovLXNi0joNSvlOedK6LFeoZJEjbMgfxM0zTXguOb_oKBBcQzZhv0o3CaXxGaXO1QTO1B2g05LzJFBIE0WA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -246,11 +389,21 @@
 		{
 			"name": "Obtener los monopatines con mas de X viajes en un año especifico",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4NjA0LCJleHAiOjE3NTIwMjg3ODR9.8_qLovLXNi0joNSvlOedK6LFeoZJEjbMgfxM0zTXguOb_oKBBcQzZhv0o3CaXxGaXO1QTO1B2g05LzJFBIE0WA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "   {\r\n       \"anio\": 2021,\r\n       \"minViajes\": 0\r\n\r\n   }",
+					"raw": "   {\r\n       \"anio\": 2021,\r\n       \"minViajes\": 0\r\n   }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -275,40 +428,18 @@
 			"response": []
 		},
 		{
-			"name": "Verificar si tiene saldo disponible",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \r\n  \"saldo\": 200.75\r\n  \r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/admin/cuentas/9876452210/verificar-saldo",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"admin",
-						"cuentas",
-						"9876452210",
-						"verificar-saldo"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "obtener uso de monopatines por usuario",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4ODA4LCJleHAiOjE3NTIwMjg5ODh9.PIbT2cCwfLL7zjh0iQEsHQX98-6tGQ-SBNBd3z3dmvWPvNE19cMRTlOkJWrqAqBC8iV1mKbovdaXvyzZOv3_5g",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -339,6 +470,16 @@
 		{
 			"name": "Obtener todos los viajes",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4ODA4LCJleHAiOjE3NTIwMjg5ODh9.PIbT2cCwfLL7zjh0iQEsHQX98-6tGQ-SBNBd3z3dmvWPvNE19cMRTlOkJWrqAqBC8iV1mKbovdaXvyzZOv3_5g",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -359,15 +500,25 @@
 		{
 			"name": "Obtener un usuario por su ID",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4ODA4LCJleHAiOjE3NTIwMjg5ODh9.PIbT2cCwfLL7zjh0iQEsHQX98-6tGQ-SBNBd3z3dmvWPvNE19cMRTlOkJWrqAqBC8iV1mKbovdaXvyzZOv3_5g",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/usuario/1\n",
+					"raw": "http://localhost:8010/api/usuario/1\n",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8010",
 					"path": [
 						"api",
 						"usuario",
@@ -380,6 +531,16 @@
 		{
 			"name": "Obtener una tarifa por tipo",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4OTYyLCJleHAiOjE3NTIwMjkxNDJ9.LA7N9Ld-TzBx6HBVtUg5eMIYoBHUC0fRhuBAxMTtGjD4LxjGuYVsddyeC19B81R1u7I05FQ94MU2uE1bYeZQhA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -406,6 +567,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4OTYyLCJleHAiOjE3NTIwMjkxNDJ9.LA7N9Ld-TzBx6HBVtUg5eMIYoBHUC0fRhuBAxMTtGjD4LxjGuYVsddyeC19B81R1u7I05FQ94MU2uE1bYeZQhA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -434,6 +605,16 @@
 				"disableBodyPruning": true
 			},
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4OTYyLCJleHAiOjE3NTIwMjkxNDJ9.LA7N9Ld-TzBx6HBVtUg5eMIYoBHUC0fRhuBAxMTtGjD4LxjGuYVsddyeC19B81R1u7I05FQ94MU2uE1bYeZQhA",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -522,16 +703,47 @@
 			"response": []
 		},
 		{
-			"name": "obtener todos los monopatines",
+			"name": "Obtener todos los monopatines",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI5MTAwLCJleHAiOjE3NTIwMjkyODB9.2i8GRdJt1rpowZh42okUaJKbeg0RxvijyJ1unWblF5rSlZm6bTWZpDnowDPErNUB5BAYKgh-lWKBWDLFSAjq_Q",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/monopatin",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"monopatin"
+					]
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "obtener monopatines disponibles",
+			"name": "Obtener monopatines disponibles",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI5MTAwLCJleHAiOjE3NTIwMjkyODB9.2i8GRdJt1rpowZh42okUaJKbeg0RxvijyJ1unWblF5rSlZm6bTWZpDnowDPErNUB5BAYKgh-lWKBWDLFSAjq_Q",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
@@ -551,15 +763,18 @@
 			"response": []
 		},
 		{
-			"name": "obtener tiempos de pausa",
+			"name": "Obtener tiempos de pausa",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		},
 		{
-			"name": "obtener monopatin x id",
+			"name": "Obtener monopatin x id",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
