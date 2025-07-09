@@ -78,7 +78,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDMzMDExLCJleHAiOjE3NTIwMzMxOTF9.Xo8XnZWkZVjUyaze3K4NWX8upnBWHOg4my3LyHOHO0gPEQJR1DQteWfOikZiha_gPeXZMukrv9reLmdj8huz_Q",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDMzMzc5LCJleHAiOjE3NTIwMzM1NTl9.jddv0x7KnTBUxXlTzUhuslK_Z-8nXaCfTK7CSRL7f8RwoiJt7gMXaWRMnL_iKFaHD3Ou5jmD4j__vY2W3veXyg",
 							"type": "string"
 						}
 					]
@@ -87,7 +87,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"nombre\": \"roberto3\",\r\n    \"apellido\": \"hank3\",\r\n    \"email\": \"abc3@abc.abc\",\r\n    \"telefono\": \"2262123125\",\r\n    \"username\": \"test3\",\r\n    \"password\": \"1234\",\r\n    \"roles\" : [\"MANTENIMIENTO\"]\r\n}",
+					"raw": "{\r\n    \"nombre\": \"roberto\",\r\n    \"apellido\": \"hank\",\r\n    \"email\": \"abc@abc.abc\",\r\n    \"telefono\": \"226212312\",\r\n    \"username\": \"test\",\r\n    \"password\": \"1234\",\r\n    \"roles\" : [\"MANTENIMIENTO\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -505,7 +505,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4ODA4LCJleHAiOjE3NTIwMjg5ODh9.PIbT2cCwfLL7zjh0iQEsHQX98-6tGQ-SBNBd3z3dmvWPvNE19cMRTlOkJWrqAqBC8iV1mKbovdaXvyzZOv3_5g",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDM1MzM3LCJleHAiOjE3NTIwMzU1MTd9.B59FccTVtqEuZhkrrD-YQQtl0YykFjHWHAJZ7p1M7u1MjuqEgVfyrkTMapR3qlHC0eZVVQPlkU4mO917cujBaA",
 							"type": "string"
 						}
 					]
@@ -513,16 +513,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8010/api/usuario/1\n",
+					"raw": "http://localhost:8080/api/usuario/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8010",
+					"port": "8080",
 					"path": [
 						"api",
 						"usuario",
-						"1\n"
+						"1"
 					]
 				}
 			},
