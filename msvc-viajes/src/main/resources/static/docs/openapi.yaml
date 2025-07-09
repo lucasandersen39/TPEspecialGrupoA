@@ -1,0 +1,402 @@
+openapi: 3.0.3
+info:
+  title: API de Viajes - Microservicio
+  version: "1.0"
+  description: API para la gestión de viajes y estadísticas de monopatines.
+servers:
+  - url: http://localhost:8007
+    description: Servidor local para el microservicio de viajes
+
+paths:
+  /api/viaje:
+    get:
+      summary: Listar todos los viajes
+      description: Obtiene una lista con todos los viajes registrados.
+      responses:
+        '200':
+          description: Lista de viajes obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DtoViajeResponse"
+
+  /api/viaje/{id}:
+    get:
+      summary: Obtener un viaje por ID
+      description: Obtiene el detalle de un viaje específico usando su identificador.
+      parameters:
+        - name: id
+          in: path
+          description: ID del viaje a obtener.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Detalle del viaje obtenido exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DtoViajeResponse"
+        '404':
+          description: El viaje no fue encontrado.
+
+    put:
+      summary: Actualizar un viaje existente
+      description: Modifica los detalles de un viaje en base a su ID.
+      parameters:
+        - name: id
+          in: path
+          description: ID del viaje a actualizar.
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Datos del viaje a actualizar.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DtoViajeRequest"
+            example: # Esto muestra el ejemplo en Swagger UI
+              idUsuario: 1
+              idMonopatin: "6859d4b5b0e8deed224b1610"
+              fechaInicio: "2025-07-08T00:05:52.699"
+              fechaFin: "2025-07-08T01:00:00.000"
+              kmRecorridos: 77.5
+              tiempoPausado: 10.0
+      responses:
+        '200':
+          description: Viaje actualizado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DtoViajeResponse"
+        '404':
+          description: El viaje no fue encontrado.
+    delete:
+      summary: Eliminar un viaje
+      description: Elimina un viaje en base a su identificador.
+      parameters:
+        - name: id
+          in: path
+          description: ID del viaje a eliminar.
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Viaje eliminado exitosamente.
+        '404':
+          description: El viaje no fue encontrado.
+
+  /api/viaje/facturacion:
+    post:
+      summary: Obtener facturación entre fechas
+      description: Calcula el monto total facturado en un rango de fechas.
+      requestBody:
+        description: Detalles del rango de fechas a procesar.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DtoFacturacionRequest"
+      responses:
+        '200':
+          description: Monto facturado calculado exitosamente.
+          content:
+            application/json:
+              schema:
+                type: number
+                format: double
+
+  /api/viaje/pausas:
+    get:
+      summary: Obtener tiempos pausados
+      description: Recupera el tiempo en estado pausado por monopatín.
+      responses:
+        '200':
+          description: Información de tiempos pausados disponible.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: number
+                  format: double
+
+  /api/viaje/monopatines/mas-viajes:
+    post:
+      summary: Obtener monopatines con más de X viajes
+      description: Retorna una lista de monopatines que han superado un cierto número de viajes.
+      requestBody:
+        description: Detalles del criterio de búsqueda.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DtoMonopatinesRequest"
+      responses:
+        '200':
+          description: Lista de monopatines obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DtoMonopatinResponse"
+
+  /api/viaje/usuarios/mas-viajes:
+    get:
+      summary: Obtener usuarios con más viajes
+      description: Recupera los usuarios con mayor número de viajes en un rango de fechas.
+      parameters:
+        - name: fechaInicio
+          in: query
+          description: Fecha de inicio del rango.
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: fechaFin
+          in: query
+          description: Fecha de fin del rango.
+          required: true
+          schema:
+            type: string
+            format: date-time
+        - name: tipoUsuario
+          in: query
+          description: Tipo de usuario opcional.
+          schema:
+            type: string
+      requestBody:
+        description: Lista de usuarios a procesar.
+        required: false
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/DtoUsuarioResponse"
+      responses:
+        '200':
+          description: Lista de usuarios obtenida exitosamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DtoResponseUsuarioConViajes"
+
+  /api/viaje/uso:
+    post:
+      summary: Obtener tiempo de uso
+      description: Calcula el tiempo de uso y su correspondiente proporción.
+      requestBody:
+        description: Detalles del uso.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DtoUsoRequest"
+      responses:
+        '200':
+          description: Tiempo de uso calculado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DtoUsoResponse"
+
+components:
+  schemas:
+    DtoViajeResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identificador único del viaje.
+        idUsuario:
+          type: integer
+          description: ID del usuario que realizó el viaje.
+          format: int64
+        idMonopatin:
+          type: string
+          description: Identificador del monopatín utilizado.
+        fechaInicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del viaje.
+        fechaFin:
+          type: string
+          format: date-time
+          description: Fecha y hora del fin del viaje.
+        kmRecorridos:
+          type: number
+          format: double
+          description: Distancia recorrida en kilómetros.
+        costoTotal:
+          type: number
+          format: double
+          description: Costo total del viaje.
+        tiempoPausado:
+          type: number
+          format: double
+          description: Tiempo total pausado durante el viaje.
+
+    DtoViajeRequest:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          description: ID del usuario que realiza el viaje.
+          format: int64
+        idMonopatin:
+          type: string
+          description: Identificador del monopatín utilizado.
+        fechaInicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del viaje.
+        fechaFin:
+          type: string
+          format: date-time
+          description: Fecha y hora de finalización del viaje.
+        kmRecorridos:
+          type: number
+          format: double
+          description: Distancia recorrida en kilómetros.
+        tiempoPausado:
+          type: number
+          format: double
+          description: Tiempo total pausado en minutos.
+
+    DtoFacturacionRequest:
+      type: object
+      properties:
+        fechaInicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del periodo de facturación.
+        fechaFin:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del periodo de facturación.
+
+    DtoMonopatinesRequest:
+      type: object
+      properties:
+        anio:
+          type: integer
+          description: Año a analizar.
+        minViajes:
+          type: integer
+          description: Número mínimo de viajes que un monopatín debe tener.
+
+    DtoMonopatinResponse:
+      type: object
+      properties:
+        idMonopatin:
+          type: string
+          description: Identificador único del monopatín.
+        estado:
+          type: integer
+          description: Estado del monopatín (0 Inactivo, 1 Activo, 2 Mantenimiento).
+        kmRecorridos:
+          type: number
+          format: double
+          description: Kilómetros recorridos por el monopatín.
+        tiempoUsado:
+          type: number
+          format: double
+          description: Tiempo total de uso del monopatín.
+
+    DtoUsoRequest:
+      type: object
+      properties:
+        idUsuario:
+          type: string
+          description: Identificador único del usuario.
+        fechaInicio:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio del periodo a analizar.
+        fechaFin:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin del periodo a analizar.
+
+    DtoUsoResponse:
+      type: object
+      properties:
+        tiempoTotalUso:
+          type: number
+          format: double
+          description: Tiempo total de uso registrado.
+
+    DtoUsuarioResponse:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          description: Identificador único del usuario.
+          format: int64
+        tipoUsuario:
+          type: string
+          description: Tipo de usuario (ej Premium, Basico).
+
+    DtoResponseUsuarioConViajes:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          description: Identificador único del usuario.
+          format: int64
+        totalViajes:
+          type: integer
+          description: Total de viajes realizados por el usuario.
+        tipoUsuario:
+          type: string
+          description: Tipo de usuario del sistema.
+
+    DtoTiempoPausado:
+      type: object
+      properties:
+        idMonopatin:
+          type: string
+          description: Identificador único del monopatín.
+        tiempoTotalPausado:
+          type: number
+          format: double
+          description: Tiempo total pausado del monopatín en minutos.
+
+    DtoTarifaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Identificador único de la tarifa.
+          format: int64
+        tipo_tarifa:
+          type: string
+          description: Tipo de tarifa (ej Base, Kilométrica).
+        monto:
+          type: number
+          format: double
+          description: Monto de la tarifa.
+        fecha_vigencia:
+          type: string
+          format: date
+          description: Fecha de vigencia de la tarifa.
+
+    DtoResponseMonopatinesMasViajes:
+      type: object
+      properties:
+        idMonopatin:
+          type: string
+          description: Identificador único del monopatín.
+        totalViajes:
+          type: integer
+          description: Número total de viajes realizados por el monopatín.
