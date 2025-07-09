@@ -7,6 +7,7 @@ import com.integrador.msvc_monopatines.service.dto.request.MonopatinRequestDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonoParaParadaResponseDTO;
 import com.integrador.msvc_monopatines.service.dto.response.MonopatinResponseDTO;
 import com.integrador.msvc_monopatines.service.dto.response.ReporteUsoDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class MonopatinResource {
     private final MonopatinRepository monopatinRepository;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping
     public ResponseEntity<MonopatinResponseDTO> saveMonopatin(@Valid @RequestBody MonopatinRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(monopatinService.saveMonopatin(dto));
@@ -47,12 +49,14 @@ public class MonopatinResource {
 
 
     @PreAuthorize("hasRole('USER')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping
     public List<MonopatinResponseDTO> getAllMonopatines() {
         return monopatinService.getAllMonopatines();
     }
 
     @PreAuthorize("hasRole('USER')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
     public ResponseEntity<MonopatinResponseDTO> getMonopatinById(@PathVariable String id) {
         try {
@@ -63,6 +67,7 @@ public class MonopatinResource {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<MonopatinResponseDTO> updateMonopatin(@PathVariable String id, @Valid @RequestBody MonopatinRequestDTO dto) {
         try {
@@ -74,6 +79,7 @@ public class MonopatinResource {
 
     //Poner en mantenimiento monopatin
     @PreAuthorize("hasRole('MANTENIMIENTO')")
+    @SecurityRequirement(name = "bearerAuth")
     @PatchMapping("/{idMonopatin}/mantenimiento")
     public ResponseEntity<String> ponerEnMantenimiento(@PathVariable String idMonopatin) {
         monopatinService.marcarComoEnMantenimiento(idMonopatin);
@@ -138,6 +144,4 @@ public class MonopatinResource {
         monopatinService.sumarTiempoUso(id, tiempo);
         return ResponseEntity.ok().build();
     }
-
 }
-

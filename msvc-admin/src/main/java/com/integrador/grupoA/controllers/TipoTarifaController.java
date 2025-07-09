@@ -5,6 +5,7 @@ import com.integrador.grupoA.services.dto.tipoTarifas.tipoTarifaRequest.TipoTari
 import com.integrador.grupoA.services.dto.tipoTarifas.tipoTarifaResponse.TipoTarifaResponseDTO;
 import com.integrador.grupoA.swagger.SwaggerErrorResponsesTipoTarifas;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
 
     @Operation(summary = "Dar de alta una nueva tarifa")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("")
     public ResponseEntity<TipoTarifaResponseDTO> agregarTarifa(@Valid @RequestBody TipoTarifaRequestDTO request) {
         TipoTarifaResponseDTO tipo_tarifa = tipoTarifaService.crearTipoTarifa(request);
@@ -50,6 +52,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
 
     @Operation(summary = "Elimina una tarifa existente")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> borrarTarifa(@PathVariable Long id) {
         tipoTarifaService.eliminarTipoTarifa(id);
@@ -58,6 +61,7 @@ public class TipoTarifaController implements SwaggerErrorResponsesTipoTarifas {
 
     @Operation(summary = "Modificar una tarifa existente")
     @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/{id}")
     public ResponseEntity<TipoTarifaResponseDTO> actualizarTipoTarifa(@PathVariable Long id, @Valid @RequestBody TipoTarifaRequestDTO request) {
         return ResponseEntity.ok(tipoTarifaService.actualizarTipoTarifa(id, request));
