@@ -34,7 +34,7 @@ public class ParadaController {
 
     @Operation(summary = "Listar todas las paradas")
     @GetMapping("")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public List<ParadaResponseDTO> listar(){return paradaService.listar();}
 
@@ -44,7 +44,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no encontrada")
     })
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ParadaResponseDTO> buscarPorId(@PathVariable Long id){
         return paradaService.buscarPorId(id)
@@ -58,6 +58,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "No se encontró parada con esas coordenadas")
     })
     @GetMapping("/coordenadas")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     public ResponseEntity<ParadaResponseDTO> buscarPorCoordenada(@Parameter(description = "Coordenada X") @RequestParam  Double x,
                                                                  @Parameter(description = "Coordenada Y") @RequestParam  Double y){
         return paradaService.buscarPorCoordenada(x, y)
@@ -114,6 +115,7 @@ public class ParadaController {
 
     @Operation(summary = "Buscar monopatines cercanos a una coordenada")
     @GetMapping("/monopatinesCercanos/x/{x}/y/{y}")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     public ParadaMonopatinResponseDTO monopatinesCercanos(@Parameter(description = "Coordenada X") @PathVariable  Double x,
                                                           @Parameter(description = "Coordenada Y") @PathVariable  Double y){
         return paradaService.buscarMonopatinesCercanos(x, y);
@@ -125,6 +127,7 @@ public class ParadaController {
             @ApiResponse(responseCode = "404", description = "Parada no válida")
     })
     @GetMapping("/id_valido/{id}")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     public ResponseEntity<Void> validarParada(@Parameter(description = "ID de la parada a validar") @PathVariable Long id) {
         boolean existe = paradaRepository.existsById(id);
         return existe ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
