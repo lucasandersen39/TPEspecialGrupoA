@@ -1,0 +1,146 @@
+openapi: 3.0.1
+info:
+  title: API de Autenticación
+  version: 1.0.0
+  description: API para autenticación y registro de usuarios
+
+servers:
+  - url: http://localhost:8003
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Login de usuario
+      description: Autentica a un usuario con username y password. Devuelve un token JWT si las credenciales son válidas.
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /api/auth/register:
+    post:
+      summary: Registrar nuevo usuario
+      description: Crea un nuevo usuario. Requiere rol ADMIN.
+      tags:
+        - Autenticación
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Usuario registrado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+        '400':
+          description: Datos inválidos
+        '403':
+          description: No autorizado (requiere rol ADMIN)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: juan123
+        password:
+          type: string
+          example: secreta123
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: Token JWT emitido
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    RegisterRequest:
+      type: object
+      required:
+        - nombre
+        - apellido
+        - email
+        - telefono
+        - username
+        - password
+        - roles
+      properties:
+        nombre:
+          type: string
+          example: Juan
+        apellido:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juan@example.com
+        telefono:
+          type: string
+          example: "1134567890"
+        username:
+          type: string
+          example: juan123
+        password:
+          type: string
+          example: secreta123
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["USER", "ADMIN"]
+
+    RegisterResponse:
+      type: object
+      properties:
+        nombre:
+          type: string
+          example: Juan
+        apellido:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          example: juan@example.com
+        telefono:
+          type: string
+          example: "1134567890"
+        username:
+          type: string
+          example: juan123
+        roles:
+          type: array
+          items:
+            type: string
+          example: ["USER"]
