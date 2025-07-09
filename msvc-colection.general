@@ -78,7 +78,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDI4Mzg4LCJleHAiOjE3NTIwMjg1Njh9.JRsYmiuZc2OXZlQ51X6zPU2RlRbUHJP2h3qGJs6BqyxsWfTGXKa9pIGCKBhS_BPxntO91MYImYJ8ohjd1miacg",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJhdXRob3JpdGllcyI6WyJST0xFX0FETUlOIl0sInN1YiI6ImFkbWluIiwiaWF0IjoxNzUyMDMzMDExLCJleHAiOjE3NTIwMzMxOTF9.Xo8XnZWkZVjUyaze3K4NWX8upnBWHOg4my3LyHOHO0gPEQJR1DQteWfOikZiha_gPeXZMukrv9reLmdj8huz_Q",
 							"type": "string"
 						}
 					]
@@ -801,6 +801,58 @@
 						"api",
 						"monopatin",
 						"685c9f2942338f1061319031"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CHATBOT message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"userId\": 3,\n  \"message\": \"Hola\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3010/api/chat/chatbot",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3010",
+					"path": [
+						"api",
+						"chat",
+						"chatbot"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CHATBOT historialPorUserId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3010/api/chat/historial/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3010",
+					"path": [
+						"api",
+						"chat",
+						"historial",
+						"3"
 					]
 				}
 			},
