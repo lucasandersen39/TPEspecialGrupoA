@@ -31,4 +31,10 @@ public class Tarifa {
     @JoinColumn (name = "tipo_tarifa_id")
     @JsonBackReference
     private TipoTarifa tipo_tarifa;
+
+    public Tarifa(TipoTarifa tipo_tarifa, double monto, LocalDate fechaVigencia) {
+        this.monto = monto;
+        this.fechaVigencia = fechaVigencia;
+        this.tipo_tarifa = tipo_tarifa;
+    }
 }

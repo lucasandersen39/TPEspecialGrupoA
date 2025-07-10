@@ -29,4 +29,7 @@ public class TipoTarifa {
     @JsonManagedReference
     private List<Tarifa> tarifas;
 
+    public TipoTarifa(String tipo_tarifa) {
+        this.tipo_tarifa = tipo_tarifa;
+    }
 }

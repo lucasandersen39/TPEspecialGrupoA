@@ -1,5 +1,11 @@
 package com.integrador.grupoA;
 
+import com.integrador.grupoA.entities.Cuenta;
+import com.integrador.grupoA.entities.Tarifa;
+import com.integrador.grupoA.entities.TipoTarifa;
+import com.integrador.grupoA.repository.CuentaRepository;
+import com.integrador.grupoA.repository.TarifaRepository;
+import com.integrador.grupoA.repository.TipoTarifaRepository;
 import com.integrador.grupoA.services.CuentaService;
 import com.integrador.grupoA.services.TarifaService;
 import com.integrador.grupoA.services.TipoTarifaService;
@@ -21,35 +27,31 @@ public class MsvcAdminApplication {
 	}
 
 	@Autowired
-	private CuentaService cuentaService;
+	private CuentaRepository cuentaRepository;
 
 	@Autowired
-	private TipoTarifaService tipoTarifaService;
+	private TipoTarifaRepository tipoTarifaRepository;
 
 	@Autowired
-	private TarifaService tarifaService;
+	private TarifaRepository tarifaRepository;
 
 	@Bean
 	CommandLineRunner init() {
 		return args -> {
-			if (cuentaService.findCuentaByNumeroCuenta(2657819) == null) {
-				CuentaRequestDTO defaultACuenta = new CuentaRequestDTO(
-						"BBVA", 2657819, 15000.0, 56L
-				);
-				cuentaService.agregarCuenta(defaultACuenta);
+			if (cuentaRepository.findCuentaByNumeroCuenta(2657819) == null) {
+				Cuenta defaultACuenta = new Cuenta("BBVA", 2657819, 15000.0, 56L);
+				cuentaRepository.save(defaultACuenta);
 			}
 
-			if(tipoTarifaService.findByTipoTarifa("BASICO") == null){
-				TipoTarifaRequestDTO defaultTipoTarifa = new TipoTarifaRequestDTO("BASICO");
-				tipoTarifaService.crearTipoTarifa(defaultTipoTarifa);
-			}
+			if(tipoTarifaRepository.findByTipoTarifa("BASICO").isEmpty()) {
+				TipoTarifa defaultTipoTarifa = new TipoTarifa("BASICO");
+				tipoTarifaRepository.save(defaultTipoTarifa);
 
-			if(tarifaService.obtenerTarifasPorTipo("BASICO").isEmpty()){
-				LocalDate fecha = LocalDate.parse("2025-05-29");
-				TarifaRequestDTO defaultTarifa = new TarifaRequestDTO(
-						"BASICO", 200.50, fecha
-				);
-				tarifaService.agregarTarifa(defaultTarifa);
+				if (tarifaRepository.findTarifasPorTipo("BASICO").isEmpty()) {
+					LocalDate fecha = LocalDate.parse("2025-05-29");
+					Tarifa defaultTarifa = new Tarifa(defaultTipoTarifa, 200.50, fecha);
+					tarifaRepository.save(defaultTarifa);
+				}
 			}
 		};
 	}

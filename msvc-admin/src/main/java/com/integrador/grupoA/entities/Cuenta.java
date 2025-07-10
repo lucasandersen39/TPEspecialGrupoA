@@ -35,4 +35,10 @@ public class Cuenta {
     @NotNull(message = "El campo id_titular no puede estar vacío")
     private Long id_titular;
 
+    public Cuenta(String entidad_bancaria, int numero_cuenta, double saldo, Long id_titular) {
+        this.entidad_bancaria = entidad_bancaria;
+        this.numero_cuenta = numero_cuenta;
+        this.saldo = saldo;
+        this.id_titular = id_titular;
+    }
 }
