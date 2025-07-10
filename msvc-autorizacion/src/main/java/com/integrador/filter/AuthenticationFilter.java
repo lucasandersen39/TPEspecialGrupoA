@@ -30,11 +30,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) throws AuthenticationException {
-        LoginRequestDTO loginData = null;
+        LoginRequestDTO loginData;
         try {
             loginData = new ObjectMapper().readValue(request.getInputStream(), LoginRequestDTO.class);
         } catch (IOException e) {
-            log.error("Error: " + e.getMessage());
+            log.error("Error: {}", e.getMessage());
             throw new RuntimeException("Error al leer datos de autenticación", e);
         }
 
@@ -51,7 +51,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         final Map<String, Object> httpResponse = new HashMap<>();
         httpResponse.put("token", token);
-        httpResponse.put("message", "autenticaci\u00F3n correcta");
+        httpResponse.put("message", "autenticación correcta");
         response.getWriter().write(new ObjectMapper().writeValueAsString(httpResponse));
         response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

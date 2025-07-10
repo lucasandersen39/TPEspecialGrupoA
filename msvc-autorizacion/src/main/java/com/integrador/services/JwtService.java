@@ -26,7 +26,7 @@ public class JwtService {
     @Value("${jwt.secret.key}")
     private String secretKey;
     // Son 60.000 por cada minuto
-    private static final Long TIME_EXPIRATION = 180000L;
+    private static final Long TIME_EXPIRATION = 360000L;
 
     public String getToken(final UserDetails usuario) {
         final Map<String, Object> extraClaims = new HashMap<>();

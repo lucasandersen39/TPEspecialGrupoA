@@ -216,7 +216,7 @@ public class ViajeService {
         // Extraer los IDs de los monopatines
         List<String> idsMonopatines = resultados.stream()
                 .map(obj -> (String) obj[0]) // Suponiendo que el ID está en la primera posición
-                .collect(Collectors.toList());
+                .toList();
 
         // Llamada al microservicio de monopatines para obtener detalles
         List<DtoMonopatinResponse> detallesMonopatin= new ArrayList<DtoMonopatinResponse>();

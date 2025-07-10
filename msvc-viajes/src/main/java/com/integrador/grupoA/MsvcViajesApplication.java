@@ -31,7 +31,7 @@ public class MsvcViajesApplication {
             if (viajeRepository.findAll().isEmpty()) {
                 viajeRepository.save(new Viaje(
                                 null,
-                                12345L,
+                                1L,
                                 "mono1",
                                 LocalDateTime.of(2024, 9, 15, 10, 30),
                                 LocalDateTime.of(2024, 9, 15, 11, 30),
@@ -42,7 +42,7 @@ public class MsvcViajesApplication {
                 );
                 viajeRepository.save(new Viaje(
                         null,
-                        12346L,
+                        1L,
                         "mono2",
                         LocalDateTime.of(2023, 9, 16, 9, 0), // fechaInicio
                         LocalDateTime.of(2023, 9, 16, 10, 0), // fechaFin
@@ -53,7 +53,7 @@ public class MsvcViajesApplication {
 
                 viajeRepository.save(new Viaje(
                         null,
-                        12347L,
+                        1L,
                         "mono3",
                         LocalDateTime.of(2024, 9, 17, 8, 45), // fechaInicio
                         LocalDateTime.of(2024, 9, 17, 9, 45), // fechaFin
@@ -64,7 +64,7 @@ public class MsvcViajesApplication {
 
                 viajeRepository.save(new Viaje(
                         null,
-                        12348L,
+                        1L,
                         "mono4",
                         LocalDateTime.of(2021, 9, 18, 15, 0), // fechaInicio
                         LocalDateTime.of(2021, 9, 18, 16, 15), // fechaFin
@@ -75,7 +75,7 @@ public class MsvcViajesApplication {
 
                 viajeRepository.save(new Viaje(
                         null,
-                        12349L,
+                        1L,
                         "mono5",
                         LocalDateTime.of(2025, 9, 19, 11, 30), // fechaInicio
                         LocalDateTime.of(2025, 9, 19, 12, 0), // fechaFin
@@ -86,7 +86,7 @@ public class MsvcViajesApplication {
 
                 viajeRepository.save(new Viaje(
                         null,
-                        12350L,
+                        1L,
                         "mono2",
                         LocalDateTime.of(2023, 9, 20, 14, 20), // fechaInicio
                         LocalDateTime.of(2023, 9, 20, 15, 20), // fechaFin
@@ -94,9 +94,7 @@ public class MsvcViajesApplication {
                         22.50, // costoTotal
                         12.0 // tiempoPausado
                 ));
-
             }
         };
     }
-
 }
