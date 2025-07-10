@@ -48,14 +48,14 @@ public class MonopatinResource {
     }
 
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping
     public List<MonopatinResponseDTO> getAllMonopatines() {
         return monopatinService.getAllMonopatines();
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/{id}")
     public ResponseEntity<MonopatinResponseDTO> getMonopatinById(@PathVariable String id) {
@@ -96,7 +96,7 @@ public class MonopatinResource {
     }
 
     //Devolver los monopatines inactivos (no alquilados, disponibles para uso, que tienen estado 0
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("/disponibles")
     public ResponseEntity<List<MonoParaParadaResponseDTO>> getMonopatinesDisponibles() {
         List<MonoParaParadaResponseDTO> disponibles = monopatinService.obtenerDisponibles();
@@ -124,7 +124,7 @@ public class MonopatinResource {
     }
 
     //Verifica si el id recibido corresponde a un monopatin existente para mantener consistencia con tabla de Viajes
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
     @GetMapping("/existe/{id}")
     public ResponseEntity<Boolean> existeMonopatin(@PathVariable("id") String idMonopatin) {
         boolean existe = monopatinRepository.existsById(idMonopatin);
