@@ -688,12 +688,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8002/api/usuario/estado/2",
+					"raw": "http://localhost:8080/api/usuario/estado/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8002",
+					"port": "8080",
 					"path": [
 						"api",
 						"usuario",
