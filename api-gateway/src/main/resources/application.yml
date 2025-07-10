@@ -31,8 +31,8 @@ spring:
           uri: http://msvc-viajes:8007
           predicates:
             - Path=/api/viaje/**
-        - id: node-app-chat
-          uri: http://node-app-chat:3010
+        - id: msvc-chatbot
+          uri: http://msvc-chatbot:3010
           predicates:
             - Path=/api/chat/**
 jwt:
