@@ -3,6 +3,8 @@
 Este microservicio gestiona las **paradas** dentro del sistema de transporte, permitiendo operaciones CRUD a través de una API REST. Forma parte de una arquitectura basada en microservicios para la gestión integral de una red de transporte.
 
 ---
+## Documentacion Swagger
+http://localhost:8003/swagger-ui/
 
 ## 🔧 Tecnologías utilizadas
 

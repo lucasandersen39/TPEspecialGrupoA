@@ -12,12 +12,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8003/api/parada",
+					"raw": "http://localhost:8080/api/parada",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada"
@@ -32,12 +32,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8003/api/parada/1",
+					"raw": "http://localhost:8080/api/parada/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada",
@@ -53,12 +53,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8003/api/parada/coordenadas?x=1&y=2",
+					"raw": "http://localhost:8080/api/parada/coordenadas?x=1&y=2",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada",
@@ -93,12 +93,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8003/api/parada",
+					"raw": "http://localhost:8080/api/parada",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada"
@@ -122,12 +122,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8003/api/parada/1",
+					"raw": "http://localhost:8080/api/parada/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada",
@@ -155,12 +155,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8003/api/parada/monopatinesCercanos",
+					"raw": "http://localhost:8080/api/parada/monopatinesCercanos",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada",
@@ -188,12 +188,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8003/api/parada/id_valido/1",
+					"raw": "http://localhost:8080/api/parada/id_valido/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8080",
 					"path": [
 						"api",
 						"parada",
