@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c7324aca-9958-4ac7-8476-1e84aa5f24b0",
+		"_postman_id": "8f09f672-0b0d-4da2-a404-ecf31a78a259",
 		"name": "TP Especial Grupo A",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "28337439"
+		"_exporter_id": "43964255"
 	},
 	"item": [
 		{
@@ -302,6 +302,38 @@
 						"api",
 						"admin",
 						"cuentas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar saldo y realizar cobro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"saldo\": 100.00\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/admin/cuentas/2/verificar-saldo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"admin",
+						"cuentas",
+						"2",
+						"verificar-saldo"
 					]
 				}
 			},
